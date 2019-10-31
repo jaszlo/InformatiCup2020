@@ -39,7 +39,7 @@ public class ActionHeuristic {
 			}
 			if((requiredPoints += a.getCost()) > a.getGame().getPoints()) return Integer.MIN_VALUE;
 		}
-		return 0; //determining proper value is left as an exercise for the reader
+		return score; //determining proper value is left as an exercise for the reader
 	}
 	
 }
