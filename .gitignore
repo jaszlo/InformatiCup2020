@@ -25,3 +25,10 @@ hs_err_pid*
 /bin/
 .classpath
 .project
+
+#other folders
+/libs/
+
+#commandlineTools
+ic20_linux
+ic20_windows.exe
