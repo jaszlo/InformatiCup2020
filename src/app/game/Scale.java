@@ -22,15 +22,15 @@ public enum Scale {
 	public int numericRepresenation() {
 		switch(this) {
 			case DM:
-				return -2;
-			case M:
-				return -1;
-			case N:
-				return 0;
-			case P:
 				return 1;
-			case DP:
+			case M:
 				return 2;
+			case N:
+				return 3;
+			case P:
+				return 4;
+			case DP:
+				return 5;
 		}
 		return 0;
 	}
