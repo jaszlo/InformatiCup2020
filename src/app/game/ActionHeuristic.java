@@ -15,10 +15,11 @@ public class ActionHeuristic {
 
 	static final int DEV_VACCINE_FACTOR = 50;
 	static final int DEV_VACCINE_THRESHOLD = 9;
-	//Only develop Vaccine if global prevlance is lower than this threshold value.
+	//Only develop vaccine if global prevlance is lower than this threshold value.
 	static final double DEV_VACCINE_PREVALANCE_THRESHOLD = 1.0/3.0; 
 
-	static final int DEV_MEDICATION_FACTOR = DEV_VACCINE_FACTOR;
+	//Medication over vaccination therefore multiply the factor by 3.
+	static final int DEV_MEDICATION_FACTOR = DEV_VACCINE_FACTOR * 3; 
 	static final int DEV_MEDICATION_THRESHOLD = DEV_VACCINE_THRESHOLD;
 
 	static final int DEP_VACCINE_FACTOR = 50;
@@ -51,6 +52,15 @@ public class ActionHeuristic {
 		int score = mobility * infectivity;
 
 		return score <= DEV_VACCINE_THRESHOLD;
+	}
+	
+	private static boolean doDevMedication (Virus v) {
+		int infectivity = v.getInfectivity().numericRepresenation();
+		int mobility = v.getMobility().numericRepresenation();
+		
+		int score = mobility * infectivity;
+		//If a virus expands fast medication should be developed.
+		return score > DEV_MEDICATION_THRESHOLD;
 	}
 
 	private static boolean actionMatchesCity(Action a, City c) {
@@ -101,10 +111,10 @@ public class ActionHeuristic {
 					}
 				}
 				break;
-			case closeAirport:
-			case closeConnection:
-			case developVaccine:
-				//iterate over all encountered pathognes and check if vaccines need to be done.
+			case closeAirport: break;
+			case closeConnection: break;
+			case developVaccine: 
+				//iterate over all encountered pathognes and check if vaccines needs to be developed.
 				for (E_PathogenEncounter e : a.getGame().getPathEncounterEvents()) {
 					
 					boolean alreadyDev = false;
@@ -155,9 +165,32 @@ public class ActionHeuristic {
 					}
 					
 					
-				}
-			case deployVaccine:
+				} break;
+			case deployVaccine: break;
 			case developMedication:
+				//iterate over all encountered pathogenes and check if medication needs to be developed.
+				for (E_PathogenEncounter e : a.getGame().getPathEncounterEvents()) {
+				
+					//check if virus matches with current action and needs to be medicated
+					if (doDevMedication(e.getVirus()) && actionMatchesVirus(a, e.getVirus())) {
+						score += (DEV_MEDICATION_FACTOR * e.getVirus().getLethality().numericRepresenation());
+						
+						//check if a medication was already developed. If it is remove the given score.
+						for (E_MedicationAvailable q : a.getGame().getMedAvailableEvents()) {
+							if (q.getVirus() == e.getVirus()) {
+								score -= (DEV_MEDICATION_FACTOR * e.getVirus().getLethality().numericRepresenation());
+								break;
+							}
+						}
+						//check if a vaccine is  already being developed. If it is remove the given score.
+						for (E_MedicationInDevelopment q: a.getGame().getMedDevEvents()) {
+							if (q.getVirus() == e.getVirus()) {
+								score -= (DEV_MEDICATION_FACTOR * e.getVirus().getLethality().numericRepresenation());
+								break;
+							}
+						}
+					}
+				} break;
 			case deployMedication:
 			case exertInfluence:
 			case callElections:
