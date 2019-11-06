@@ -111,12 +111,12 @@ public class ActionHeuristic {
 					
 					//check if virus matches with current action and needs to be vaccinated 
 					if (doDevVaccine(e.getVirus()) && actionMatchesVirus(a, e.getVirus())) {
-						score += DEV_VACCINE_FACTOR;
+						score += (DEV_VACCINE_FACTOR * e.getVirus().getLethality().numericRepresenation());
 						
 						//check if a vaccine was already developed. If it is remove the given score.
 						for (E_VaccineAvailable q : a.getGame().getVaccAvailableEvents()) {
 							if (q.getVirus() == e.getVirus()) {
-								score -= DEV_VACCINE_FACTOR;
+								score -= (DEV_VACCINE_FACTOR * e.getVirus().getLethality().numericRepresenation());
 								alreadyDev = true;
 								break;
 							}
@@ -124,7 +124,7 @@ public class ActionHeuristic {
 						//check if a vaccine is  already being developed. If it is remove the given score.
 						for (E_VaccineInDevelopment q: a.getGame().getVaccDevEvents()) {
 							if (q.getVirus() == e.getVirus()) {
-								score -= DEV_VACCINE_FACTOR;
+								score -= (DEV_VACCINE_FACTOR * e.getVirus().getLethality().numericRepresenation());
 								alreadyDev = true;
 								break;
 							}
