@@ -1,5 +1,6 @@
 package app.game;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class City {
@@ -9,6 +10,7 @@ public class City {
 	private final double x,y;
 	
 	private final HashSet<City> connections;
+	private final HashMap<Class<?>, Event> events;
 	
 	private int citizens;
 	
@@ -25,6 +27,7 @@ public class City {
 		this.setGovernment(government);
 		this.setHygiene(hygiene);
 		this.setAwareness(awareness);
+		this.events = new HashMap<>();
 	}
 
 	public String getName() {
@@ -81,6 +84,15 @@ public class City {
 
 	public void setHygiene(Scale hygiene) {
 		this.hygiene = hygiene;
+	}
+	
+	public void addEvent(Event event) {
+		this.events.put(event.getClass(), event);
+	}
+	
+	@SuppressWarnings("unchecked")
+	<A extends Event> A getEvent(A a) {
+		return (A) events.get(a.getClass());
 	}
 	
 }
