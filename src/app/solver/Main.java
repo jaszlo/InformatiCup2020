@@ -1,10 +1,12 @@
 package app.solver;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 
 import app.game.Action;
 import app.game.ActionControl;
+import app.game.ActionHeuristic;
 import app.game.Game;
 import app.game.Virus;
 import app.knapsack.Item;
@@ -31,7 +33,7 @@ public class Main {
 		HashSet<Action> resultActions = Solver.solve(actions, game.getPoints()); //Die möglichst besten auswählen
 		if(resultActions.isEmpty())
 			return createEndRound();
-		Action nextAction = (Action) resultActions.iterator().next();
+		Action nextAction = resultActions.stream().max((Action a, Action b) -> ActionHeuristic.getValue(a) - ActionHeuristic.getValue(b)).get();
 		return nextAction.getHttpResponse(); //evt erst die zufälligen nehmen. aber das ist eine geschichte für einen anderen tag :)
 	}
 	

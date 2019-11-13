@@ -1,5 +1,6 @@
 package app.game;
 
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class ActionHeuristic {
@@ -70,7 +71,11 @@ public class ActionHeuristic {
 	private static boolean actionMatchesVirus(Action a, Virus v) {
 		return a.getHttpResponse().contains(v.getName());
 	}
-
+	
+	public static int getValue(Action action) {
+		return getValue(new HashSet<Action>(Arrays.asList(action)));
+	}
+	
 	public static int getValue(HashSet<Action> actions) {
 		int score = 0;
 		int requiredPoints = 0;
