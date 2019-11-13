@@ -10,7 +10,7 @@ public class City {
 	private final double x,y;
 	
 	private final HashSet<City> connections;
-	private final HashMap<Class<?>, Event> events;
+	private final HashMap<EventType, Event> events;
 	
 	private int citizens;
 	
@@ -87,12 +87,43 @@ public class City {
 	}
 	
 	public void addEvent(Event event) {
-		this.events.put(event.getClass(), event);
+		this.events.put(event.getType(), event);
 	}
 	
-	@SuppressWarnings("unchecked")
-	<A extends Event> A getEvent(A a) {
-		return (A) events.get(a.getClass());
+	///	Getters for Events in the City.
+	public E_AirportClosed getAirportClosed () {
+		return (E_AirportClosed) this.events.get(EventType.airportClosed);
 	}
 	
+	public E_AntiVacc getAntiVacc () {
+		return (E_AntiVacc) this.events.get(EventType.antiVaccinationism);
+	}
+	
+	public E_BioTerror getBioTerror () {
+		return (E_BioTerror) this.events.get(EventType.bioTerrorism);
+	}
+	
+	public E_ConnectionClosed getConnectionClosed () {
+		return (E_ConnectionClosed)  this.events.get(EventType.connectionClosed);
+	}
+	
+	public E_MedicationDeployed getMedicationDeployed () {
+		return (E_MedicationDeployed) this.events.get(EventType.medicationDeployed);
+	}
+	
+	public E_Outbreak getOutbreak () {
+		return (E_Outbreak) this.events.get(EventType.outbreak);
+	}
+	
+	public E_Quarantine getQuarantine () {
+		return (E_Quarantine) this.events.get(EventType.quarantine);
+	}
+	
+	public E_Uprising getUprising () {
+		return (E_Uprising) this.events.get(EventType.uprising);
+	}
+	
+	public E_VaccineDeployed getVaccineDeployed () {
+		return (E_VaccineDeployed) this.events.get(EventType.vaccineDeployed);
+	} 
 }
