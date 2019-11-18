@@ -42,15 +42,15 @@ public class Main {
 	}
 	
 	public static String createPutUnderQuarantine(String city, int rounds) {
-		return String.format("{\"type\": \"putUnderQuarantine\", \"city\":\"%s\", \"rounds\": \"%d\"}", city, rounds);
+		return String.format("{\"type\": \"putUnderQuarantine\", \"city\":\"%s\", \"rounds\": %d}", city, rounds);
 	}
 	
 	public static String createCloseAirport(String city, int rounds){
-		return String.format("{\"type\": \"closeAirport\", \"city\": \"%s\", \"rounds\": \"%d\"}", city, rounds);
+		return String.format("{\"type\": \"closeAirport\", \"city\": \"%s\", \"rounds\": %d}", city, rounds);
 	}
 	
 	public static String createCloseConnection(String fromCity, String toCity, int rounds) {
-		return String.format("{\"type\": \"closeConnection\", \"fromCity\":\"%s\", \"toCity\": \"%s\", \"rounds\": \"%d\"}", fromCity, toCity, rounds);
+		return String.format("{\"type\": \"closeConnection\", \"fromCity\":\"%s\", \"toCity\": \"%s\", \"rounds\": %d}", fromCity, toCity, rounds);
 	}
 	
 	public static String createDevelopVaccine(String pathogen) {
