@@ -36,6 +36,6 @@ public class E_ConnectionClosed extends Event{
 	
 	@Override
 	public String getName () {
-		return "closedConnection";
+		return "connectionClosed";
 	}
 }
