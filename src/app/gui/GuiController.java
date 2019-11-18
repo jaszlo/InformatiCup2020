@@ -176,7 +176,7 @@ public class GuiController {
 				for (City c : cities) {
 					double prev = 0;
 					boolean alreadyVacc = false;
-					for(Event e : g.getFromCityEventMap(c)) {
+					for(Event e : g.getEventsByCity(c)) {
 						if (e.getType() == EventType.outbreak) {
 							if (selectedPathogen.equals(((E_Outbreak) e).getVirus().getName()))
 								prev = ((E_Outbreak) e).getPrevalence();
