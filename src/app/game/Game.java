@@ -235,7 +235,7 @@ public class Game {
 		}
 	}
 
-	public HashSet<Event> getFromCityEventMap (City city) {
+	public HashSet<Event> getEventsByCity (City city) {
 		HashSet<Event> e = this.eventsByCity.get(city);
 		return e == null ? new HashSet<Event>(): e; 
 	}
@@ -389,4 +389,7 @@ public class Game {
 		return viruses;
 	}
 	
+	public boolean cityContains (City city, EventType type) {
+		return this.getEventsByCity(city).stream().anyMatch(event -> event.getType() == type);
+	}
 }
