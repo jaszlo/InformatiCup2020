@@ -201,8 +201,25 @@ public class Game {
 				String name = (String) city.get("name");
 				int pop = (int) ((long)city.get("population"));
 				totalPop+=pop;
+				
+				//adding prevelance of a city to the city.
+				double prevalance = 0;
+				//Grab city events and not all because we only want outbreaks that happened in this city.
+				JSONArray cityEvents = (JSONArray) city.get("events");
+				if (!(cityEvents == null)) {
+					for (Object event : cityEvents) {
+						JSONObject jsonEvent = (JSONObject) event;
+						String type = (String) jsonEvent.get("type");
+						if (type.equals("outbreak")) {
+							prevalance = Double.parseDouble(jsonEvent.get("prevalence").toString());
+							// DEBUG PRINT: System.out.println(prevalance);
+						}
+					}
+				}
 				City c = new City(name, x, y, new HashSet<City>(), pop, economy, government, hygiene, awareness);
+				c.setPrevalance(prevalance);
 				this.cities.put(name, c);
+				//End of parsing the prevalance and adding it to the cities.
 			}
 			for(Object o : cities.values()) { //Parse city connections				
 				JSONObject city = (JSONObject) o;
