@@ -29,7 +29,7 @@ public class ActionHeuristic {
 	static final int DEP_MEDICATION_FACTOR = DEV_VACCINE_FACTOR;
 	static final int DEP_MEDICATION_THRESHOLD = DEV_VACCINE_THRESHOLD;
 
-	private static boolean doQuaratine(Virus v) {
+	private static boolean doQuarantine(Virus v) {
 		int infectivity = v.getInfectivity().numericRepresenation();
 		int lethality = v.getLethality().numericRepresenation();
 		int mobility = v.getMobility().numericRepresenation();
@@ -96,11 +96,11 @@ public class ActionHeuristic {
 	}
 
 	private static boolean actionMatchesCity(Action a, City c) {
-		return a.toString().contains((c.getName()));
+		return a.getCity() == c;
 	}
 
 	private static boolean actionMatchesVirus(Action a, Virus v) {
-		return a.toString().contains(v.getName());
+		return a.getVirus() == v;
 	}
 	
 	public static int getValue(Action action) {
@@ -116,32 +116,11 @@ public class ActionHeuristic {
 			case endRound:
 				break;
 			case putUnderQuarantine:
-				// Check whether a pathogen exists that is worthy to be quarantined
-				boolean virusFound = false;
-				for (E_PathogenEncounter e: a.getGame().getPathEncounterEvents()) {
-					if (doQuaratine(e.getVirus()))  {
-						virusFound = true;
-						break;
-					}
-				}
-				
-				// Skip evaluation if no pathogen is found
-				if (!virusFound) {
-					break;
-				}
-				
-				//iterate over all outbreaks and check if a lethal virus needs to be put under quarantine.
-				for (E_Outbreak e : a.getGame().getOutbreakEvents()) {
-					// Check if the Virus is dangerous enough to be put under quarantine
-					//						and matches the city with the current action.
-					//						and the city isn't already quarantined
-					if (doQuaratine(e.getVirus()) && actionMatchesCity(a, e.getCity()) && 
-							!a.getGame().cityContains(e.getCity(), EventType.quarantine)) {
+				for(Event e: a.getGame().getEventsByCity(a.getCity())) {
+					if(e.getType() == EventType.outbreak && doQuarantine(((E_Outbreak) e).getVirus()) && a.getGame().cityContains(a.getCity(), EventType.quarantine)) {
 						score += QUARANTINE_FACTOR * a.getCost();
-						break;
 					}
 				}
-
 				break;
 			case closeAirport: break;
 			case closeConnection: break;
