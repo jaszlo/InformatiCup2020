@@ -10,7 +10,8 @@ public class City {
 	private final double x,y;
 	
 	private final HashSet<City> connections;
-	private final HashMap<EventType, Event> events;
+	private final HashMap<EventType, Event> singleEvents;
+	private final HashMap<EventType, HashSet<? extends Event>> multipleEvents;
 	
 	private int citizens;
 	
@@ -27,7 +28,8 @@ public class City {
 		this.setGovernment(government);
 		this.setHygiene(hygiene);
 		this.setAwareness(awareness);
-		this.events = new HashMap<>();
+		this.singleEvents = new HashMap<>();
+		this.multipleEvents = new HashMap<>();
 	}
 
 	public String getName() {
@@ -86,13 +88,16 @@ public class City {
 		this.hygiene = hygiene;
 	}
 	
-	public void addEvent(Event event) {
-		this.events.put(event.getType(), event);
-	}
-	
-	@Deprecated
-	public HashSet<Event> getEventsAsSet() {
-		return new HashSet<>(this.events.values());
+	@SuppressWarnings("unchecked")
+	public void addEvent(Event  event) {
+		if(!event.getType().isMultipleEventType())
+			this.singleEvents.put(event.getType(), event);
+		else {
+			if(this.multipleEvents.get(event.getType()) == null) {
+				this.multipleEvents.put(event.getType(), new HashSet<>());
+			}
+			((HashSet<Event>) this.multipleEvents.get(event.getType())).add(event);
+		}
 	}
 	
 	public double getPrevalance () {
@@ -102,38 +107,41 @@ public class City {
 	
 	///	Getters for Events in the City.
 	public E_AirportClosed getAirportClosed () {
-		return (E_AirportClosed) this.events.get(EventType.airportClosed);
+		return (E_AirportClosed) this.singleEvents.get(EventType.airportClosed);
 	}
 	
 	public E_AntiVacc getAntiVacc () {
-		return (E_AntiVacc) this.events.get(EventType.antiVaccinationism);
+		return (E_AntiVacc) this.singleEvents.get(EventType.antiVaccinationism);
 	}
 	
 	public E_BioTerror getBioTerror () {
-		return (E_BioTerror) this.events.get(EventType.bioTerrorism);
+		return (E_BioTerror) this.singleEvents.get(EventType.bioTerrorism);
 	}
 	
-	public E_ConnectionClosed getConnectionClosed () {
-		return (E_ConnectionClosed)  this.events.get(EventType.connectionClosed);
-	}
+	@SuppressWarnings("unchecked")
+	public HashSet<E_ConnectionClosed> getConnectionClosed () {
+		return (HashSet<E_ConnectionClosed>) this.multipleEvents.get(EventType.connectionClosed);
+	} 
 	
-	public E_MedicationDeployed getMedicationDeployed () {
-		return (E_MedicationDeployed) this.events.get(EventType.medicationDeployed);
+	@SuppressWarnings("unchecked")
+	public HashSet<E_MedicationDeployed> getMedicationDeployed () {
+		return (HashSet<E_MedicationDeployed>) this.multipleEvents.get(EventType.medicationDeployed);
 	}
 	
 	public E_Outbreak getOutbreak () {
-		return (E_Outbreak) this.events.get(EventType.outbreak);
+		return (E_Outbreak) this.singleEvents.get(EventType.outbreak);
 	}
 	
 	public E_Quarantine getQuarantine () {
-		return (E_Quarantine) this.events.get(EventType.quarantine);
+		return (E_Quarantine) this.singleEvents.get(EventType.quarantine);
 	}
 	
 	public E_Uprising getUprising () {
-		return (E_Uprising) this.events.get(EventType.uprising);
+		return (E_Uprising) this.singleEvents.get(EventType.uprising);
 	}
 	
-	public E_VaccineDeployed getVaccineDeployed () {
-		return (E_VaccineDeployed) this.events.get(EventType.vaccineDeployed);
-	} 
+	@SuppressWarnings("unchecked")
+	public HashSet<E_VaccineDeployed> getVaccineDeployed () {
+		return (HashSet<E_VaccineDeployed>) this.multipleEvents.get(EventType.vaccineDeployed);
+	}
 }

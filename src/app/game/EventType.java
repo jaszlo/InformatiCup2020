@@ -17,4 +17,10 @@ public enum EventType {
 				this == uprising			||
 				this == vaccineDeployed;
 	}
+	
+	public boolean isMultipleEventType() {
+		return  this == vaccineDeployed 	|| 
+				this == medicationDeployed	||
+				this == connectionClosed;
+	}
 }

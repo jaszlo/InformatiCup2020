@@ -156,7 +156,7 @@ public class ActionHeuristic {
 			case deployVaccine:
 				city = a.getCity();
 				// Cities only need to be vaccinated once
-				if(city.getVaccineDeployed() != null) break;
+				if(city.getVaccineDeployed().stream().anyMatch(e -> e.getVirus() == a.getVirus())) break;
 				
 				// TODO: Adjust formula
 				score += DEP_MEDICATION_FACTOR * (1 - city.getPrevalance()) * city.getCitizens() * a.getVirus().getLethality().numericRepresenation();
