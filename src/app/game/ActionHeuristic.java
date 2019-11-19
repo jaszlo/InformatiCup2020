@@ -1,5 +1,6 @@
 package app.game;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -99,10 +100,11 @@ public class ActionHeuristic {
 					//iterate over all outbreaks and check if a lethal virus needs to be put under quarantine.
 					for (E_Outbreak e : a.getGame().getOutbreakEvents()) {
 						//check if the Virus is dangerous enough to be put under quarantine and matches the city with the current action.
-						if (doQuaratine(e.getVirus()) && actionMatchesCity(a, e.getCity())) {
-							
+						if (doQuaratine(e.getVirus()) && actionMatchesCity(a, e.getCity()) && 
+								!a.getGame().cityContains(e.getCity(), EventType.quarantine)) {
 							score += QUARANTINE_FACTOR * a.getCost();
-							
+	
+							/*
 							//check if the infected city is already put under quarantine.
 							for (E_Quarantine q : a.getGame().getQuarantineEvents()) {
 								if (actionMatchesCity(a, q.getCity())) {
@@ -110,7 +112,7 @@ public class ActionHeuristic {
 									score -= QUARANTINE_FACTOR * a.getCost();
 									break;
 								}
-							}
+							}*/
 							break;
 						}
 					}
@@ -125,7 +127,7 @@ public class ActionHeuristic {
 					boolean alreadyDev = false;
 					
 					//check if virus matches with current action and needs to be vaccinated 
-					if (doDevVaccine(e.getVirus()) && actionMatchesVirus(a, e.getVirus())) {
+					if (doDevVaccine(e.getVirus()) && actionMatchesVirus(a, e.getVirus())){
 						score += (DEV_VACCINE_FACTOR * e.getVirus().getLethality().numericRepresenation());
 						
 						//check if a vaccine was already developed. If it is remove the given score.
@@ -147,19 +149,21 @@ public class ActionHeuristic {
 						//check if to many people are already infected (if score was not removed yet).
 						//if too many are infected remove score.
 						if (!alreadyDev) {
-							int totalPopulation = 0;
+							double totalPopulation = 0;
 							double infectedPopulation = 0;
 							
 							//calculate the current total population
 							for (City c : a.getGame().getCities().values()) {
 								totalPopulation += c.getCitizens();
+								infectedPopulation += c.getCitizens() * c.getPrevalance();
 							}
+							/*
 							//calculate the current infected population
 							for (E_Outbreak q : a.getGame().getOutbreakEvents()) {
 								if (actionMatchesVirus(a, q.getVirus())) {
 									infectedPopulation += q.getCity().getCitizens() * q.getPrevalence();
 								}
-							}
+							}*/
 							
 							//check global prevalance and remove score if necessary.
 							double globalPrevalance = infectedPopulation / totalPopulation;
@@ -171,7 +175,39 @@ public class ActionHeuristic {
 					
 					
 				} break;
-			case deployVaccine: break;
+			case deployVaccine:
+				
+				boolean anyVaccinesAvailable = false;
+				ArrayList<City> vaccinedCities = new ArrayList<>();
+				
+				for (E_VaccineAvailable e : a.getGame().getVaccAvailableEvents()) {
+					if (e.getName().equals(a.getParameters()[0])) {
+						anyVaccinesAvailable = true;
+					}
+				}
+				
+				for (E_VaccineDeployed q : a.getGame().getVaccDeployedEvents()) {
+					vaccinedCities.add(q.getCity());
+				}
+				double totalCityPopulation, infectedCityPopulation;
+				
+				if (anyVaccinesAvailable) {
+					for (City c : a.getGame().getCities().values()) {
+						if (vaccinedCities.contains(c)) {
+							break;
+						}
+						totalCityPopulation = c.getCitizens();
+						infectedCityPopulation = c.getCitizens() * c.getPrevalance();			
+
+						//if prevalance is lower than Threshold deploy vaccines.
+						if ((infectedCityPopulation / totalCityPopulation) <= DEP_MEDICATION_THRESHOLD) {
+							score += DEP_MEDICATION_FACTOR;
+						}
+					}
+					
+				}
+				
+				break;
 			case developMedication:
 				//iterate over all encountered pathogenes and check if medication needs to be developed.
 				for (E_PathogenEncounter e : a.getGame().getPathEncounterEvents()) {
