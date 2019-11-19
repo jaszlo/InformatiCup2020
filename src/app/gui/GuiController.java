@@ -12,8 +12,6 @@ import java.util.HashSet;
 
 import app.game.City;
 import app.game.E_Outbreak;
-import app.game.Event;
-import app.game.EventType;
 import app.game.Game;
 import app.http.GameExchange;
 import app.http.GameServer;
@@ -171,16 +169,15 @@ public class GuiController {
 				ArrayList<Pair<City, Double>> citiesPrev = new ArrayList<>();
 				
 				//get all cities that are infected by the selected Pathogen.
-				for (City c : cities) {
+				for (City c: cities) {
 					double prev = 0;
 					boolean alreadyVacc = false;
-					for(Event e : g.getEventsByCity(c)) {
-						if (e.getType() == EventType.outbreak) {
-							if (selectedPathogen.equals(((E_Outbreak) e).getVirus().getName()))
-								prev = ((E_Outbreak) e).getPrevalence();
-						} else if(e.getType() == EventType.vaccineDeployed) {
-							alreadyVacc = true;
-						}
+					if (c.getOutbreak() != null) {
+						if (selectedPathogen.equals(c.getOutbreak().getVirus().getName()))
+							prev = c.getPrevalance();
+					}
+					if(c.getVaccineDeployed() != null) {
+						alreadyVacc = true;
 					}
 					if(!alreadyVacc)
 						citiesPrev.add(new Pair<>(c, prev));

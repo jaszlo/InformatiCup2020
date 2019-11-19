@@ -13,7 +13,6 @@ public class City {
 	private final HashMap<EventType, Event> events;
 	
 	private int citizens;
-	private double prevalance;
 	
 	private Scale economy, government, hygiene, awareness;
 	
@@ -29,7 +28,6 @@ public class City {
 		this.setHygiene(hygiene);
 		this.setAwareness(awareness);
 		this.events = new HashMap<>();
-		this.prevalance = 0;
 	}
 
 	public String getName() {
@@ -92,12 +90,14 @@ public class City {
 		this.events.put(event.getType(), event);
 	}
 	
-	public double getPrevalance () {
-		return this.prevalance;
+	@Deprecated
+	public HashSet<Event> getEventsAsSet() {
+		return new HashSet<>(this.events.values());
 	}
 	
-	public void setPrevalance (double prevalance) {
-		this.prevalance = prevalance;
+	public double getPrevalance () {
+		E_Outbreak outbreak = this.getOutbreak();
+		return outbreak == null? 0: outbreak.getPrevalence();
 	}
 	
 	///	Getters for Events in the City.

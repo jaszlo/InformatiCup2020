@@ -13,7 +13,7 @@ public class Game {
 	//General
 	private final HashMap<String,City> cities = new HashMap<String,City>();
 	private final HashMap<String,Virus> viruses = new HashMap<String,Virus>();
-	private final HashMap<City,HashSet<Event>> eventsByCity = new HashMap<City,HashSet<Event>>();
+	//private final HashMap<City,HashSet<Event>> eventsByCity = new HashMap<City,HashSet<Event>>();
 	private final HashMap<EventType,HashSet<? extends Event>> events = new HashMap<EventType,HashSet<? extends Event>>();	//Eventtypen nach Namen
 	
 	private int ecoCrisisStart=-1, panicStart=-1;
@@ -170,13 +170,7 @@ public class Game {
 	}
 	
 	private void addToCityEventMap(Event event, City city) {
-		if(eventsByCity.containsKey(city)){
-			eventsByCity.get(city).add(event);
-		}else {
-			HashSet<Event> set = new HashSet<Event>();
-			set.add(event);
-			eventsByCity.put(city, set);
-		}
+		city.addEvent(event);
 	}
 	
 	private void parseGame(String game) {
@@ -200,24 +194,9 @@ public class Game {
 				int pop = (int) ((long)city.get("population"));
 				totalPop+=pop;
 				
-				//adding prevelance of a city to the city.
-				double prevalance = 0;
-				//Grab city events and not all because we only want outbreaks that happened in this city.
-				JSONArray cityEvents = (JSONArray) city.get("events");
-				if (!(cityEvents == null)) {
-					for (Object event : cityEvents) {
-						JSONObject jsonEvent = (JSONObject) event;
-						String type = (String) jsonEvent.get("type");
-						if (type.equals("outbreak")) {
-							prevalance = Double.parseDouble(jsonEvent.get("prevalence").toString());
-							// DEBUG PRINT: System.out.println(prevalance);
-						}
-					}
-				}
+				
 				City c = new City(name, x, y, new HashSet<City>(), pop, economy, government, hygiene, awareness);
-				c.setPrevalance(prevalance);
 				this.cities.put(name, c);
-				//End of parsing the prevalance and adding it to the cities.
 			}
 			for(Object o : cities.values()) { //Parse city connections				
 				JSONObject city = (JSONObject) o;
@@ -249,10 +228,10 @@ public class Game {
 			e.printStackTrace();
 		}
 	}
-
+	
+	@Deprecated
 	public HashSet<Event> getEventsByCity (City city) {
-		HashSet<Event> e = this.eventsByCity.get(city);
-		return e == null ? new HashSet<Event>(): e; 
+		return city.getEventsAsSet();
 	}
 	
 	public HashMap<String,City> getCities() {
@@ -404,6 +383,7 @@ public class Game {
 		return viruses;
 	}
 	
+	@Deprecated
 	public boolean cityContains (City city, EventType type) {
 		return this.getEventsByCity(city).stream().anyMatch(event -> event.getType() == type);
 	}

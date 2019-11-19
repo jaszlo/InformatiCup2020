@@ -112,11 +112,20 @@ public class ActionHeuristic {
 			case endRound:
 				break;
 			case putUnderQuarantine:
-				for(Event e: a.getGame().getEventsByCity(a.getCity())) {
-					if(e.getType() == EventType.outbreak && doQuarantine(((E_Outbreak) e).getVirus()) && a.getGame().cityContains(a.getCity(), EventType.quarantine)) {
-						score += QUARANTINE_FACTOR * a.getCost();
-					}
-				}
+				// City under investigation
+				City city = a.getCity();
+				
+				// The city does not need to be quarantined without an outbreak
+				if(city.getOutbreak() == null) break;
+				
+				// The city does not need to be quarantined if the virus is to mild
+				if(!doQuarantine(city.getOutbreak().getVirus())) break;
+				
+				// The city does not need to be quarantined if it is already under quarantine
+				if(city.getQuarantine() != null) break;
+				
+				// City should be quarantined
+				score += QUARANTINE_FACTOR * a.getCost();
 				break;
 			case closeAirport: break;
 			case closeConnection: break;
