@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 public class ActionHeuristic {
-
 	//FACTOR: 		The factor by which the score is scaled.
 	//THRESHOLD:	The minimum of points an action need to reach in order to be executed.
 	
@@ -46,23 +45,54 @@ public class ActionHeuristic {
 		return score >= QUARANTINE_THRESHOLD;
 	}
 
-	private static boolean doDevVaccine(Virus v) {
+	private static boolean doDevVaccine(Virus v, Game g) {
 		int infectivity = v.getInfectivity().numericRepresenation();
 		int mobility = v.getMobility().numericRepresenation();
 
-		// If a virus expands slowly vaccines should be developed.
+		
 		int score = mobility * infectivity;
 
-		return score <= DEV_VACCINE_THRESHOLD;
+		// If a virus expands fast vaccines should not be developed.
+		if(score > DEV_VACCINE_THRESHOLD) {
+			return false;
+		}
+		
+		// Vaccine already available so no development necessary
+		if(g.getVaccAvailableEvents().stream().anyMatch(event -> event.getVirus() == v)) {
+			return false;
+		}
+		
+		// Vaccine already in development so no development necessary
+		if(g.getVaccDevEvents().stream().anyMatch(event -> event.getVirus() == v)) {
+			return false;
+		}
+		
+		// Vaccine should not be available already or in development
+		return true;
 	}
 	
-	private static boolean doDevMedication (Virus v) {
+	private static boolean doDevMedication (Virus v, Game g) {
 		int infectivity = v.getInfectivity().numericRepresenation();
 		int mobility = v.getMobility().numericRepresenation();
 		
 		int score = mobility * infectivity;
-		//If a virus expands fast medication should be developed.
-		return score > DEV_MEDICATION_THRESHOLD;
+		
+		// If a virus is not expanding fast, medication should not be developed.
+		if(score <= DEV_MEDICATION_THRESHOLD) {
+			return false;
+		}	
+		
+		// Medication already available so no development necessary
+		if(g.getMedAvailableEvents().stream().anyMatch(event -> event.getVirus() == v)) {
+			return false;
+		}
+		
+		// Medication already in development so no development necessary
+		if(g.getMedDevEvents().stream().anyMatch(event -> event.getVirus() == v)) {
+			return false;
+		}
+		// Medication should not be available already or in development
+		return true;
 	}
 
 	private static boolean actionMatchesCity(Action a, City c) {
@@ -118,57 +148,26 @@ public class ActionHeuristic {
 				//iterate over all encountered pathognes and check if vaccines needs to be developed.
 				for (E_PathogenEncounter e : a.getGame().getPathEncounterEvents()) {
 					
-					boolean alreadyDev = false;
 					
 					//check if virus matches with current action and needs to be vaccinated 
-					if (doDevVaccine(e.getVirus()) && actionMatchesVirus(a, e.getVirus())){
+					if (doDevVaccine(e.getVirus(), a.getGame()) && actionMatchesVirus(a, e.getVirus())){
 						score += (DEV_VACCINE_FACTOR * e.getVirus().getLethality().numericRepresenation());
+					
+						double infectedPopulation = 0;
+						double totalPopulation = a.getGame().getPopulation();
+						//calculate the current total population
+						for (City c : a.getGame().getCities().values()) {
+							infectedPopulation += c.getCitizens() * c.getPrevalance();
+						}
 						
-						//check if a vaccine was already developed. If it is remove the given score.
-						for (E_VaccineAvailable q : a.getGame().getVaccAvailableEvents()) {
-							if (q.getVirus() == e.getVirus()) {
-								score -= (DEV_VACCINE_FACTOR * e.getVirus().getLethality().numericRepresenation());
-								alreadyDev = true;
-								break;
-							}
-						}
-						//check if a vaccine is  already being developed. If it is remove the given score.
-						for (E_VaccineInDevelopment q: a.getGame().getVaccDevEvents()) {
-							if (q.getVirus() == e.getVirus()) {
-								score -= (DEV_VACCINE_FACTOR * e.getVirus().getLethality().numericRepresenation());
-								alreadyDev = true;
-								break;
-							}
-						}
-						//check if to many people are already infected (if score was not removed yet).
-						//if too many are infected remove score.
-						if (!alreadyDev) {
-							double totalPopulation = 0;
-							double infectedPopulation = 0;
-							
-							//calculate the current total population
-							for (City c : a.getGame().getCities().values()) {
-								totalPopulation += c.getCitizens();
-								infectedPopulation += c.getCitizens() * c.getPrevalance();
-							}
-							/*
-							//calculate the current infected population
-							for (E_Outbreak q : a.getGame().getOutbreakEvents()) {
-								if (actionMatchesVirus(a, q.getVirus())) {
-									infectedPopulation += q.getCity().getCitizens() * q.getPrevalence();
-								}
-							}*/
-							
-							//check global prevalance and remove score if necessary.
-							double globalPrevalance = infectedPopulation / totalPopulation;
-							if (globalPrevalance >= DEV_VACCINE_PREVALANCE_THRESHOLD) {
-								score -= DEV_VACCINE_FACTOR;
-							}
+						//check global prevalance and remove score if necessary.
+						double globalPrevalance = infectedPopulation / totalPopulation;
+						if (globalPrevalance >= DEV_VACCINE_PREVALANCE_THRESHOLD) {
+							score -= DEV_VACCINE_FACTOR;
 						}
 					}
-					
-					
-				} break;
+				}
+				break;
 			case deployVaccine:
 				
 				boolean anyVaccinesAvailable = false;
@@ -190,6 +189,7 @@ public class ActionHeuristic {
 						if (vaccinedCities.contains(c)) {
 							break;
 						}
+						
 						totalCityPopulation = c.getCitizens();
 						infectedCityPopulation = c.getCitizens() * c.getPrevalance();			
 
@@ -205,27 +205,12 @@ public class ActionHeuristic {
 			case developMedication:
 				//iterate over all encountered pathogenes and check if medication needs to be developed.
 				for (E_PathogenEncounter e : a.getGame().getPathEncounterEvents()) {
-				
 					//check if virus matches with current action and needs to be medicated
-					if (doDevMedication(e.getVirus()) && actionMatchesVirus(a, e.getVirus())) {
+					if (doDevMedication(e.getVirus(), a.getGame()) && actionMatchesVirus(a, e.getVirus())) {
 						score += (DEV_MEDICATION_FACTOR * e.getVirus().getLethality().numericRepresenation());
-						
-						//check if a medication was already developed. If it is remove the given score.
-						for (E_MedicationAvailable q : a.getGame().getMedAvailableEvents()) {
-							if (q.getVirus() == e.getVirus()) {
-								score -= (DEV_MEDICATION_FACTOR * e.getVirus().getLethality().numericRepresenation());
-								break;
-							}
-						}
-						//check if a vaccine is  already being developed. If it is remove the given score.
-						for (E_MedicationInDevelopment q: a.getGame().getMedDevEvents()) {
-							if (q.getVirus() == e.getVirus()) {
-								score -= (DEV_MEDICATION_FACTOR * e.getVirus().getLethality().numericRepresenation());
-								break;
-							}
-						}
 					}
-				} break;
+				} 
+				break;
 			case deployMedication:
 			case exertInfluence:
 			case callElections:
