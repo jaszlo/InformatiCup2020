@@ -1,5 +1,6 @@
 package app.game;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class ActionControl {
@@ -55,10 +56,16 @@ public class ActionControl {
 	}
 	
 	private static void addDeployMedActions(Game game, HashSet<Action> actions) {
-		for(E_MedicationAvailable e : game.getMedAvailableEvents()) {
-			for(City city : game.getCities().values()) {
-					Action a = new Action(ActionType.deployMedication, game, city, e.getVirus());
-					actions.add(a);
+		HashMap<Virus, E_MedicationAvailable> medAvailable = new HashMap<>();
+		
+		for (E_MedicationAvailable e : game.getMedAvailableEvents()) {
+			medAvailable.put(e.getVirus(), e);
+		}
+		
+		for (E_Outbreak outbreak : game.getOutbreakEvents()) {
+			if (medAvailable.get(outbreak.getVirus()) != null) {
+				Action a = new Action(ActionType.deployMedication, game, outbreak.getCity(), outbreak.getVirus());
+				actions.add(a);
 			}
 		}
 	}
