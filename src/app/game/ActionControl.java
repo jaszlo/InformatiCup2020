@@ -22,20 +22,16 @@ public class ActionControl {
 	
 	private static void addStatRerollActions(Game game, HashSet<Action> actions) {
 		for(City city : game.getCities().values()) {
-			Action influence = new Action(ActionType.exertInfluence, game, 3,
-					Main.createExertInfluence(city.getName()), city.getName());
+			Action influence = new Action(ActionType.exertInfluence, game, city);
 			actions.add(influence);
 			
-			Action elections = new Action(ActionType.callElections, game, 3,
-					Main.createCallElections(city.getName()), city.getName());
+			Action elections = new Action(ActionType.callElections, game, city);
 			actions.add(elections);
 			
-			Action hygiene = new Action(ActionType.applyHygienicMeasures, game, 3,
-					Main.createApplyHygienicMeasures(city.getName()), city.getName());
+			Action hygiene = new Action(ActionType.applyHygienicMeasures, game, city);
 			actions.add(hygiene);
 			
-			Action campaign = new Action(ActionType.launchCampaign, game, 3,
-					Main.createLaunchCampaign(city.getName()), city.getName());
+			Action campaign = new Action(ActionType.launchCampaign, game, city);
 			actions.add(campaign);
 		}
 	}
@@ -44,8 +40,7 @@ public class ActionControl {
 		int maxRounds = (game.getPoints()-20)/10;
 		for(City city : game.getCities().values()) {
 			for(int i = 1; i <= maxRounds; i++) {
-				Action a = new Action(ActionType.putUnderQuarantine, game,20+i*10,
-						Main.createPutUnderQuarantine(city.getName(), i), city.getName(),i);
+				Action a = new Action(ActionType.putUnderQuarantine, game, city,i);
 				actions.add(a);
 			}
 		}
@@ -55,8 +50,7 @@ public class ActionControl {
 	private static void addDeployVaccActions(Game game, HashSet<Action> actions) {
 		for(E_VaccineAvailable e : game.getVaccAvailableEvents()) {
 			for(City city : game.getCities().values()) {
-					Action a = new Action(ActionType.deployVaccine, game,5,
-							Main.createDeployVaccine(e.getVirus().getName(), city.getName()), e.getVirus().getName(),city.getName());
+					Action a = new Action(ActionType.deployVaccine, game, city);
 					actions.add(a);
 			}
 		}
@@ -65,8 +59,7 @@ public class ActionControl {
 	private static void addDeployMedActions(Game game, HashSet<Action> actions) {
 		for(E_MedicationAvailable e : game.getMedAvailableEvents()) {
 			for(City city : game.getCities().values()) {
-					Action a = new Action(ActionType.deployMedication, game,10,
-							Main.createDeployMedication(e.getVirus().getName(), city.getName()), e.getVirus().getName(),city.getName());
+					Action a = new Action(ActionType.deployMedication, game, city);
 					actions.add(a);
 			}
 		}
@@ -74,16 +67,14 @@ public class ActionControl {
 	
 	private static void addVaccineDevActions(Game game, HashSet<Action> actions) {
 		for(Virus virus : game.getViruses().values()) {
-			Action a = new Action(ActionType.developVaccine, game, 40,
-					Main.createDevelopVaccine(virus.getName()),virus.getName());
+			Action a = new Action(ActionType.developVaccine, game, virus);
 			actions.add(a);
 		}
 	}
 	
 	private static void addMedDevActions(Game game, HashSet<Action> actions) {
 		for(Virus virus : game.getViruses().values()) {
-			Action a = new Action(ActionType.developMedication, game, 20,
-					Main.createDevelopMedication(virus.getName()),virus.getName());
+			Action a = new Action(ActionType.developMedication, game, virus);
 			actions.add(a);
 		}
 	}
@@ -92,8 +83,7 @@ public class ActionControl {
 		int maxRounds = (game.getPoints()-15)/5;
 		for(City city : game.getCities().values()) {
 			for(int i = 1; i <= maxRounds; i++) {
-				Action a = new Action(ActionType.closeAirport, game,15+i*5,
-						Main.createCloseAirport(city.getName(), i), city.getName(),i);
+				Action a = new Action(ActionType.closeAirport, game, city, i);
 				actions.add(a);
 			}
 		}
@@ -104,8 +94,7 @@ public class ActionControl {
 		for(City city : game.getCities().values()) {
 			for(City to : city.getConnections()) {
 				for(int i = 1; i <= maxRounds; i++) {
-					Action a = new Action(ActionType.closeConnection, game,3+i*3,
-					Main.createCloseConnection(city.getName(), to.getName(), i), city.getName(),to.getName(),i);
+					Action a = new Action(game, city, to, i);
 					actions.add(a);
 				}
 			}

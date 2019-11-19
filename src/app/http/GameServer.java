@@ -8,13 +8,16 @@ import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
+import app.game.Game;
 import app.solver.GameEvaluater;
+import app.solver.Main;
 
 public class GameServer {
 	HttpServer server;
 	public static LinkedBlockingDeque<GameEvaluater> repliesToSend = new LinkedBlockingDeque<>();;
 	
 	public GameServer() {
+		addReply((Game g) -> Main.solve(g));
 		try {
 			this.server = HttpServer.create(new InetSocketAddress(50123), 0);
 			HttpContext context = server.createContext("/");

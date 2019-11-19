@@ -96,11 +96,11 @@ public class ActionHeuristic {
 	}
 
 	private static boolean actionMatchesCity(Action a, City c) {
-		return a.getHttpResponse().contains((c.getName()));
+		return a.toString().contains((c.getName()));
 	}
 
 	private static boolean actionMatchesVirus(Action a, Virus v) {
-		return a.getHttpResponse().contains(v.getName());
+		return a.toString().contains(v.getName());
 	}
 	
 	public static int getValue(Action action) {
@@ -141,6 +141,7 @@ public class ActionHeuristic {
 						break;
 					}
 				}
+
 				break;
 			case closeAirport: break;
 			case closeConnection: break;
@@ -174,7 +175,7 @@ public class ActionHeuristic {
 				ArrayList<City> vaccinedCities = new ArrayList<>();
 				
 				for (E_VaccineAvailable e : a.getGame().getVaccAvailableEvents()) {
-					if (e.getName().equals(a.getParameters()[0])) {
+					if (e.getVirus() == a.getVirus()) {
 						anyVaccinesAvailable = true;
 					}
 				}
