@@ -1,15 +1,11 @@
 package app.solver;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 
 import app.game.Action;
 import app.game.ActionControl;
 import app.game.ActionHeuristic;
 import app.game.Game;
-import app.game.Virus;
-import app.knapsack.Item;
 import app.knapsack.Solver;
 
 public class Main {

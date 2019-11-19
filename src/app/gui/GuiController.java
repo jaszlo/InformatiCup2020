@@ -9,14 +9,12 @@ import javafx.fxml.FXML;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 import app.game.City;
 import app.game.E_Outbreak;
 import app.game.Event;
 import app.game.EventType;
 import app.game.Game;
-import app.game.Virus;
 import app.http.GameExchange;
 import app.http.GameServer;
 import javafx.stage.Stage;

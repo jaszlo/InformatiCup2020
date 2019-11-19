@@ -2,8 +2,6 @@ package app.game;
 
 import java.util.HashSet;
 
-import app.solver.Main;
-
 public class ActionControl {
 
 	public static HashSet<Action> generatePossibleActions(Game game){ //möglicherweise hier schon filtern?
@@ -50,7 +48,7 @@ public class ActionControl {
 	private static void addDeployVaccActions(Game game, HashSet<Action> actions) {
 		for(E_VaccineAvailable e : game.getVaccAvailableEvents()) {
 			for(City city : game.getCities().values()) {
-					Action a = new Action(ActionType.deployVaccine, game, city);
+					Action a = new Action(ActionType.deployVaccine, game, city, e.getVirus());
 					actions.add(a);
 			}
 		}
@@ -59,7 +57,7 @@ public class ActionControl {
 	private static void addDeployMedActions(Game game, HashSet<Action> actions) {
 		for(E_MedicationAvailable e : game.getMedAvailableEvents()) {
 			for(City city : game.getCities().values()) {
-					Action a = new Action(ActionType.deployMedication, game, city);
+					Action a = new Action(ActionType.deployMedication, game, city, e.getVirus());
 					actions.add(a);
 			}
 		}

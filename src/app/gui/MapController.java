@@ -2,14 +2,12 @@ package app.gui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
 import app.game.City;
 import app.game.E_Outbreak;
-import app.game.Event;
 import app.game.Game;
 import app.game.Virus;
 import app.http.GameExchange;
@@ -234,20 +232,6 @@ public class MapController {
 	}
 	
 	
-	//Helper methode for city info. 
-	///////////NEEDS TO BE UPDATED (SHOWING MULTIPLE EVENTS WITH ONE TEXTFIELD ISNT WORKING)
-	private String eventsToString (HashSet<Event> events) {
-		
-		String result = new String();
-		
-		Iterator<Event> iterator = events.iterator();
-	     while(iterator.hasNext()){
-	    	result = result + (iterator.next().getName()) + "\n";
-	     }
-		
-		return result;
-		
-	}
 	
 	@FXML //Button implementation
 	private void printSelectInfectedCities () {

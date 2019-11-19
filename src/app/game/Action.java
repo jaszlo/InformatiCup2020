@@ -33,7 +33,6 @@ public class Action extends Item {
 	}
 
 	// quarantine and closeAirport constructor
-	// exertInfluence callElections applyHygienicMeasures launchCampaign constructor
 	public Action(ActionType type, Game game, City city, int rounds) {
 		this(type, game, city, null, null, rounds);
 	}
@@ -44,15 +43,20 @@ public class Action extends Item {
 	}
 
 	// deployVaccine or deployMedication constructor
-	public Action(ActionType type, Game game, City city) {
-		this(type, game, city, null, null, 0);
+	public Action(ActionType type, Game game, City city, Virus virus) {
+		this(type, game, city, null, virus, 0);
 	}
 
 	// closeConnection constructor
 	public Action(Game game, City city, City toCity, int rounds) {
 		this(ActionType.closeConnection, game, city, toCity, null, rounds);
 	}
-
+	
+	// exertInfluence callElections applyHygienicMeasures launchCampaign constructor
+		public Action(ActionType type, Game game, City city) {
+			this(type, game, city, null, null, 0);
+		}
+	
 	public String toString() {
 		switch (this.getType()) {
 

@@ -95,10 +95,6 @@ public class ActionHeuristic {
 		return true;
 	}
 
-	private static boolean actionMatchesCity(Action a, City c) {
-		return a.getCity() == c;
-	}
-
 	private static boolean actionMatchesVirus(Action a, Virus v) {
 		return a.getVirus() == v;
 	}
