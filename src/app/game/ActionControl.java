@@ -49,8 +49,8 @@ public class ActionControl {
 	private static void addDeployVaccActions(Game game, HashSet<Action> actions) {
 		for(E_VaccineAvailable e : game.getVaccAvailableEvents()) {
 			for(City city : game.getCities().values()) {
-					Action a = new Action(ActionType.deployVaccine, game, city, e.getVirus());
-					actions.add(a);
+				Action a = new Action(ActionType.deployVaccine, game, city, e.getVirus());
+				actions.add(a);
 			}
 		}
 	}

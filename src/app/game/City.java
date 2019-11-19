@@ -120,11 +120,19 @@ public class City {
 	
 	@SuppressWarnings("unchecked")
 	public HashSet<E_ConnectionClosed> getConnectionClosed () {
+		if(!this.multipleEvents.containsKey(EventType.connectionClosed)) {
+			return new HashSet<>();
+		}
+				
 		return (HashSet<E_ConnectionClosed>) this.multipleEvents.get(EventType.connectionClosed);
 	} 
 	
 	@SuppressWarnings("unchecked")
 	public HashSet<E_MedicationDeployed> getMedicationDeployed () {
+		if(!this.multipleEvents.containsKey(EventType.medicationDeployed)) {
+			return new HashSet<>();
+		}
+		
 		return (HashSet<E_MedicationDeployed>) this.multipleEvents.get(EventType.medicationDeployed);
 	}
 	
@@ -142,6 +150,10 @@ public class City {
 	
 	@SuppressWarnings("unchecked")
 	public HashSet<E_VaccineDeployed> getVaccineDeployed () {
+		if(!this.multipleEvents.containsKey(EventType.vaccineDeployed)) {
+			return new HashSet<>();
+		}
+		
 		return (HashSet<E_VaccineDeployed>) this.multipleEvents.get(EventType.vaccineDeployed);
 	}
 }
