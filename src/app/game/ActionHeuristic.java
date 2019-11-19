@@ -86,7 +86,7 @@ public class ActionHeuristic {
 			case endRound:
 				break;
 			case putUnderQuarantine:
-				//check PathogeneEncounred for doQuaratine viruses to boost performance.
+				// Check whether a pathogen exists that is worthy to be quarantined
 				boolean virusFound = false;
 				for (E_PathogenEncounter e: a.getGame().getPathEncounterEvents()) {
 					if (doQuaratine(e.getVirus()))  {
@@ -95,26 +95,20 @@ public class ActionHeuristic {
 					}
 				}
 				
-				//only iterate over outbreak events if necessary.
-				if (virusFound) {
-					//iterate over all outbreaks and check if a lethal virus needs to be put under quarantine.
-					for (E_Outbreak e : a.getGame().getOutbreakEvents()) {
-						//check if the Virus is dangerous enough to be put under quarantine and matches the city with the current action.
-						if (doQuaratine(e.getVirus()) && actionMatchesCity(a, e.getCity()) && 
-								!a.getGame().cityContains(e.getCity(), EventType.quarantine)) {
-							score += QUARANTINE_FACTOR * a.getCost();
-	
-							/*
-							//check if the infected city is already put under quarantine.
-							for (E_Quarantine q : a.getGame().getQuarantineEvents()) {
-								if (actionMatchesCity(a, q.getCity())) {
-									//if the city is already put under quarantine remove the given score.
-									score -= QUARANTINE_FACTOR * a.getCost();
-									break;
-								}
-							}*/
-							break;
-						}
+				// Skip evaluation if no pathogen is found
+				if (!virusFound) {
+					break;
+				}
+				
+				//iterate over all outbreaks and check if a lethal virus needs to be put under quarantine.
+				for (E_Outbreak e : a.getGame().getOutbreakEvents()) {
+					// Check if the Virus is dangerous enough to be put under quarantine
+					//						and matches the city with the current action.
+					//						and the city isn't already quarantined
+					if (doQuaratine(e.getVirus()) && actionMatchesCity(a, e.getCity()) && 
+							!a.getGame().cityContains(e.getCity(), EventType.quarantine)) {
+						score += QUARANTINE_FACTOR * a.getCost();
+						break;
 					}
 				}
 				break;
