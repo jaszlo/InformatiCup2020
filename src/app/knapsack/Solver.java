@@ -11,6 +11,7 @@ public class Solver {
 		final int RANDOM_ITERATIONS = 5, GREEDY_ITERATIONS = 5;
 		//RANDOM FILL
 		for(int i = 0; i < RANDOM_ITERATIONS; i++) {
+			System.out.println("rndm"+i);
 			Bag<T> temp = new Bag<T>(capacity,new HashSet<T>());
 			HashSet<T> tempItems = new HashSet<T>(set);
 			fillBagRandom(temp, tempItems);
@@ -22,6 +23,7 @@ public class Solver {
 		}
 		//GREEDY FILL
 		for(int i = 0; i < GREEDY_ITERATIONS; i++) {
+			System.out.println("greedy"+i);
 			Bag<T> temp = new Bag<T>(capacity,new HashSet<T>());
 			HashSet<T> tempItems = new HashSet<T>(set);
 			fillBagGreedy(temp, tempItems);
@@ -31,6 +33,7 @@ public class Solver {
 				maxRestItems = tempItems;
 			}
 		}
+		System.out.println("opt");
 		Optimization.optimiseSolution(maxSolution, maxRestItems); //evt wieder nach jedem SA durchlauf
 		return maxSolution.getItems();
 	}
