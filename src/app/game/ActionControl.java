@@ -3,6 +3,10 @@ package app.game;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import app.events.E_MedicationAvailable;
+import app.events.E_Outbreak;
+import app.events.E_VaccineAvailable;
+
 public class ActionControl {
 
 	public static HashSet<Action> generatePossibleActions(Game game){ //möglicherweise hier schon filtern?

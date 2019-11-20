@@ -8,6 +8,23 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import app.events.E_AirportClosed;
+import app.events.E_AntiVacc;
+import app.events.E_BioTerror;
+import app.events.E_ConnectionClosed;
+import app.events.E_MedicationAvailable;
+import app.events.E_MedicationDeployed;
+import app.events.E_MedicationInDevelopment;
+import app.events.E_Outbreak;
+import app.events.E_PathogenEncounter;
+import app.events.E_Quarantine;
+import app.events.E_Uprising;
+import app.events.E_VaccineAvailable;
+import app.events.E_VaccineDeployed;
+import app.events.E_VaccineInDevelopment;
+import app.events.Event;
+import app.events.EventType;
+
 public class Game {
 
 	// General

@@ -13,8 +13,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import app.events.E_Outbreak;
 import app.game.City;
-import app.game.E_Outbreak;
 import app.game.Game;
 
 public class MapFactory {

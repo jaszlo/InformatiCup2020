@@ -3,6 +3,18 @@ package app.game;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import app.events.E_AirportClosed;
+import app.events.E_AntiVacc;
+import app.events.E_BioTerror;
+import app.events.E_ConnectionClosed;
+import app.events.E_MedicationDeployed;
+import app.events.E_Outbreak;
+import app.events.E_Quarantine;
+import app.events.E_Uprising;
+import app.events.E_VaccineDeployed;
+import app.events.Event;
+import app.events.EventType;
+
 public class City {
 
 	private final String name;

@@ -1,4 +1,6 @@
-package app.game;
+package app.events;
+
+import app.game.City;
 
 public class E_AirportClosed extends Event{
 

@@ -1,4 +1,4 @@
-package app.game;
+package app.events;
 
 public abstract class Event {
 	

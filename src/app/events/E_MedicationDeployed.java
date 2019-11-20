@@ -1,4 +1,7 @@
-package app.game;
+package app.events;
+
+import app.game.City;
+import app.game.Virus;
 
 public class E_MedicationDeployed extends Event{
 

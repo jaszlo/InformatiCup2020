@@ -1,4 +1,4 @@
-package app.game;
+package app.events;
 
 public enum EventType {
 

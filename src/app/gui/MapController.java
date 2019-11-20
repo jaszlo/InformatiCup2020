@@ -6,8 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
+import app.events.E_Outbreak;
 import app.game.City;
-import app.game.E_Outbreak;
 import app.game.Game;
 import app.game.Virus;
 import app.http.GameExchange;

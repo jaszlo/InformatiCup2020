@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
+import app.events.E_Outbreak;
 import app.game.City;
-import app.game.E_Outbreak;
 import app.game.Game;
 import app.http.GameExchange;
 import app.http.GameServer;

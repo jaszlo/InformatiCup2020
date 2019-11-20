@@ -1,4 +1,6 @@
-package app.game;
+package app.events;
+
+import app.game.Virus;
 
 public class E_PathogenEncounter extends Event{
 
