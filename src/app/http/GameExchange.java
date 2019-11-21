@@ -68,31 +68,32 @@ public class GameExchange {
 	private void startGui() {
 		try {
 			
-			//Create the stages for the gui and the map.
-			Stage MAP = new Stage();
-			//Create the loader for the gui and the map.
-			FXMLLoader mapLoader = new FXMLLoader();
-			mapLoader.setLocation(getClass().getResource("/resources/gui.fxml"));			
+			//Create the stages for the gui.
+			Stage GUI = new Stage();
+			//Create the loader for the gui.
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/resources/gui.fxml"));			
 			
 			//Create and assign the controllers.
-			GuiController mapController = new GuiController();
-			mapController.setGame(this);
-			mapLoader.setController(mapController);
+			GuiController guiController = new GuiController();
+			guiController.setGame(this);
+			loader.setController(guiController);
+			Parent root = null;
+		
+			//Create the scenes for the gui
+			root = (Parent)loader.load();
+			Scene scene = new Scene(root);
 			
-			//Create the scenes for the map and the gui
-			Parent rootMap = (Parent)mapLoader.load();
-			Scene mapScene = new Scene(rootMap);
-			
-			//Set the position of the stages. set Stages boundaries to the upper right corner of the visible bounds of the main screen
+			//Set the position of the stage. Set Stage boundaries to the upper right corner of the visible bounds of the main screen
 			Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-			MAP.setX(screenBounds.getMaxX() - screenBounds.getWidth());
-			MAP.setY(screenBounds.getMaxY() - screenBounds.getHeight());
+			GUI.setX(screenBounds.getMaxX() - screenBounds.getWidth());
+			GUI.setY(screenBounds.getMaxY() - screenBounds.getHeight());
 			
-			//Attaches the newly created scene to the MAPStage. Shows the MAPStage in a unresizable window. Also set Title to PandemieMAP.
-			MAP.setResizable(true);
-			MAP.setScene(mapScene);
-			MAP.setTitle("PandemieMAP");
-			MAP.show();
+			//Attaches the newly created scene to the stage. Shows the Stage in a resizable window. Also set Title to Pandemie.
+			GUI.setResizable(true);
+			GUI.setScene(scene);
+			GUI.setTitle("Pandemie");
+			GUI.show();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
