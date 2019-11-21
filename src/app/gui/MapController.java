@@ -181,7 +181,7 @@ public class MapController {
 		if (this.selectedCity == null) return;
 		
 		//Get all the city info as Strings.
-		String population = this.selectedCity.getCitizens() + "";
+		String population = this.selectedCity.getPopulation() + "";
 		String economy = this.selectedCity.getEconomy().toString();
 		String goverment = this.selectedCity.getGovernment().toString();
 		String hygiene = this.selectedCity.getHygiene().toString();
@@ -305,7 +305,7 @@ public class MapController {
 		currentGame = this.currentGame.getGame();
 		//Get all the info from the current city.
 		String cityName = currentCity.getName();
-		int diameter = currentCity.getCitizens() / 120;
+		int diameter = currentCity.getPopulation() / 120;
 		int x = (int) currentCity.getX() + 180;  
 		int y = (int) - currentCity.getY() + 90;
 		double prev = 0;

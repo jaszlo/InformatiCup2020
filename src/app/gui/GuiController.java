@@ -186,8 +186,8 @@ public class GuiController {
 					//sort the infectedCities by size.
 					//don't ask questions. It works.
 					citiesPrev.sort((Pair<City, Double> c2, Pair<City, Double> c1)->
-								(int) ((c1.getKey().getCitizens() * (1 - c1.getValue()))
-								- (c2.getKey().getCitizens()) * (1 - c2.getValue())));
+								(int) ((c1.getKey().getPopulation() * (1 - c1.getValue()))
+								- (c2.getKey().getPopulation()) * (1 - c2.getValue())));
 					
 					return "{\"type\": \"deployVaccine\", \"pathogen\": \"" + selectedPathogen +
 							"\", \"city\": \"" + citiesPrev.get(0).getKey().getName() + "\"}";
@@ -275,8 +275,8 @@ public class GuiController {
 				//sort the infectedCities by size.
 				//don't ask questions. It works.
 				infectedCities.sort((Pair<City, Double> c2, Pair<City, Double> c1)->
-							(int) ((c1.getKey().getCitizens() * c1.getValue())
-							- (c2.getKey().getCitizens()) * c2.getValue()));
+							(int) ((c1.getKey().getPopulation() * c1.getValue())
+							- (c2.getKey().getPopulation()) * c2.getValue()));
 				
 				return "{\"type\": \"deployMedication\", \"pathogen\": \"" + selectedPathogen +
 				"\", \"city\": \"" + infectedCities.get(0).getKey().getName() + "\"}";

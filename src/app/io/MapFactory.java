@@ -51,7 +51,7 @@ public class MapFactory {
 				Color red = new Color(prev, 0, 0, 100);
 				g2d.setColor(red);
 				int x = (int) c.getX() + 180, y = (int) - c.getY() + 90;
-				int diameter = c.getCitizens() / 100;
+				int diameter = c.getPopulation() / 100;
 				x *= 10;
 				y *= 10;
 				// Inner

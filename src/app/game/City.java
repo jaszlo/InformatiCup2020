@@ -25,17 +25,17 @@ public class City {
 	private final HashMap<EventType, Event> singleEvents;
 	private final HashMap<EventType, HashSet<? extends Event>> multipleEvents;
 	
-	private int citizens;
+	private int population;
 	
 	private Scale economy, government, hygiene, awareness;
 	
-	public City(String name, double x, double y, HashSet<City> connections, int citizens,
+	public City(String name, double x, double y, HashSet<City> connections, int population,
 			Scale economy, Scale government, Scale hygiene, Scale awareness) {
 		this.name = name;
 		this.x = x;
 		this.y = y;
 		this.connections = connections;
-		this.setCitizens(citizens);
+		this.setPopulation(population);
 		this.setEconomy(economy);
 		this.setGovernment(government);
 		this.setHygiene(hygiene);
@@ -60,12 +60,12 @@ public class City {
 		return connections;
 	}
 
-	public int getCitizens() {
-		return citizens;
+	public int getPopulation() {
+		return population;
 	}
 
-	public void setCitizens(int citizens) {
-		this.citizens = citizens;
+	public void setPopulation(int population) {
+		this.population = population;
 	}
 
 	public Scale getAwareness() {
