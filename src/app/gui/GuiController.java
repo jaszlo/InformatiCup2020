@@ -440,7 +440,7 @@ public class GuiController {
 			lastActionString = "deployVac";
 			return;
 		} 
-		lastActionString = "irrelevant";
+		lastActionString = "useless";
 	}
 
 	@FXML
