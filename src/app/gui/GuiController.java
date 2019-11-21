@@ -419,8 +419,6 @@ public class GuiController {
 
 	//helper methode
 	private void setLastAction(String s) {
-//		System.out.println(s);
-		System.out.println(s.contains("endRound"));
 		if (s.contains("endRound")) {
 			lastActionString = "endRound";
 			return;
