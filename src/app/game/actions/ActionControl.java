@@ -15,7 +15,7 @@ public class ActionControl {
 
 	public static HashSet<Action> generatePossibleActions(Game game){ //möglicherweise hier schon filtern?
 		HashSet<Action> allActions = new HashSet<Action>();
-		//allActions.add(new Action(ActionType.endRound,game,0,Main.createEndRound()));
+		allActions.add(new Action(game));
 		addQuarantineActions(game,allActions);
 		addCloseConnectionsActions(game, allActions);
 		addCloseAirportActions(game, allActions);

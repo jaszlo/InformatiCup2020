@@ -110,6 +110,7 @@ public class ActionHeuristic {
 		for (Action action : actions) {
 			switch (action.getType()) {
 			case endRound:
+				score += 1; // EndRound as default action
 				break;
 			case putUnderQuarantine:
 				// City under investigation
