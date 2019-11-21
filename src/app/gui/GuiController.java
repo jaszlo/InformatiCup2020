@@ -113,19 +113,24 @@ public class GuiController {
 	
 	@FXML
 	private void autoTurn () {
-		String amountString = this.amountT.getText();
+		String amountString = new String();
+		try {
+			amountString = this.amountT.getText();
+		} catch (Exception e) {
+			return;
+		}
 		int amount = 1;
 		if (!amountString.equals("")) {
 			amount = Integer.parseInt(amountString);
 		}
-//		this.autoTurn.setDisable(true);
+		this.autoTurn.setDisable(true);
 		for (int i = 0; i < amount; i++) {
 			GameServer.addReply((Game g)-> {
 				return Main.solve(g);
 			});
 		}
 		this.executeEvent(GameServer.getReply().evalutate(currentGame));
-//		this.autoTurn.setDisable(false);
+		this.autoTurn.setDisable(false);
 	}
 	@FXML
 	private void putUnderQuarantine () {
