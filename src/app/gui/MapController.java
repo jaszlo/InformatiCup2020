@@ -25,11 +25,11 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.canvas.GraphicsContext;
 
-
 public class MapController {
 	
 	//GameState
-	private GameExchange currentGame;
+	private GameExchange currentGameExchange;
+	private Game currentGame;
 	
 	private City selectedCity = null;
 	private Virus selectedPathogen = null;
@@ -115,7 +115,8 @@ public class MapController {
 	
 	//Setter for the gameExchange
 	public void setGame(GameExchange exchange) {
-		this.currentGame = exchange;
+		this.currentGameExchange = exchange;
+		this.currentGame = this.currentGameExchange.getGame();
 	}
 	
 	
@@ -164,7 +165,7 @@ public class MapController {
 		//Get the city's name from the textField
 		String selectedCity = this.selectCityT.getText();
 		//Get the city object via its name.
-		this.selectedCity = this.currentGame.getGame().getCities().get(selectedCity);	
+		this.selectedCity = this.currentGame.getCities().get(selectedCity);	
 		if (this.selectedCity == null) {
 			System.out.println("City not found");
 			return;
@@ -217,7 +218,7 @@ public class MapController {
 		
 		//Get the prevalance for the selected City if one has been selected.
 		if (this.selectedCity != null) {
-			for(E_Outbreak e: this.currentGame.getGame().getOutbreakEvents()) {
+			for(E_Outbreak e: this.currentGame.getOutbreakEvents()) {
 				if(e.getCity() == this.selectedCity) {
 					prevalance = e.getPrevalence() + "";
 					break;
@@ -241,7 +242,7 @@ public class MapController {
 		
 		System.out.println("The Virus " +  this.selectedPathogen.getName() + " has infected:");
 
-		for (E_Outbreak e: this.currentGame.getGame().getOutbreakEvents()) {
+		for (E_Outbreak e: this.currentGame.getOutbreakEvents()) {
 			if (this.selectedPathogen == e.getVirus()) 
 				System.out.print(e.getCity().getName() + ", ");
 		}
@@ -254,7 +255,7 @@ public class MapController {
 	private void printAllOutbreaks () {
 		
 		System.out.println("All current outbreaks:");
-		for (E_Outbreak e: this.currentGame.getGame().getOutbreakEvents()) {
+		for (E_Outbreak e: this.currentGame.getOutbreakEvents()) {
 			
 			System.out.println("Virus " + e.getVirus().getName() + " is active in " + e.getCity().getName());
 		}	
@@ -267,9 +268,9 @@ public class MapController {
 	//DRAW THE MAP STUF//
 	public void drawMap () {	
 		
-		if (this.currentGame == null) return;
+		if (this.currentGameExchange == null) return;
 		
-		Game currentGame = this.currentGame.getGame();
+		Game currentGame = this.currentGame;
 		
 		//Set fill, stroke and clear the whole canvas
 		this.gc.setFill(Color.WHITE);
@@ -303,7 +304,7 @@ public class MapController {
 	//Draws one City on the Canvas (and all additional features)
 	private void drawCity (City currentCity, Game currentGame) {
 		
-		currentGame = this.currentGame.getGame();
+		currentGame = this.currentGame;
 		//Get all the info from the current city.
 		String cityName = currentCity.getName();
 		int diameter = currentCity.getPopulation() / 120;
@@ -338,7 +339,7 @@ public class MapController {
 	
 	private void updatePathogenChoiceBox () {
 	
-		Game currentGame = this.currentGame.getGame();
+		Game currentGame = this.currentGame;
 		
 		List<String> activePathogenes = new ArrayList<String>(currentGame.getViruses().keySet());
 		ObservableList<String> activePathogenesList = FXCollections.observableList(activePathogenes);
@@ -350,7 +351,7 @@ public class MapController {
 	@FXML //onAction call for the selectPathogen choiceBox
 	private void changeSelectedPathogen () {
 		
-		Game currentGame = this.currentGame.getGame();
+		Game currentGame = this.currentGame;
 		String pathogen = this.selectPathogenC.getValue();
 		this.selectedPathogen = currentGame.getViruses().get(pathogen);
 		setPathogenInfo();

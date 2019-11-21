@@ -29,7 +29,8 @@ public class GuiController {
 	applyHygienicMeasuresB, exertInfluenceB, callElectionsB, launchCampaignB, medicateBiggestCitiesB,
 	autoTurn;
 	
-	private GameExchange currentGame;
+	private GameExchange currentGameExchange;
+	private Game currentGame;
 	private MapController mapControllerRefrence;
 	
 	@FXML
@@ -62,12 +63,11 @@ public class GuiController {
 		this.amountT.setPromptText("enter the amount ...");
 	
 		//Set Points and current Round.
-		if(this.currentGame != null) {
-			this.currentRound.setText(this.currentGame.getGame().getRound() + "");
-//			MapFactory.createMap(this.currentGame.getGame());			
+		if(this.currentGameExchange != null) {
+			this.currentRound.setText(this.currentGame.getRound() + "");
 			
 			//uncomment when points are implemented.
-			this.currentPoints.setText(this.currentGame.getGame().getPoints() + "");
+			this.currentPoints.setText(this.currentGame.getPoints() + "");
 			
 		}
 	}	
@@ -107,7 +107,7 @@ public class GuiController {
 		}
 		
 		System.out.println("endRound");
-		this.executeEvent(GameServer.getReply().evalutate(currentGame.getGame()));
+		this.executeEvent(GameServer.getReply().evalutate(currentGame));
 		
 	}
 	
@@ -119,7 +119,7 @@ public class GuiController {
 			amount = Integer.parseInt(amountString);
 		}
 		for (int i = 0; i < amount; i++) {
-			this.executeEvent(Main.solve((this.currentGame.getGame())));
+			this.executeEvent(Main.solve((this.currentGame)));
 		}
 	}
 	
@@ -210,7 +210,7 @@ public class GuiController {
 				
 			}
 			
-			this.executeEvent(GameServer.getReply().evalutate(currentGame.getGame()));
+			this.executeEvent(GameServer.getReply().evalutate(currentGame));
 		} else {
 			
 			System.out.println("developVaccine");
@@ -299,19 +299,20 @@ public class GuiController {
 			
 		}
 		
-		this.executeEvent(GameServer.getReply().evalutate(currentGame.getGame()));
+		this.executeEvent(GameServer.getReply().evalutate(currentGame));
 	}
 	
 	private void executeEvent(String event) {
-		if(this.currentGame == null || !this.currentGame.isAlive()) return;
-		this.currentGame.sendReply(event);
+		if(this.currentGameExchange == null || !this.currentGameExchange.isAlive()) return;
+		this.currentGameExchange.sendReply(event);
 		
 		this.quit();
 		this.mapControllerRefrence.quit();
 	}
 	
 	public void setGame(GameExchange exchange) {
-		this.currentGame = exchange;
+		this.currentGameExchange = exchange;
+		this.currentGame = this.currentGameExchange.getGame();
 	}
 	
 	
