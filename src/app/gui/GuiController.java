@@ -425,7 +425,7 @@ public class GuiController {
 			lastActionString = "endRound";
 			return;
 		} else if (s.contains("putUnderQuarantine")) {
-			lastActionString = "putUnderQuarantine";
+			lastActionString = "quarantine";
 			return;
 		} else if (s.contains("developMed")) {
 			lastActionString = "developMed";
@@ -438,9 +438,14 @@ public class GuiController {
 			return;
 		} else if (s.contains("deployVac")) {
 			lastActionString = "deployVac";
+		} else if (s.contains("Airport")) {
+			lastActionString = "closeAirport";
+			return;
+		} else if (s.contains("Connection")) {
+			lastActionString = "closeConnection";
 			return;
 		} 
-		lastActionString = "useless";
+		lastActionString = "rerolled";
 	}
 
 	@FXML
