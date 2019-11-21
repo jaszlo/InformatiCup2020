@@ -121,7 +121,7 @@ public class GuiController {
 //		this.autoTurn.setDisable(true);
 		for (int i = 0; i < amount; i++) {
 			GameServer.addReply((Game g)-> {
-				return Main.solve(currentGame);
+				return Main.solve(g);
 			});
 		}
 		this.executeEvent(GameServer.getReply().evalutate(currentGame));
