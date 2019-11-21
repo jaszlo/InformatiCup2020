@@ -436,6 +436,7 @@ public class GuiController {
 			return;
 		} else if (s.contains("deployVac")) {
 			lastActionString = "deployVac";
+			return;
 		} else if (s.contains("Airport")) {
 			lastActionString = "closeAirport";
 			return;
