@@ -1,12 +1,13 @@
 package app.gui;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
-import app.events.E_Outbreak;
+import app.game.events.E_Outbreak;
 import app.game.City;
 import app.game.Game;
 import app.game.Virus;

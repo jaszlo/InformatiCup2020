@@ -1,7 +1,10 @@
-package app.game;
+package app.game.actions;
 
 import java.util.HashSet;
 
+import app.game.City;
+import app.game.Game;
+import app.game.Virus;
 import app.knapsack.Item;
 
 public class Action extends Item {

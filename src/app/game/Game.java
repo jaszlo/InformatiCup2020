@@ -1,6 +1,7 @@
 package app.game;
 
 import java.util.HashMap;
+
 import java.util.HashSet;
 
 import org.json.simple.JSONArray;
@@ -8,22 +9,22 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import app.events.E_AirportClosed;
-import app.events.E_AntiVacc;
-import app.events.E_BioTerror;
-import app.events.E_ConnectionClosed;
-import app.events.E_MedicationAvailable;
-import app.events.E_MedicationDeployed;
-import app.events.E_MedicationInDevelopment;
-import app.events.E_Outbreak;
-import app.events.E_PathogenEncounter;
-import app.events.E_Quarantine;
-import app.events.E_Uprising;
-import app.events.E_VaccineAvailable;
-import app.events.E_VaccineDeployed;
-import app.events.E_VaccineInDevelopment;
-import app.events.Event;
-import app.events.EventType;
+import app.game.events.E_AirportClosed;
+import app.game.events.E_AntiVacc;
+import app.game.events.E_BioTerror;
+import app.game.events.E_ConnectionClosed;
+import app.game.events.E_MedicationAvailable;
+import app.game.events.E_MedicationDeployed;
+import app.game.events.E_MedicationInDevelopment;
+import app.game.events.E_Outbreak;
+import app.game.events.E_PathogenEncounter;
+import app.game.events.E_Quarantine;
+import app.game.events.E_Uprising;
+import app.game.events.E_VaccineAvailable;
+import app.game.events.E_VaccineDeployed;
+import app.game.events.E_VaccineInDevelopment;
+import app.game.events.Event;
+import app.game.events.EventType;
 
 public class Game {
 

@@ -1,7 +1,11 @@
-package app.game;
+package app.game.actions;
 
 import java.util.Arrays;
 import java.util.HashSet;
+
+import app.game.City;
+import app.game.Game;
+import app.game.Virus;
 
 public class ActionHeuristic {
 	// FACTOR: The factor by which the score is scaled.

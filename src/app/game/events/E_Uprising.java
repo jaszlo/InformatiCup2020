@@ -1,4 +1,4 @@
-package app.events;
+package app.game.events;
 
 import app.game.City;
 

@@ -1,4 +1,4 @@
-package app.game;
+package app.game.actions;
 
 public enum ActionType {
 

@@ -2,10 +2,10 @@ package app.solver;
 
 import java.util.HashSet;
 
-import app.game.Action;
-import app.game.ActionControl;
-import app.game.ActionHeuristic;
 import app.game.Game;
+import app.game.actions.Action;
+import app.game.actions.ActionControl;
+import app.game.actions.ActionHeuristic;
 import app.knapsack.Solver;
 
 public class Main {

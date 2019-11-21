@@ -2,6 +2,7 @@ package app.io;
 
 import java.awt.Color;
 
+
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
@@ -13,7 +14,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import app.events.E_Outbreak;
+import app.game.events.E_Outbreak;
 import app.game.City;
 import app.game.Game;
 

@@ -1,9 +1,9 @@
-package app.events;
+package app.game.events;
 
 import app.game.City;
 import app.game.Virus;
 
-public class E_MedicationDeployed extends Event{
+public class E_VaccineDeployed extends Event{
 
 	private final int round;
 	
@@ -11,8 +11,8 @@ public class E_MedicationDeployed extends Event{
 	
 	private final City city;
 	
-	public E_MedicationDeployed(int round, Virus virus, City city) {
-		super(EventType.medicationDeployed);
+	public E_VaccineDeployed(int round, Virus virus, City city) {
+		super(EventType.vaccineDeployed);
 		this.round = round;
 		this.virus = virus;
 		this.city = city;

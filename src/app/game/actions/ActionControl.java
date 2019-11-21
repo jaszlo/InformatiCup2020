@@ -1,11 +1,15 @@
-package app.game;
+package app.game.actions;
 
 import java.util.HashMap;
+
 import java.util.HashSet;
 
-import app.events.E_MedicationAvailable;
-import app.events.E_Outbreak;
-import app.events.E_VaccineAvailable;
+import app.game.City;
+import app.game.Game;
+import app.game.Virus;
+import app.game.events.E_MedicationAvailable;
+import app.game.events.E_Outbreak;
+import app.game.events.E_VaccineAvailable;
 
 public class ActionControl {
 

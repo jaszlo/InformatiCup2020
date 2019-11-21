@@ -2,6 +2,7 @@ package app.gui;
 
 //Imports for the GUI
 import javafx.scene.control.Button;
+
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.fxml.FXML;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
-import app.events.E_Outbreak;
+import app.game.events.E_Outbreak;
 import app.game.City;
 import app.game.Game;
 import app.http.GameExchange;
