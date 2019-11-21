@@ -75,8 +75,8 @@ public class GuiController {
 	private TextField cityFrom, cityTo, rounds, amountT;
 
 	@FXML
-	private Text currentRound, currentPoints, currentAction;
-
+	private Text currentRound, currentPoints, lastAction;
+	private static String lastActionString;
 	// Constructor
 	public GuiController() {
 
@@ -84,7 +84,7 @@ public class GuiController {
 		 * Has no real purpose. The Class-Objects (GUI-elements) will be assigned to the
 		 * corresponding element in the fxml-file.
 		 */
-		System.out.println("GUI has been created.");
+//		System.out.println("GUI has been created.");
 	}
 
 	public void initialize() {
@@ -123,16 +123,19 @@ public class GuiController {
 
 		}
 
+		//set the last Action in the TextField to the static String where it was saved.
+		this.lastAction.setText(lastActionString);
+		
 		// Draw Call for the MapCanvas
 		drawMap();
 		// Update the ChoiceBox items.
 		this.updatePathogenChoiceBox();
-		System.out.println("GuiController has been initialized.");
+//		System.out.println("GuiController has been initialized.");
 	}
 
 	// Getter (for the GUI-Controller)
 	public Virus getSlectedPathogen() {
-		return this.selectedPathogen; 
+		return this.selectedPathogen;
 	}
 
 	// is called from the quitButton from the GuiController.
@@ -147,7 +150,6 @@ public class GuiController {
 
 	@FXML // start of checkBox methodes.
 	private void checkShowConnections() {
-
 		this.showConnections = !this.showConnections;
 		drawMap();
 	}
@@ -356,7 +358,7 @@ public class GuiController {
 			this.gc.strokeText(cityName, x, y);
 
 	}
-	//End of draw map methodes.
+	// End of draw map methodes.
 
 	@FXML // onAction call for the selectPathogen choiceBox
 	private void changeSelectedPathogen() {
@@ -374,7 +376,7 @@ public class GuiController {
 
 		String cityAmount = this.amountT.getText();
 		int amount = 1;
-		if (cityAmount != null) {
+		if (!cityAmount.equals("")) {
 			try {
 				amount = Integer.parseInt(cityAmount);
 			} catch (NumberFormatException e) {
@@ -407,17 +409,44 @@ public class GuiController {
 		this.autoTurn.setDisable(true);
 		for (int i = 0; i < amount; i++) {
 			GameServer.addReply((Game g) -> {
-				return Main.solve(g);
+				String result = Main.solve(g);
+				return result;
 			});
 		}
 		this.executeEvent(GameServer.getReply().evalutate(currentGame));
 		this.autoTurn.setDisable(false);
 	}
 
+	//helper methode
+	private void setLastAction(String s) {
+//		System.out.println(s);
+		System.out.println(s.contains("endRound"));
+		if (s.contains("endRound")) {
+			lastActionString = "endRound";
+			return;
+		} else if (s.contains("putUnderQuarantine")) {
+			lastActionString = "putUnderQuarantine";
+			return;
+		} else if (s.contains("developMed")) {
+			lastActionString = "developMed";
+			return;
+		} else if (s.contains("developVac")) {
+			lastActionString = "developVac";
+			return;
+		} else if (s.contains("deployMedication")) {
+			lastActionString = "deployMed";
+			return;
+		} else if (s.contains("deployVac")) {
+			lastActionString = "deployVac";
+			return;
+		} 
+		lastActionString = "irrelevant";
+	}
+
 	@FXML
 	private void putUnderQuarantine() {
-
-		System.out.println("quarantine");
+		
+//		System.out.println("quarantine");
 		this.executeEvent("{\"type\": \"putUnderQuarantine\", \"city\":\"" + this.cityFrom.getText()
 				+ "\", \"rounds\": " + this.rounds.getText() + "}");
 	}
@@ -425,7 +454,7 @@ public class GuiController {
 	@FXML
 	private void closeAirport() {
 
-		System.out.println("closeAirport");
+//		System.out.println("closeAirport");
 		this.executeEvent("{\"type\": \"closeAirport\", \"city\": \"" + this.cityFrom.getText() + "\", \"rounds\": "
 				+ this.rounds.getText() + "}");
 	}
@@ -433,7 +462,7 @@ public class GuiController {
 	@FXML
 	private void closeConnection() {
 
-		System.out.println("closeConnection");
+//		System.out.println("closeConnection");
 		this.executeEvent("{\"type\": \"closeConnection\", \"fromCity\": \"" + this.cityFrom.getText()
 				+ "\", \"toCity\": \"" + this.cityTo.getText() + "\", \"rounds\": " + this.rounds.getText() + "}");
 	}
@@ -441,7 +470,7 @@ public class GuiController {
 	@FXML
 	private void developVaccine() {
 
-		System.out.println("developVaccine");
+//		System.out.println("developVaccine");
 		this.executeEvent(
 				"{\"type\": \"developVaccine\", \"pathogen\": \"" + this.selectedPathogenCB.getValue() + "\"}");
 	}
@@ -522,7 +551,7 @@ public class GuiController {
 	@FXML
 	private void deployMedication() {
 
-		System.out.println("deployMedication");
+//		System.out.println("deployMedication");
 		this.executeEvent("{\"type\": \"deployMedication\", \"pathogen\": \"" + this.selectedPathogenCB.getValue()
 				+ "\", \"city\": \"" + this.cityFrom.getText() + "\"}");
 	}
@@ -530,28 +559,28 @@ public class GuiController {
 	@FXML
 	private void applyHygienicMeasures() {
 
-		System.out.println("applyHygienicMeasures");
+//		System.out.println("applyHygienicMeasures");
 		this.executeEvent("{\"type\": \"applyHygienicMeasures\", \"city\":\"" + this.cityFrom.getText() + "\"}");
 	}
 
 	@FXML
 	private void exertInfluence() {
 
-		System.out.println("exertInfluence");
+//		System.out.println("exertInfluence");
 		this.executeEvent("{\"type\": \"exertInfluence\", \"city\": \"" + this.cityFrom.getText() + "\"}");
 	}
 
 	@FXML
 	private void callElections() {
 
-		System.out.println("callElections");
+//		System.out.println("callElections");
 		this.executeEvent("{\"type\": \"callElections\", \"city\": \"" + this.cityFrom.getText() + "\"}");
 	}
 
 	@FXML
 	private void launchCampaign() {
 
-		System.out.println("launchCampaign");
+//		System.out.println("launchCampaign");
 		this.executeEvent("{\"type\": \"launchCampaign\", \"city\": \"" + this.cityFrom.getText() + "\"}");
 	}
 
@@ -598,9 +627,10 @@ public class GuiController {
 	private void executeEvent(String event) {
 		if (this.currentGameExchange == null || !this.currentGameExchange.isAlive())
 			return;
+		setLastAction(event);
 		this.currentGameExchange.sendReply(event);
 		
-		//close the GUI
+		// close the GUI
 		Stage primaryStage = (Stage) this.selectCityB.getScene().getWindow();
 		if (primaryStage == null)
 			System.out.println("error");
@@ -618,14 +648,15 @@ public class GuiController {
 		if (currentGame == null) {
 			return;
 		}
-			
-		ArrayList<E_PathogenEncounter> activePathogenes = new ArrayList<E_PathogenEncounter>(currentGame.getPathEncounterEvents());
+
+		ArrayList<E_PathogenEncounter> activePathogenes = new ArrayList<E_PathogenEncounter>(
+				currentGame.getPathEncounterEvents());
 		ArrayList<String> pathogenNames = new ArrayList<String>();
-	
+
 		for (E_PathogenEncounter p : activePathogenes) {
 			pathogenNames.add(p.getVirus().getName());
 		}
-		
+
 		ObservableList<String> activePathogenesList = FXCollections.observableList(pathogenNames);
 		this.selectedPathogenCB.setItems(activePathogenesList);
 

@@ -249,19 +249,19 @@
       <Button fx:id="putUnderQuarantineB" layoutX="1642.0" layoutY="403.0" mnemonicParsing="false" onAction="#putUnderQuarantine" prefHeight="25.0" prefWidth="121.0" text="quarantine" />
       <Button fx:id="medicateBiggestCitiesB" layoutX="1213.0" layoutY="872.0" mnemonicParsing="false" onAction="#medicateBiggestCities" prefHeight="110.0" prefWidth="403.0" text="Medicate biggest Cities">
          <font>
-            <Font name="Ubuntu Light" size="10.0" />
+            <Font name="Ubuntu Light" size="30.0" />
          </font>
       </Button>
       <TextField fx:id="amountT" layoutX="1740.0" layoutY="187.0" prefHeight="25.0" prefWidth="140.0" />
       <TextField fx:id="rounds" layoutX="1740.0" layoutY="147.0" prefHeight="25.0" prefWidth="140.0" />
       <TextField fx:id="cityTo" layoutX="1742.0" layoutY="106.0" prefHeight="25.0" prefWidth="140.0" />
       <TextField fx:id="cityFrom" layoutX="1742.0" layoutY="66.0" prefHeight="25.0" prefWidth="140.0" />
-      <Text layoutX="1033.0" layoutY="732.0" strokeType="OUTSIDE" strokeWidth="0.0" text="current Action:" wrappingWidth="240.0">
+      <Text layoutX="1033.0" layoutY="732.0" strokeType="OUTSIDE" strokeWidth="0.0" text="last Action:" wrappingWidth="240.0">
          <font>
             <Font name="Ubuntu Light" size="30.0" />
          </font>
       </Text>
-      <Text fx:id="currentAction" layoutX="1261.0" layoutY="732.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="240.0">
+      <Text fx:id="lastAction" text="none" layoutX="1261.0" layoutY="732.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="240.0">
          <font>
             <Font name="Ubuntu Light" size="30.0" />
          </font>
