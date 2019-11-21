@@ -13,9 +13,9 @@
       <TextField fx:id="rounds" layoutX="121.0" layoutY="140.0" prefHeight="25.0" prefWidth="140.0" />
       <TextField fx:id="pathogen" layoutX="123.0" layoutY="176.0" prefHeight="25.0" prefWidth="140.0" />
       <TextField fx:id="amountT" layoutX="123.0" layoutY="217.0" prefHeight="25.0" prefWidth="140.0" />
-      <Button fx:id="medicateBiggestCitiesB" layoutX="15.0" layoutY="271.0" mnemonicParsing="false" onAction="#medicateBiggestCities" prefHeight="55.0" prefWidth="254.0" text="medicateBiggestCities">
+      <Button fx:id="medicateBiggestCitiesB" layoutX="148.0" layoutY="259.0" mnemonicParsing="false" onAction="#medicateBiggestCities" prefHeight="55.0" prefWidth="121.0" text="medicateBiggestCiteis">
          <font>
-            <Font name="Ubuntu Light" size="20.0" />
+            <Font name="Ubuntu Light" size="10.0" />
          </font>
       </Button>
       <Button fx:id="putUnderQuarantineB" layoutX="285.0" layoutY="106.0" mnemonicParsing="false" onAction="#putUnderQuarantine" prefHeight="25.0" prefWidth="121.0" text="quarantine" />
@@ -116,5 +116,10 @@
             <Font name="Ubuntu Light" size="21.0" />
          </font>
       </Text>
+      <Button fx:id="autoTurn" layoutX="15.0" layoutY="260.0" mnemonicParsing="false" onAction="#autoTurn" prefHeight="55.0" prefWidth="121.0" text="autoTurn">
+         <font>
+            <Font name="Ubuntu Light" size="20.0" />
+         </font>
+      </Button>
    </children>
 </Pane>

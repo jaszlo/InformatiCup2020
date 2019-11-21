@@ -16,6 +16,7 @@ import app.game.City;
 import app.game.Game;
 import app.http.GameExchange;
 import app.http.GameServer;
+import app.solver.Main;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -25,7 +26,8 @@ public class GuiController {
 	@FXML
 	private Button quitB, endRoundB, putUnderQuarantineB, closeAirportB, closeConnectionB,
 	developVaccineB, deployVaccineB, developMedicationB, deployMedicationB, getGameB,
-	applyHygienicMeasuresB, exertInfluenceB, callElectionsB, launchCampaignB, medicateBiggestCitiesB;
+	applyHygienicMeasuresB, exertInfluenceB, callElectionsB, launchCampaignB, medicateBiggestCitiesB,
+	autoTurn;
 	
 	private GameExchange currentGame;
 	private MapController mapControllerRefrence;
@@ -107,6 +109,18 @@ public class GuiController {
 		System.out.println("endRound");
 		this.executeEvent(GameServer.getReply().evalutate(currentGame.getGame()));
 		
+	}
+	
+	@FXML
+	private void autoTurn () {
+		String amountString = this.amountT.getText();
+		int amount = 1;
+		if (!amountString.equals("")) {
+			amount = Integer.parseInt(amountString);
+		}
+		for (int i = 0; i < amount; i++) {
+			this.executeEvent(Main.solve((this.currentGame.getGame())));
+		}
 	}
 	
 	@FXML
@@ -299,4 +313,6 @@ public class GuiController {
 	public void setGame(GameExchange exchange) {
 		this.currentGame = exchange;
 	}
+	
+	
 }

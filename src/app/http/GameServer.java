@@ -17,8 +17,6 @@ public class GameServer {
 	public static LinkedBlockingDeque<GameEvaluater> repliesToSend = new LinkedBlockingDeque<>();;
 	
 	public GameServer() {
-		for(int i = 0; i < 200; i++)
-			addReply((Game g) -> Main.solve(g));
 		try {
 			this.server = HttpServer.create(new InetSocketAddress(50123), 0);
 			HttpContext context = server.createContext("/");
