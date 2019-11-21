@@ -118,11 +118,18 @@ public class GuiController {
 		if (!amountString.equals("")) {
 			amount = Integer.parseInt(amountString);
 		}
+//		this.autoTurn.setDisable(true);
 		for (int i = 0; i < amount; i++) {
-			this.executeEvent(Main.solve((this.currentGame)));
+			System.out.println("searching best action");
+			
+			GameServer.addReply((Game g)-> {
+				return Main.solve(currentGame);
+			});
 		}
+		this.executeEvent(GameServer.getReply().evalutate(currentGame));
+		System.out.println("found best action");
+//		this.autoTurn.setDisable(false);
 	}
-	
 	@FXML
 	private void putUnderQuarantine () {
 		
