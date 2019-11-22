@@ -404,7 +404,11 @@ public class GuiController {
 		}
 		int amount = 1;
 		if (!amountString.equals("")) {
-			amount = Integer.parseInt(amountString);
+			try {
+				amount = Integer.parseInt(amountString);
+			} catch (Exception e) {
+				
+			}
 		}
 		this.autoTurn.setDisable(true);
 		for (int i = 0; i < amount; i++) {
