@@ -1,0 +1,13 @@
+#!/bin/sh
+
+i=1
+while [ $i -lt 300 ]
+do
+    processes=`ps | grep ic20 | wc -l`
+    if [ "${processes}" -lt "100" ]
+        then 
+            ./ic20_linux -t 0 -s $i -o log &
+            i=`expr ${i} + 1`
+   else sleep 1
+    fi 
+done
