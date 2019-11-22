@@ -98,7 +98,6 @@ public class ActionHeuristic {
 		return true;
 	}
 
-
 	public static int getValue(Action action) {
 		return getValue(new HashSet<Action>(Arrays.asList(action)));
 	}
@@ -136,18 +135,17 @@ public class ActionHeuristic {
 			case closeConnection:
 				break;
 			case developVaccine:
+
 				// Only develop vaccine if necessary
 				if (!doDevVaccine(action.getVirus(), action.getGame()))
 					break;
 
 				// Calculate the global prevalance. If everyone is already
 				// infected vaccines are useless
-				double infectedPopulation = 0;
 				double totalPopulation = action.getGame().getPopulation();
-
-				for (City c: action.getGame().getCities().values()) {
-					infectedPopulation += c.getPopulation() * c.getPrevalance();
-				}
+				double infectedPopulation = action.getGame().getCities().values().stream()
+						.filter(c -> c.getOutbreak() != null && c.getOutbreak().getVirus() == action.getVirus())
+						.mapToDouble(c -> c.getPrevalance() * c.getPopulation()).sum();
 
 				double globalPrevalance = infectedPopulation / totalPopulation;
 
@@ -157,25 +155,34 @@ public class ActionHeuristic {
 				}
 
 				break;
-				
+
 			case deployVaccine:
+				if (action.getGame().getPoints() <= 40) {
+					break;
+				}
 				city = action.getCity();
 				// Cities only need to be vaccinated once
-				if(city.getVaccineDeployed().stream().anyMatch(e -> e.getVirus() == action.getVirus())) break;
-				
+				if (city.getVaccineDeployed().stream().anyMatch(e -> e.getVirus() == action.getVirus()))
+					break;
+
 				// TODO: Adjust formula
-				score += DEP_MEDICATION_FACTOR * (1 - city.getPrevalance()) * city.getPopulation() * action.getVirus().getLethality().numericRepresenation();
+				score += DEP_MEDICATION_FACTOR * (1 - city.getPrevalance()) * city.getPopulation()
+						* action.getVirus().getLethality().numericRepresenation();
 				break;
 			case developMedication:
-				// If virus is strong enough develop medication 
+				// If virus is strong enough develop medication
 				if (doDevMedication(action.getVirus(), action.getGame())) {
 					score += (DEV_MEDICATION_FACTOR * action.getVirus().getLethality().numericRepresenation());
 				}
 				break;
 			case deployMedication:
+				if (action.getGame().getPoints() <= 40) {
+					break;
+				}
 				city = action.getCity();
 				// TODO: Adjust formula
-				score += DEP_MEDICATION_FACTOR * city.getPrevalance() * city.getPopulation() * action.getVirus().getLethality().numericRepresenation();
+				score += DEP_MEDICATION_FACTOR * city.getPrevalance() * city.getPopulation()
+						* action.getVirus().getLethality().numericRepresenation();
 				break;
 			case exertInfluence:
 			case callElections:
@@ -184,7 +191,7 @@ public class ActionHeuristic {
 			default:
 				break;
 			}
-			
+
 		}
 		return score;
 	}

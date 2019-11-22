@@ -417,38 +417,13 @@ public class GuiController {
 				return result;
 			});
 		}
-		this.executeEvent(GameServer.getReply().evalutate(currentGame));
+		this.executeEvent(GameServer.getReply().evalutate(this.currentGame));
 		this.autoTurn.setDisable(false);
 	}
 
 	//helper methode
 	private void setLastAction(String s) {
-		if (s.contains("endRound")) {
-			lastActionString = "endRound";
-			return;
-		} else if (s.contains("putUnderQuarantine")) {
-			lastActionString = "quarantine";
-			return;
-		} else if (s.contains("developMed")) {
-			lastActionString = "developMed";
-			return;
-		} else if (s.contains("developVac")) {
-			lastActionString = "developVac";
-			return;
-		} else if (s.contains("deployMedication")) {
-			lastActionString = "deployMed";
-			return;
-		} else if (s.contains("deployVac")) {
-			lastActionString = "deployVac";
-			return;
-		} else if (s.contains("Airport")) {
-			lastActionString = "closeAirport";
-			return;
-		} else if (s.contains("Connection")) {
-			lastActionString = "closeConnection";
-			return;
-		} 
-		lastActionString = "rerolled";
+		GuiController.lastActionString = s;
 	}
 
 	@FXML

@@ -226,7 +226,7 @@
             <Font name="Ubuntu Light" size="21.0" />
          </font>
       </Text>
-      <Button fx:id="quitB" layoutX="1628.0" layoutY="870.0" mnemonicParsing="false" onAction="#quit" prefHeight="110.0" prefWidth="240.0" text="Quit">
+      <Button fx:id="quitB" layoutX="1633.0" layoutY="870.0" mnemonicParsing="false" onAction="#quit" prefHeight="110.0" prefWidth="240.0" text="Quit">
          <font>
             <Font name="Ubuntu Light" size="20.0" />
          </font>
@@ -261,9 +261,9 @@
             <Font name="Ubuntu Light" size="30.0" />
          </font>
       </Text>
-      <Text fx:id="lastAction" text="none" layoutX="1261.0" layoutY="732.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="240.0">
+      <Text fx:id="lastAction" layoutX="1194.0" layoutY="728.0" strokeType="OUTSIDE" strokeWidth="0.0" text="emptyemptyemptyemptyemptyempty" wrappingWidth="431.0">
          <font>
-            <Font name="Ubuntu Light" size="30.0" />
+            <Font name="Ubuntu Light" size="19.0" />
          </font>
       </Text>
    </children>
