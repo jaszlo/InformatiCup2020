@@ -261,7 +261,7 @@
             <Font name="Ubuntu Light" size="30.0" />
          </font>
       </Text>
-      <Text fx:id="lastAction" layoutX="1194.0" layoutY="728.0" strokeType="OUTSIDE" strokeWidth="0.0" text="emptyemptyemptyemptyemptyempty" wrappingWidth="431.0">
+      <Text fx:id="lastAction" layoutX="1194.0" layoutY="715.0" strokeType="OUTSIDE" strokeWidth="0.0" text="emptyemptyemptyemptyemptyempty" wrappingWidth="431.0">
          <font>
             <Font name="Ubuntu Light" size="19.0" />
          </font>
