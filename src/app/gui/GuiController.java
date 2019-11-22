@@ -211,19 +211,15 @@ public class GuiController {
 		String goverment = this.selectedCity.getGovernment().toString();
 		String hygiene = this.selectedCity.getHygiene().toString();
 		String awareness = this.selectedCity.getAwareness().toString();
-
-		// ISSUE: If in a city no event has happened this will create a
-		// NullPointerException.
-//		HashSet<Event> events = this.currentGame.getGame().getFromCityEvents(selectedCity);
-//		String eventString = eventsToString(events);
-
+		String eventString = this.selectedCity.getPrevalance() + "";
+		
 		// Set all the info to the corresponding textElemt.
 		this.population.setText(population);
 		this.economy.setText(economy);
 		this.goverment.setText(goverment);
 		this.hygiene.setText(hygiene);
 		this.awareness.setText(awareness);
-//		this.events.setText(eventSting);
+		this.events.setText(eventString);
 
 	}
 

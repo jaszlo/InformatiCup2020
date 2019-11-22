@@ -26,6 +26,8 @@ public class ActionHeuristic {
 	// Medication over vaccination therefore multiply the factor by 3.
 	static final int DEV_MEDICATION_FACTOR = DEV_VACCINE_FACTOR * 3;
 	static final int DEV_MEDICATION_THRESHOLD = DEV_VACCINE_THRESHOLD;
+	// If a Virus usualy does not require medication but this global prevalance is reached develop it anyway.
+	static final double DEV_MEDICATION_PREVALANCE_THRESHOLD = DEV_VACCINE_PREVALANCE_THRESHOLD;
 
 	static final int DEP_VACCINE_FACTOR = 50;
 	static final int DEP_VACCINE_THRESHOLD = 40;
@@ -79,12 +81,7 @@ public class ActionHeuristic {
 		int mobility = virus.getMobility().numericRepresenation();
 
 		int score = mobility * infectivity;
-
-		// If a virus is not expanding fast, medication should not be developed.
-		if (score <= DEV_MEDICATION_THRESHOLD) {
-			return false;
-		}
-
+		
 		// Medication already available so no development necessary
 		if (game.getMedAvailableEvents().stream().anyMatch(event -> event.getVirus() == virus)) {
 			return false;
@@ -94,6 +91,25 @@ public class ActionHeuristic {
 		if (game.getMedDevEvents().stream().anyMatch(event -> event.getVirus() == virus)) {
 			return false;
 		}
+		
+		//Because quarantine only contains a virus within one city it is not worth the points to develop a medication
+		if (doQuarantine(virus)) {
+			return false;
+		}
+		
+		// If a virus is not expanding fast, medication should not be developed.
+		if (score <= DEV_MEDICATION_THRESHOLD) {
+			double totalPopulation = game.getPopulation();
+			double infectedPopulation = game.getCities().values().stream()
+					.filter(c -> c.getOutbreak() != null && c.getOutbreak().getVirus() == virus)
+					.mapToDouble(c -> c.getPrevalance() * c.getPopulation()).sum();
+
+			double globalPrevalance = infectedPopulation / totalPopulation;
+			if (globalPrevalance <= DEV_MEDICATION_PREVALANCE_THRESHOLD) {
+				return false;
+			}
+		}
+
 		// Medication should not be available already or in development
 		return true;
 	}
@@ -173,6 +189,7 @@ public class ActionHeuristic {
 				// If virus is strong enough develop medication
 				if (doDevMedication(action.getVirus(), action.getGame())) {
 					score += (DEV_MEDICATION_FACTOR * action.getVirus().getLethality().numericRepresenation());
+
 				}
 				break;
 			case deployMedication:
