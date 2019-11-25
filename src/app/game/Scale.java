@@ -19,7 +19,7 @@ public enum Scale {
 	}
 	
 	
-	public int numericRepresenation() {
+	public int getNumericRepresentation() {
 		switch(this) {
 			case DM:
 				return 1;
