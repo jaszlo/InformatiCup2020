@@ -71,7 +71,7 @@ public class ActionHeuristic {
 		if (game.getVaccDevEvents().stream().anyMatch(event -> event.getVirus() == virus)) {
 			return false;
 		}
-
+		//test
 		// Vaccine should not be available already or in development
 		return true;
 	}
