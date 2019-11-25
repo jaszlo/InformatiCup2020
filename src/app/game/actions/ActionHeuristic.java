@@ -36,10 +36,10 @@ public class ActionHeuristic {
 	static final int DEP_MEDICATION_THRESHOLD = DEV_VACCINE_THRESHOLD;
 
 	private static boolean doQuarantine(Virus virus) {
-		int infectivity = virus.getInfectivity().numericRepresenation();
-		int lethality = virus.getLethality().numericRepresenation();
-		int mobility = virus.getMobility().numericRepresenation();
-		int duration = virus.getDuration().numericRepresenation();
+		int infectivity = virus.getInfectivity().getNumericRepresentation();
+		int lethality = virus.getLethality().getNumericRepresentation();
+		int mobility = virus.getMobility().getNumericRepresentation();
+		int duration = virus.getDuration().getNumericRepresentation();
 
 		// Factors that contribute to a dangerous virus killing lots of people in a
 		// short amount of time
@@ -52,8 +52,8 @@ public class ActionHeuristic {
 	}
 
 	private static boolean doDevVaccine(Virus virus, Game game) {
-		int infectivity = virus.getInfectivity().numericRepresenation();
-		int mobility = virus.getMobility().numericRepresenation();
+		int infectivity = virus.getInfectivity().getNumericRepresentation();
+		int mobility = virus.getMobility().getNumericRepresentation();
 
 		int score = mobility * infectivity;
 
@@ -77,8 +77,8 @@ public class ActionHeuristic {
 	}
 
 	private static boolean doDevMedication(Virus virus, Game game) {
-		int infectivity = virus.getInfectivity().numericRepresenation();
-		int mobility = virus.getMobility().numericRepresenation();
+		int infectivity = virus.getInfectivity().getNumericRepresentation();
+		int mobility = virus.getMobility().getNumericRepresentation();
 
 		int score = mobility * infectivity;
 		
@@ -167,7 +167,7 @@ public class ActionHeuristic {
 
 				// Only if prevalence is low enough add score
 				if (globalPrevalance < DEV_VACCINE_PREVALANCE_THRESHOLD) {
-					score += (DEV_VACCINE_FACTOR * action.getVirus().getLethality().numericRepresenation());
+					score += (DEV_VACCINE_FACTOR * action.getVirus().getLethality().getNumericRepresentation());
 				}
 
 				break;
@@ -184,12 +184,12 @@ public class ActionHeuristic {
 
 				// TODO: Adjust formula
 				score += DEP_VACCINE_FACTOR * (1 - city.getPrevalance()) * city.getPopulation()
-						* action.getVirus().getLethality().numericRepresenation();
+						* action.getVirus().getLethality().getNumericRepresentation();
 				break;
 			case developMedication:
 				// If virus is strong enough develop medication
 				if (doDevMedication(action.getVirus(), action.getGame())) {
-					score += (DEV_MEDICATION_FACTOR * action.getVirus().getLethality().numericRepresenation());
+					score += (DEV_MEDICATION_FACTOR * action.getVirus().getLethality().getNumericRepresentation());
 
 				}
 				break;
@@ -201,7 +201,7 @@ public class ActionHeuristic {
 				city = action.getCity();
 				// TODO: Adjust formula
 				score += DEP_MEDICATION_FACTOR * city.getPrevalance() * city.getPopulation()
-						* action.getVirus().getLethality().numericRepresenation();
+						* action.getVirus().getLethality().getNumericRepresentation();
 				break;
 			case exertInfluence:
 			case callElections:
