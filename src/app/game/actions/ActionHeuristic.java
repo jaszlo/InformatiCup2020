@@ -173,6 +173,7 @@ public class ActionHeuristic {
 				break;
 
 			case deployVaccine:
+				// TODO: finetune this
 				if (action.getGame().getPoints() <= 40) {
 					break;
 				}
@@ -182,7 +183,7 @@ public class ActionHeuristic {
 					break;
 
 				// TODO: Adjust formula
-				score += DEP_MEDICATION_FACTOR * (1 - city.getPrevalance()) * city.getPopulation()
+				score += DEP_VACCINE_FACTOR * (1 - city.getPrevalance()) * city.getPopulation()
 						* action.getVirus().getLethality().numericRepresenation();
 				break;
 			case developMedication:
@@ -193,6 +194,7 @@ public class ActionHeuristic {
 				}
 				break;
 			case deployMedication:
+				// TODO: finetune this
 				if (action.getGame().getPoints() <= 40) {
 					break;
 				}
