@@ -18,9 +18,9 @@ public class GameServer {
 	public static LinkedBlockingDeque<GameEvaluater> repliesToSend = new LinkedBlockingDeque<>();;
 	private static boolean testMode;
 	
-	public GameServer(boolean showGui) {
+	public GameServer(boolean testMode) {
 		try {
-			GameServer.testMode = showGui;
+			GameServer.testMode = testMode;
 			this.server = HttpServer.create(new InetSocketAddress(50123), 0);
 			HttpContext context = server.createContext("/");
 			context.setHandler(GameServer::handleRequest);
