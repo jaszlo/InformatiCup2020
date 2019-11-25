@@ -1,3 +1,0 @@
-./ic20_linux -t 0 -s 123125
-
-Team OneLiner
