@@ -16,7 +16,7 @@ public class Testing extends Application {
 	
 	//@Override
 	public void start (Stage primaryStage) throws Exception {
-		new GameServer();
+		new GameServer(false);
 		Platform.setImplicitExit(false);
 	}
 }

@@ -386,7 +386,7 @@ public class GuiController {
 		}
 
 		System.out.println("endRound");
-		this.executeEvent(GameServer.getReply().evalutate(currentGame));
+		this.executeEvent(GameServer.getReply().evaluate(currentGame));
 
 	}
 
@@ -413,7 +413,7 @@ public class GuiController {
 				return result;
 			});
 		}
-		this.executeEvent(GameServer.getReply().evalutate(this.currentGame));
+		this.executeEvent(GameServer.getReply().evaluate(this.currentGame));
 		this.autoTurn.setDisable(false);
 	}
 
@@ -510,7 +510,7 @@ public class GuiController {
 
 			}
 
-			this.executeEvent(GameServer.getReply().evalutate(currentGame));
+			this.executeEvent(GameServer.getReply().evaluate(currentGame));
 		} else {
 
 			System.out.println("developVaccine");
@@ -600,7 +600,7 @@ public class GuiController {
 
 		}
 
-		this.executeEvent(GameServer.getReply().evalutate(currentGame));
+		this.executeEvent(GameServer.getReply().evaluate(currentGame));
 	}
 
 	private void executeEvent(String event) {

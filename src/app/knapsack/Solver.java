@@ -33,8 +33,8 @@ public class Solver {
 				maxRestItems = tempItems;
 			}
 		}
-		System.out.println("opt");
-		Optimization.optimiseSolution(maxSolution, maxRestItems); //evt wieder nach jedem SA durchlauf
+		//System.out.println("opt");
+		//Optimization.optimiseSolution(maxSolution, maxRestItems); //evt wieder nach jedem SA durchlauf
 		return maxSolution.getItems();
 	}
 
