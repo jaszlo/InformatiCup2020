@@ -4,5 +4,5 @@ import app.game.Game;
 
 public interface GameEvaluater {
 
-	public String evalutate (Game currentGame);
+	public String evaluate (Game currentGame);
 }
