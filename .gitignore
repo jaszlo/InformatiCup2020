@@ -32,3 +32,6 @@ hs_err_pid*
 #commandlineTools
 ic20_linux
 ic20_windows.exe
+
+#logfiles
+log
