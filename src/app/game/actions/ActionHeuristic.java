@@ -22,11 +22,14 @@ public class ActionHeuristic {
 	static final int DEV_VACCINE_THRESHOLD = 9;
 	// Only develop vaccine if global prevlance is lower than this threshold value.
 	static final double DEV_VACCINE_PREVALANCE_THRESHOLD = 1.0 / 3.0;
+	//
+	static final double DEV_VACCINE_INFECTABLE_THRESHOLD = 1.0 / 5.0;
 
 	// Medication over vaccination therefore multiply the factor by 3.
 	static final int DEV_MEDICATION_FACTOR = DEV_VACCINE_FACTOR * 3;
 	static final int DEV_MEDICATION_THRESHOLD = DEV_VACCINE_THRESHOLD;
-	// If a Virus usualy does not require medication but this global prevalance is reached develop it anyway.
+	// If a Virus usualy does not require medication but this global prevalance is
+	// reached develop it anyway.
 	static final double DEV_MEDICATION_PREVALANCE_THRESHOLD = DEV_VACCINE_PREVALANCE_THRESHOLD;
 
 	static final int DEP_VACCINE_FACTOR = 50;
@@ -58,22 +61,7 @@ public class ActionHeuristic {
 		int score = mobility * infectivity;
 
 		// If a virus expands fast vaccines should not be developed.
-		if (score > DEV_VACCINE_THRESHOLD) {
-			return false;
-		}
-
-		// Vaccine already available so no development necessary
-		if (game.getVaccAvailableEvents().stream().anyMatch(event -> event.getVirus() == virus)) {
-			return false;
-		}
-
-		// Vaccine already in development so no development necessary
-		if (game.getVaccDevEvents().stream().anyMatch(event -> event.getVirus() == virus)) {
-			return false;
-		}
-		//test
-		// Vaccine should not be available already or in development
-		return true;
+		return score <= DEV_VACCINE_THRESHOLD;
 	}
 
 	private static boolean doDevMedication(Virus virus, Game game) {
@@ -81,23 +69,16 @@ public class ActionHeuristic {
 		int mobility = virus.getMobility().getNumericRepresentation();
 
 		int score = mobility * infectivity;
-		
-		// Medication already available so no development necessary
-		if (game.getMedAvailableEvents().stream().anyMatch(event -> event.getVirus() == virus)) {
-			return false;
-		}
 
-		// Medication already in development so no development necessary
-		if (game.getMedDevEvents().stream().anyMatch(event -> event.getVirus() == virus)) {
-			return false;
-		}
-		
-		//Because quarantine only contains a virus within one city it is not worth the points to develop a medication
+		// Because quarantine only contains a virus within one city it is not worth the
+		// points to develop a medication
 		if (doQuarantine(virus)) {
 			return false;
 		}
-		
+
 		// If a virus is not expanding fast, medication should not be developed.
+		// Unless it already has infected enough (see the
+		// DEV_MEDICATION_PREVALANCE_THRESHOLD)
 		if (score <= DEV_MEDICATION_THRESHOLD) {
 			double totalPopulation = game.getPopulation();
 			double infectedPopulation = game.getCities().values().stream()
@@ -120,9 +101,10 @@ public class ActionHeuristic {
 
 	public static int getValue(HashSet<Action> actions) {
 		int score = 0;
-		City city;
-
 		for (Action action : actions) {
+			City city = action.getCity();
+			Game game = action.getGame();
+
 			switch (action.getType()) {
 			case endRound:
 				score += 1; // EndRound as default action
@@ -143,6 +125,11 @@ public class ActionHeuristic {
 				if (city.getQuarantine() != null)
 					break;
 
+				// Check if there is another uninfected city we want to protect from this Virus.
+				if (!game.getCities().values().stream().anyMatch((City c) -> c.getOutbreak() == null)) {
+					break;
+				}
+
 				// City should be quarantined
 				score += QUARANTINE_FACTOR * action.getCost();
 				break;
@@ -153,13 +140,16 @@ public class ActionHeuristic {
 			case developVaccine:
 
 				// Only develop vaccine if necessary
-				if (!doDevVaccine(action.getVirus(), action.getGame()))
+				if (!doDevVaccine(action.getVirus(), game) && 
+					game.getCities().values().stream().filter(c -> c.getOutbreak() == null)
+					.mapToDouble(c -> c.getPopulation()).sum() <= 0.1 * game.getPopulation()) {
 					break;
-
+				}
+				
 				// Calculate the global prevalance. If everyone is already
 				// infected vaccines are useless
-				double totalPopulation = action.getGame().getPopulation();
-				double infectedPopulation = action.getGame().getCities().values().stream()
+				double totalPopulation = game.getPopulation();
+				double infectedPopulation = game.getCities().values().stream()
 						.filter(c -> c.getOutbreak() != null && c.getOutbreak().getVirus() == action.getVirus())
 						.mapToDouble(c -> c.getPrevalance() * c.getPopulation()).sum();
 
@@ -174,7 +164,7 @@ public class ActionHeuristic {
 
 			case deployVaccine:
 				// TODO: finetune this
-				if (action.getGame().getPoints() <= 40) {
+				if (game.getPoints() <= 25) {
 					break;
 				}
 				city = action.getCity();
@@ -188,14 +178,14 @@ public class ActionHeuristic {
 				break;
 			case developMedication:
 				// If virus is strong enough develop medication
-				if (doDevMedication(action.getVirus(), action.getGame())) {
+				if (doDevMedication(action.getVirus(), game)) {
 					score += (DEV_MEDICATION_FACTOR * action.getVirus().getLethality().getNumericRepresentation());
 
 				}
 				break;
 			case deployMedication:
 				// TODO: finetune this
-				if (action.getGame().getPoints() <= 40) {
+				if (game.getPoints() <= 30) {
 					break;
 				}
 				city = action.getCity();
