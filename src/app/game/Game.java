@@ -49,11 +49,19 @@ public class Game {
 
 	private String outcome;
 
+	/**
+	 * Creates a game object
+	 * @param game The String representing the game in UTF-8 format.
+	 */
 	public Game(String game) {
 		parseGame(game);
 		// Main.solve(this);
 	}
 
+	/**
+	 * 
+	 * @return String An overview of the game's current state as a String.
+	 */
 	public String gameInformation() {
 		String game = "";
 		for (HashSet<? extends Event> eventType : events.values()) {
@@ -176,6 +184,7 @@ public class Game {
 		}
 	}
 
+	//helper method to put an Event into the events map
 	@SuppressWarnings("unchecked")
 	private void addToGeneralEventMap(Event event) {
 		String name = event.getName();
@@ -189,6 +198,7 @@ public class Game {
 		}
 	}
 
+	//helper method to add an event to a city
 	private void addToCityEventMap(Event event, City city) {
 		city.addEvent(event);
 	}
@@ -196,13 +206,15 @@ public class Game {
 	private void parseGame(String game) {
 		try {
 			JSONObject obj = (JSONObject) new JSONParser().parse(game);
+			//parse general information
 			round = Integer.parseInt(obj.get("round").toString());
 			outcome = (String) obj.get("outcome");
 			points = Integer.parseInt(obj.get("points").toString());
 
 			JSONObject cities = (JSONObject) obj.get("cities");
 			int totalPop = 0;
-			for (Object o : cities.values()) { // Parse all cities
+			//parse Cities
+			for (Object o : cities.values()) {
 				JSONObject city = (JSONObject) o;
 				Scale government = Scale.parse((String) city.get("government"));
 				Scale awareness = Scale.parse((String) city.get("awareness"));
@@ -217,7 +229,8 @@ public class Game {
 				City c = new City(name, x, y, new HashSet<City>(), pop, economy, government, hygiene, awareness);
 				this.cities.put(name, c);
 			}
-			for (Object o : cities.values()) { // Parse city connections
+			//parse City connections
+			for (Object o : cities.values()) {
 				JSONObject city = (JSONObject) o;
 				City source = getCities().get(city.get("name"));
 				JSONArray arr = (JSONArray) city.get("connections");
@@ -232,12 +245,13 @@ public class Game {
 					}
 				}
 			}
+			//Set, if possible, the initial population. Only possible at round 1. 
 			population = totalPop;
 			if (getRound() == 1)
 				initialPopulation = getPopulation();
 			else
 				initialPopulation = -1;
-
+			//Parse non city-specific Events
 			JSONArray globalEvents = (JSONArray) obj.get("events"); // parse global events
 			if (globalEvents != null) {
 				for (Object event : globalEvents)
@@ -248,22 +262,42 @@ public class Game {
 		}
 	}
 
+	/**
+	 * 
+	 * @return A Map of Cities in the game. The Key is the unique name of the City.
+	 */
 	public HashMap<String, City> getCities() {
 		return cities;
 	}
 
+	/**
+	 * 
+	 * @return The current round the game is in.
+	 */
 	public int getRound() {
 		return round;
 	}
 
+	/**
+	 * 
+	 * @return The initial population of the game. -1 if not known.
+	 */
 	public int getInitialPopulation() {
 		return initialPopulation;
 	}
 
+	/**
+	 * 
+	 * @return The current total population. Equal to the sum of population of all cities.
+	 */
 	public int getPopulation() {
 		return population;
 	}
 
+	/**
+	 * 
+	 * @return A Set of all anti-vaccionationism events
+	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_AntiVacc> getAntiVaccEvents() {
 		if (events.containsKey(EventType.antiVaccinationism))
@@ -272,6 +306,10 @@ public class Game {
 			return new HashSet<E_AntiVacc>();
 	}
 
+	/**
+	 * 
+	 * @return A Set of all the bio-terrorism taking place
+	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_BioTerror> getBioTerrorEvents() {
 		if (events.containsKey(EventType.bioTerrorism))
@@ -280,6 +318,10 @@ public class Game {
 			return new HashSet<E_BioTerror>();
 	}
 
+	/**
+	 * 
+	 * @return A set of all virus-outbreaks
+	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_Outbreak> getOutbreakEvents() {
 		if (events.containsKey(EventType.outbreak))
@@ -288,6 +330,10 @@ public class Game {
 			return new HashSet<E_Outbreak>();
 	}
 
+	/**
+	 * 
+	 * @return The set of all uprisings taking place
+	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_Uprising> getUprisingEvents() {
 		if (events.containsKey(EventType.uprising))
@@ -296,6 +342,10 @@ public class Game {
 			return new HashSet<E_Uprising>();
 	}
 
+	/**
+	 * 
+	 * @return A set of all the pathogens encountered
+	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_PathogenEncounter> getPathEncounterEvents() {
 		if (events.containsKey(EventType.pathogenEncountered))
@@ -304,6 +354,10 @@ public class Game {
 			return new HashSet<E_PathogenEncounter>();
 	}
 
+	/**
+	 * 
+	 * @return A set of all Quarantines
+	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_Quarantine> getQuarantineEvents() {
 		if (events.containsKey(EventType.quarantine))
@@ -312,6 +366,10 @@ public class Game {
 			return new HashSet<E_Quarantine>();
 	}
 
+	/**
+	 * 
+	 * @return A set of all vaccines currently in development
+	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_VaccineInDevelopment> getVaccDevEvents() {
 		if (events.containsKey(EventType.vaccineInDevelopment))
@@ -320,6 +378,10 @@ public class Game {
 			return new HashSet<E_VaccineInDevelopment>();
 	}
 
+	/**
+	 * 
+	 * @return A set of all available vaccines
+	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_VaccineAvailable> getVaccAvailableEvents() {
 		if (events.containsKey(EventType.vaccineAvailable))
@@ -328,6 +390,11 @@ public class Game {
 			return new HashSet<E_VaccineAvailable>();
 	}
 
+	
+	/**
+	 * 
+	 * @return A set of all medication currently in development
+	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_MedicationInDevelopment> getMedDevEvents() {
 		if (events.containsKey(EventType.medicationInDevelopment))
@@ -336,6 +403,10 @@ public class Game {
 			return new HashSet<E_MedicationInDevelopment>();
 	}
 
+	/**
+	 * 
+	 * @return A set of all medication available.
+	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_MedicationAvailable> getMedAvailableEvents() {
 		if (events.containsKey(EventType.medicationAvailable))
@@ -344,6 +415,10 @@ public class Game {
 			return new HashSet<E_MedicationAvailable>();
 	}
 
+	/**
+	 * 
+	 * @return A set of all connections closed.
+	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_ConnectionClosed> getConnClosedEvents() {
 		if (events.containsKey(EventType.connectionClosed))
@@ -352,6 +427,10 @@ public class Game {
 			return new HashSet<E_ConnectionClosed>();
 	}
 
+	/**
+	 * 
+	 * @return A set of all airports currently closed.
+	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_AirportClosed> getAirportClosedEvents() {
 		if (events.containsKey(EventType.airportClosed))
@@ -360,6 +439,10 @@ public class Game {
 			return new HashSet<E_AirportClosed>();
 	}
 
+	/**
+	 * 
+	 * @return A set of all cities a certain medication is being deployed in.
+	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_MedicationDeployed> getMedDeployedEvents() {
 		if (events.containsKey(EventType.medicationDeployed))
@@ -368,6 +451,10 @@ public class Game {
 			return new HashSet<E_MedicationDeployed>();
 	}
 
+	/**
+	 * 
+	 * @return A set of all cities a certain vaccine is being deployed in.
+	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_VaccineDeployed> getVaccDeployedEvents() {
 		if (events.containsKey(EventType.vaccineDeployed))
@@ -376,22 +463,42 @@ public class Game {
 			return new HashSet<E_VaccineDeployed>();
 	}
 
+	/**
+	 * 
+	 * @return The outcome of the game as String. This can either be 'loss', 'win' or 'pending'
+	 */
 	public String getOutcome() {
 		return outcome;
 	}
 
+	/**
+	 * 
+	 * @return The round the large scale panic started. If it hasn't started yet, -1 is returned.
+	 */
 	public int getPanicStart() {
 		return panicStart;
 	}
 
+	/**
+	 * 
+	 * @return The round the economic crisis has started. If it hasn't started yet, -1 is returned.
+	 */
 	public int getEcoCrisisStart() {
 		return ecoCrisisStart;
 	}
 
+	/**
+	 * 
+	 * @return The amount of points available for spending on actions.
+	 */
 	public int getPoints() {
 		return points;
 	}
 	
+	/**
+	 * 
+	 * @return All Map of all Viruses. The Key is the name of the Virus.
+	 */
 	@Deprecated
 	public HashMap<String, Virus> getViruses() {
 		return viruses;
