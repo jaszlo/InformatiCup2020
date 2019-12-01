@@ -29,6 +29,10 @@ public abstract class Item implements Comparable<Item>{
 		return cost;
 	}
 
+	/**
+	 * 
+	 * @return Returns 1 if item's weight is more than weight of i. 0 if its equal, and -1 if its less. 
+	 */
 	public int compareTo(Item i) {
 		return Integer.compare(getCost(), i.getCost());
 	}
@@ -48,6 +52,11 @@ public abstract class Item implements Comparable<Item>{
 		return "Id:"+getId()+", Cost:"+getCost();
 	}
 
+	/**
+	 * 
+	 * @param set A set of this Item-Type
+	 * @return The value a specific set of this Item-Type adds to knapsack 
+	 */
 	public abstract int getSetValue(HashSet<? extends Item> set);
 	
 }

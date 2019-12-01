@@ -4,6 +4,7 @@ import java.util.HashSet;
 
 /**
  * Class to represent a transition from a knapsack solution to another.
+ * A Swap is the removal of X items to add one item Y to the knapsack.
  */
 public class Swap<T extends Item>{
 	
