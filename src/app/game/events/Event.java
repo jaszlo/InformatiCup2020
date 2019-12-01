@@ -1,5 +1,10 @@
 package app.game.events;
 
+/**
+ * Superclass for all event-classes
+ * that hold information about a specific ingame event.
+ *
+ */
 public abstract class Event {
 	
 	private final EventType type;
