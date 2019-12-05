@@ -5,13 +5,19 @@ import java.util.HashSet;
 
 public class Solver {
 
+	/**
+	 * Finds a good approximation to the knapsack problem provided by set and capacity.
+	 * @param <T>
+	 * @param set All possible items that can be put into the knapsack
+	 * @param capacity The maximum weight the sum of items of a solution may have
+	 * @return The knapsack filled with items, resulting in the best possible value of the knapsack
+	 */
 	public static<T extends Item> HashSet<T> solve(HashSet<T> set, int capacity){
 		Bag<T> maxSolution = null;
 		HashSet<T> maxRestItems = null;
 		final int RANDOM_ITERATIONS = 5, GREEDY_ITERATIONS = 5;
 		//RANDOM FILL
 		for(int i = 0; i < RANDOM_ITERATIONS; i++) {
-			System.out.println("rndm"+i);
 			Bag<T> temp = new Bag<T>(capacity,new HashSet<T>());
 			HashSet<T> tempItems = new HashSet<T>(set);
 			fillBagRandom(temp, tempItems);
@@ -23,7 +29,6 @@ public class Solver {
 		}
 		//GREEDY FILL
 		for(int i = 0; i < GREEDY_ITERATIONS; i++) {
-			System.out.println("greedy"+i);
 			Bag<T> temp = new Bag<T>(capacity,new HashSet<T>());
 			HashSet<T> tempItems = new HashSet<T>(set);
 			fillBagGreedy(temp, tempItems);
@@ -33,7 +38,6 @@ public class Solver {
 				maxRestItems = tempItems;
 			}
 		}
-		//System.out.println("opt");
 		//Optimization.optimiseSolution(maxSolution, maxRestItems); //evt wieder nach jedem SA durchlauf
 		return maxSolution.getItems();
 	}
@@ -47,6 +51,14 @@ public class Solver {
 		return saSol;
 	}
 	
+	/**
+	 * Randomly fills a bag with items from a given set until no item can be put into
+	 * the bag without exceeding its capacity.
+	 * bag and availableItems are modified to the result of the method.
+	 * @param <T>
+	 * @param bag The bag to be filled
+	 * @param availableItems The items that can be put into the bag
+	 */
 	public static<T extends Item> void fillBagRandom(Bag<T> bag, HashSet<T> availableItems) {
 		boolean addedItem = true;
 		while(addedItem) {
@@ -65,6 +77,14 @@ public class Solver {
 		}
 	}
 	
+	/**
+	 * Fills a bag with the greedy algorithm until no item can be put into the bag without
+	 * exceeding its capacity.
+	 * bag and availableItems are modified to the result of the method.
+	 * @param <T>
+	 * @param bag The bag to be filled
+	 * @param availableItems The items that can be put into the bag
+	 */
 	public static <T extends Item> void fillBagGreedy(Bag<T> bag, HashSet<T> availableItems) { 
 		HashSet<T> set = new HashSet<T>(availableItems);
 		boolean addedItem = true;
@@ -72,6 +92,7 @@ public class Solver {
 			addedItem = false;
 			int max = Integer.MIN_VALUE;
 			T maxItem = null;
+			//search for item with biggest value that fits into bag
 			for(T item : set) {
 				if(bag.hasSpaceFor(item)) {
 					Bag<T> temp = new Bag<T>(bag);
@@ -83,6 +104,7 @@ public class Solver {
 					}
 				}
 			}
+			//put most valuable item into bag
 			if(maxItem != null) {
 				set.remove(maxItem);
 				bag.addItem(maxItem);
