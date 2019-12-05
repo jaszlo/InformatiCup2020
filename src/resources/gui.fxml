@@ -144,7 +144,7 @@
             <Font size="20.0" />
          </font>
       </Button>
-      <Button fx:id="printInfectedCities" layoutX="196.0" layoutY="943.0" mnemonicParsing="false" onAction="#printSelectInfectedCities" prefHeight="42.0" prefWidth="545.0" text="Print infected Cities">
+      <Button fx:id="selectInfectedCitiesB" layoutX="196.0" layoutY="943.0" mnemonicParsing="false" onAction="#selectInfectedCities" prefHeight="42.0" prefWidth="545.0" text="Select infected Cities">
          <font>
             <Font size="20.0" />
          </font>

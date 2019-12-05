@@ -40,7 +40,7 @@ public class GuiController {
 
 	// All FXML elements that have interaction.
 	@FXML
-	private Button selectCityB, printAllOutbreaksB, printInfectedCitiesB, resetB;
+	private Button selectCityB, printAllOutbreaksB, selectInfectedCitiesB, resetB;
 
 	@FXML
 	private TextField selectCityT;
@@ -253,16 +253,18 @@ public class GuiController {
 	}
 
 	@FXML // Button implementation
-	private void printSelectInfectedCities() {
+	private void selectInfectedCities() {
 
 		if (this.selectedPathogen == null)
 			return;
 
-		System.out.println("The Virus " + this.selectedPathogen.getName() + " has infected:");
-
+		this.gc.setFill(Color.WHITE);
+		this.gc.setStroke(Color.BLACK);
+		this.gc.clearRect(0, 0, this.currentMap.getWidth(), this.currentMap.getHeight());
+		
 		for (E_Outbreak e : this.currentGame.getOutbreakEvents()) {
 			if (this.selectedPathogen == e.getVirus())
-				System.out.print(e.getCity().getName() + ", ");
+				drawCity(e.getCity(), currentGame);
 		}
 
 		System.out.println();
