@@ -1,0 +1,1 @@
+https://etcqy85oef.execute-api.us-east-1.amazonaws.com/default/ic20_solver
