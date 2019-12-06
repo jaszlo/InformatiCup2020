@@ -1,1 +1,1 @@
-https://etcqy85oef.execute-api.us-east-1.amazonaws.com/default/ic20_solver
+https://udi8pt9vo9.execute-api.us-east-1.amazonaws.com/Beta/
