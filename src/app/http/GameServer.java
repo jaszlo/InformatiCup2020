@@ -15,12 +15,13 @@ import app.solver.Main;
 
 public class GameServer {
 	HttpServer server;
-	public static LinkedBlockingDeque<GameEvaluater> repliesToSend = new LinkedBlockingDeque<>();;
-	private static boolean testMode;
+	public static double games = 0;
+	public static double wins = 0;
 	
-	public GameServer(boolean testMode) {
+	public static LinkedBlockingDeque<GameEvaluater> repliesToSend = new LinkedBlockingDeque<>();;
+	
+	public GameServer() {
 		try {
-			GameServer.testMode = testMode;
 			this.server = HttpServer.create(new InetSocketAddress(50123), 0);
 			HttpContext context = server.createContext("/");
 			context.setHandler(GameServer::handleRequest);
@@ -37,19 +38,30 @@ public class GameServer {
     	}
     	new Thread(() -> {
 	    		GameExchange ge = new GameExchange(exchange);
-	    		System.out.println(ge.getGame().getOutcome());
-	    		if(!testMode) {
-		    		if(hasReplies())
-		    			ge.sendReply(getReply().evaluate(ge.getGame()));
-		    		else
-		    			ge.playGui();
+//	    		System.out.println(ge.getGame().getOutcome());
+//	    		if (!ge.getGame().getUprisingEvents().isEmpty()) {
+//	    			System.out.println("FOUND UPRISING IN ROUND " + ge.getGame().getRound());
+//	    			ge.getGame().getUprisingEvents().stream().forEach(e -> System.out.print(e.getCity()));
+//	    			System.out.println();
+//	    		}
+//	    		if (ge.getGame().getPanicStart() >= 0) {
+//	    			System.out.println("large Scale Panic started in Round " + ge.getGame().getPanicStart());
+//	     		}
+//	    		if (ge.getGame().getEcoCrisisStart() >= 0) {
+//	    			System.out.println("Eco Crisis started in Round " + ge.getGame().getEcoCrisisStart());
+//	    		}
+	    		if (!ge.getGame().getOutcome().equals("pending")) {
+		    		if (ge.getGame().getOutcome().equals("win")) {
+		    			wins++;
+		    		} 
+		    		games++;
+	    			System.out.println(ge.getGame().getOutcome() + " - current winRate = " + ((wins/games)*100) + "%.");
 	    		}
-	    		else {
-	    			if(!ge.getGame().getOutcome().equals("pending")) 
-	    				WinrateTest.addResult(ge.getGame().getOutcome());
-	    			else
-	    				ge.sendReply(app.solver.Main.solve(ge.getGame()));
-	    		}
+	    		if(hasReplies())
+	    			ge.sendReply(getReply().evaluate(ge.getGame()));
+	    		else
+	    			ge.playGui();
+    		
     		}).start();
     }
     

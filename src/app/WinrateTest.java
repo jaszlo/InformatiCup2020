@@ -21,7 +21,7 @@ public class WinrateTest extends Application {
 	
 	//@Override
 	public void start (Stage primaryStage) throws Exception {
-		new GameServer(true);
+		new GameServer();
 		Platform.setImplicitExit(false);
 		JFileChooser jf = new JFileChooser();
 		jf.showSaveDialog(null);
