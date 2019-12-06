@@ -6,6 +6,7 @@ import java.util.HashSet;
 import app.game.City;
 import app.game.Game;
 import app.game.Virus;
+import app.game.events.E_Outbreak;
 
 public class ActionHeuristic {
 	// FACTOR: The factor by which the score is scaled.
@@ -104,15 +105,30 @@ public class ActionHeuristic {
 		for (Action action : actions) {
 			City city = action.getCity();
 			Game game = action.getGame();
-
+			
 			switch (action.getType()) {
 			case endRound:
 				score += 1; // EndRound as default action
 				break;
 			case putUnderQuarantine:
-				// City under investigation
-				city = action.getCity();
-
+				
+				// If a very strong virus breaks out in 2 Cities protect the biggest one
+				// This only helps in the first round
+				if (city.getOutbreak() == null) {
+					int strongVirusAmount = 0;
+					for (E_Outbreak e : game.getOutbreakEvents()) {
+						if (doQuarantine(e.getVirus())) {
+							strongVirusAmount++;
+						}
+					}
+					
+					// If there are more than 2 qurantinable viruses we can not quarantine both.
+					// Therefore we quarantine the biggest city and hope for the best 
+					if (strongVirusAmount > 1) {
+						score += QUARANTINE_FACTOR * action.getCost() * city.getPopulation();
+					}
+				}
+				
 				// The city does not need to be quarantined without an outbreak
 				if (city.getOutbreak() == null)
 					break;
@@ -140,12 +156,12 @@ public class ActionHeuristic {
 			case developVaccine:
 
 				// Only develop vaccine if necessary
-				if (!doDevVaccine(action.getVirus(), game) && 
-					game.getCities().values().stream().filter(c -> c.getOutbreak() == null)
-					.mapToDouble(c -> c.getPopulation()).sum() <= 0.1 * game.getPopulation()) {
+				if (!doDevVaccine(action.getVirus(), game)
+						&& game.getCities().values().stream().filter(c -> c.getOutbreak() == null)
+								.mapToDouble(c -> c.getPopulation()).sum() <= 0.1 * game.getPopulation()) {
 					break;
 				}
-				
+
 				// Calculate the global prevalance. If everyone is already
 				// infected vaccines are useless
 				double totalPopulation = game.getPopulation();
