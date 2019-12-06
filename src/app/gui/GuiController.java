@@ -385,7 +385,7 @@ public class GuiController {
 			GameServer.addReply((Game g) -> "{\"type\": \"endRound\"}");
 		}
 
-		System.out.println("endRound");
+//		System.out.println("endRound");
 		this.executeEvent(GameServer.getReply().evaluate(currentGame));
 
 	}

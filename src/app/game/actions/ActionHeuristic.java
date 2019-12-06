@@ -105,30 +105,26 @@ public class ActionHeuristic {
 		for (Action action : actions) {
 			City city = action.getCity();
 			Game game = action.getGame();
-			
+
 			switch (action.getType()) {
 			case endRound:
 				score += 1; // EndRound as default action
 				break;
 			case putUnderQuarantine:
-				
+
 				// If a very strong virus breaks out in 2 Cities protect the biggest one
 				// This only helps in the first round
 				if (city.getOutbreak() == null) {
-					int strongVirusAmount = 0;
-					for (E_Outbreak e : game.getOutbreakEvents()) {
-						if (doQuarantine(e.getVirus())) {
-							strongVirusAmount++;
-						}
-					}
-					
+					int strongVirusAmount = (int) game.getOutbreakEvents().stream()
+							.filter(e -> doQuarantine(e.getVirus())).count();
+
 					// If there are more than 2 qurantinable viruses we can not quarantine both.
-					// Therefore we quarantine the biggest city and hope for the best 
+					// Therefore we quarantine the biggest city and hope for the best
 					if (strongVirusAmount > 1) {
 						score += QUARANTINE_FACTOR * action.getCost() * city.getPopulation();
 					}
 				}
-				
+
 				// The city does not need to be quarantined without an outbreak
 				if (city.getOutbreak() == null)
 					break;
