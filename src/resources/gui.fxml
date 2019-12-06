@@ -139,7 +139,7 @@
       <Text fx:id="duration" layoutX="907.0" layoutY="861.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+" />
       <Text fx:id="mobility" layoutX="908.0" layoutY="836.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+" />
       <Text fx:id="infectivity" layoutX="908.0" layoutY="813.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+" />
-      <Button fx:id="printAllOutbreaksB" layoutX="196.0" layoutY="888.0" mnemonicParsing="false" onAction="#printAllOutbreaks" prefHeight="28.0" prefWidth="545.0" text="Print active Pathogenes">
+      <Button fx:id="selectAllHealthyCitiesB" layoutX="196.0" layoutY="888.0" mnemonicParsing="false" onAction="#selectAllHealthyCities" prefHeight="28.0" prefWidth="545.0" text="Select healthy Cities">
          <font>
             <Font size="20.0" />
          </font>
@@ -261,10 +261,10 @@
             <Font name="Ubuntu Light" size="30.0" />
          </font>
       </Text>
-      <Text fx:id="lastAction" layoutX="1194.0" layoutY="715.0" strokeType="OUTSIDE" strokeWidth="0.0" text="emptyemptyemptyemptyemptyempty" wrappingWidth="431.0">
+      <Text fx:id="lastAction" layoutX="1194.0" layoutY="723.0" strokeType="OUTSIDE" strokeWidth="0.0" text="emptyemptyemptyemptyemptyempty" wrappingWidth="431.0">
          <font>
             <Font name="Ubuntu Light" size="19.0" />
          </font>
       </Text>
-   </children>
+    </children>
 </AnchorPane>
