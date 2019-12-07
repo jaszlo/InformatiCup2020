@@ -10,7 +10,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Canvas fx:id="currentMap" height="740.0" width="1600.0" />
-      <Separator layoutX="14.0" layoutY="736.0" prefHeight="15.0" prefWidth="1600.0" />
+      <Separator layoutX="14.0" layoutY="736.0" prefHeight="15.0" prefWidth="1624.0" />
       <Text layoutX="28.0" layoutY="769.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Show ">
          <font>
             <Font name="Ubuntu Light" size="23.0" />
@@ -42,23 +42,23 @@
             <Font name="Ubuntu Light" size="23.0" />
          </font>
       </Text>
-      <Separator layoutX="380.0" layoutY="755.0" orientation="VERTICAL" prefHeight="163.0" prefWidth="6.0" />
-      <Text layoutX="406.0" layoutY="769.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select City">
+      <Separator layoutX="465.0" layoutY="754.0" orientation="VERTICAL" prefHeight="163.0" prefWidth="6.0" />
+      <Text layoutX="487.0" layoutY="769.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select City">
          <font>
             <Font name="Ubuntu Light" size="23.0" />
          </font>
       </Text>
-      <TextField fx:id="selectCityT" layoutX="406.0" layoutY="786.0" prefHeight="25.0" prefWidth="145.0" promptText="enter City manually...">
+      <TextField fx:id="selectCityT" layoutX="487.0" layoutY="786.0" prefHeight="24.0" prefWidth="255.0" promptText="enter City manually...">
          <font>
             <Font size="10.0" />
          </font>
       </TextField>
-      <Button fx:id="selectCityB" layoutX="406.0" layoutY="830.0" mnemonicParsing="false" onAction="#selectCity" prefHeight="42.0" prefWidth="145.0" text="Select">
+      <Button fx:id="selectCityB" layoutX="487.0" layoutY="830.0" mnemonicParsing="false" onAction="#selectCity" prefHeight="42.0" prefWidth="255.0" text="Select">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
-      <Text layoutX="1033.0" layoutY="783.0" strokeType="OUTSIDE" strokeWidth="0.0" text="City info">
+      <Text layoutX="1033.0" layoutY="776.0" strokeType="OUTSIDE" strokeWidth="0.0" text="City info">
          <font>
             <Font name="Ubuntu Light" size="23.0" />
          </font>
@@ -88,11 +88,6 @@
             <Font size="15.0" />
          </font>
       </Text>
-      <Text layoutX="1035.0" layoutY="938.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Events:">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Text>
       <Text layoutX="776.0" layoutY="910.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Prevalance in selected City:" wrappingWidth="148.0">
          <font>
             <Font size="15.0" />
@@ -118,43 +113,37 @@
             <Font size="15.0" />
          </font>
       </Text>
-      <Text layoutX="774.0" layoutY="781.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pathogen info">
+      <Text layoutX="774.0" layoutY="774.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pathogen info">
          <font>
             <Font name="Ubuntu Light" size="23.0" />
          </font>
       </Text>
-      <Separator layoutX="551.0" layoutY="749.0" orientation="VERTICAL" prefHeight="163.0" prefWidth="11.0" />
       <Text fx:id="population" layoutX="1169.0" layoutY="813.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
       <Text fx:id="economy" layoutX="1168.0" layoutY="835.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+" />
       <Text fx:id="goverment" layoutX="1167.0" layoutY="860.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+" />
       <Text fx:id="awareness" layoutX="1167.0" layoutY="909.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+" />
       <Text fx:id="hygiene" layoutX="1167.0" layoutY="884.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+" />
-      <Text fx:id="events" layoutX="1035.0" layoutY="962.0" strokeType="OUTSIDE" strokeWidth="0.0" text="no events">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Text>
       <Text fx:id="lethality" layoutX="907.0" layoutY="885.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+" />
-      <Text fx:id="prevalance" layoutX="845.0" layoutY="965.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0.00" />
+      <Text fx:id="prevalance" layoutX="898.0" layoutY="930.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0.00" />
       <Text fx:id="duration" layoutX="907.0" layoutY="861.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+" />
       <Text fx:id="mobility" layoutX="908.0" layoutY="836.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+" />
       <Text fx:id="infectivity" layoutX="908.0" layoutY="813.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+" />
-      <Button fx:id="selectAllHealthyCitiesB" layoutX="196.0" layoutY="888.0" mnemonicParsing="false" onAction="#selectAllHealthyCities" prefHeight="28.0" prefWidth="545.0" text="Select healthy Cities">
+      <Button fx:id="selectAllHealthyCitiesB" layoutX="196.0" layoutY="941.0" mnemonicParsing="false" onAction="#selectAllHealthyCities" prefHeight="28.0" prefWidth="545.0" text="Select healthy Cities">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
-      <Button fx:id="selectInfectedCitiesB" layoutX="196.0" layoutY="943.0" mnemonicParsing="false" onAction="#selectInfectedCities" prefHeight="42.0" prefWidth="545.0" text="Select infected Cities">
+      <Button fx:id="selectInfectedCitiesB" layoutX="197.0" layoutY="888.0" mnemonicParsing="false" onAction="#selectInfectedCities" prefHeight="42.0" prefWidth="545.0" text="Select infected Cities">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
-      <Separator layoutX="729.0" layoutY="752.0" orientation="VERTICAL" prefHeight="234.0" prefWidth="6.0" />
-      <Separator layoutX="1021.0" layoutY="746.0" orientation="VERTICAL" prefHeight="234.0" prefWidth="6.0" />
-      <Separator layoutX="1234.0" layoutY="749.0" orientation="VERTICAL" prefHeight="234.0" prefWidth="6.0" />
-      <Button fx:id="resetB" layoutX="200.0" layoutY="829.0" mnemonicParsing="false" onAction="#reset" prefHeight="42.0" prefWidth="167.0" text="Reset all Selections" />
-      <ChoiceBox fx:id="selectedPathogenCB" layoutX="200.0" layoutY="786.0" onAction="#changeSelectedPathogen" prefHeight="25.0" prefWidth="167.0" />
-      <Button fx:id="autoTurnB" layoutX="1213.0" layoutY="751.0" mnemonicParsing="false" onAction="#autoTurn" prefHeight="110.0" prefWidth="201.0" text="autoTurn">
+      <Separator layoutX="756.0" layoutY="752.0" orientation="VERTICAL" prefHeight="252.0" prefWidth="6.0" />
+      <Separator layoutX="1006.0" layoutY="754.0" orientation="VERTICAL" prefHeight="252.0" prefWidth="6.0" />
+      <Separator layoutX="1191.0" layoutY="756.0" orientation="VERTICAL" prefHeight="252.0" prefWidth="0.0" />
+      <Button fx:id="resetB" layoutX="200.0" layoutY="829.0" mnemonicParsing="false" onAction="#reset" prefHeight="42.0" prefWidth="255.0" text="Reset all Selections" />
+      <ChoiceBox fx:id="selectedPathogenCB" layoutX="200.0" layoutY="786.0" onAction="#changeSelectedPathogen" prefHeight="24.0" prefWidth="255.0" />
+      <Button fx:id="autoTurnB" layoutX="1213.0" layoutY="751.0" mnemonicParsing="false" onAction="#autoTurn" prefHeight="110.0" prefWidth="186.0" text="autoTurn">
          <font>
             <Font name="Ubuntu Light" size="20.0" />
          </font>
@@ -164,31 +153,31 @@
             <Font name="Ubuntu Light" size="21.0" />
          </font>
       </Text>
-      <Text fx:id="currentPoints" layoutX="1751.0" layoutY="385.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+      <Text fx:id="currentPoints" layoutX="1751.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
          <font>
             <Font name="Ubuntu Light" size="30.0" />
          </font>
       </Text>
-      <Text fx:id="points" layoutX="1636.0" layoutY="385.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Points:" wrappingWidth="104.248046875">
+      <Text fx:id="points" layoutX="1636.0" layoutY="344.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Points:" wrappingWidth="104.248046875">
          <font>
             <Font name="Ubuntu Light" size="30.0" />
          </font>
       </Text>
-      <Text layoutX="1766.0" layoutY="845.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3" wrappingWidth="34.00927734375" />
-      <Text layoutX="1766.0" layoutY="810.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3" wrappingWidth="34.00927734375" />
-      <Text layoutX="1763.0" layoutY="766.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3" wrappingWidth="34.00927734375" />
-      <Text layoutX="1763.0" layoutY="734.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3" wrappingWidth="34.00927734375" />
-      <Text layoutX="1631.0" layoutY="703.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Random Events" wrappingWidth="240.0">
+      <Text layoutX="1800.0" layoutY="843.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3P" wrappingWidth="34.00927734375" />
+      <Text layoutX="1800.0" layoutY="807.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3P" wrappingWidth="34.00927734375" />
+      <Text layoutX="1800.0" layoutY="766.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3P" wrappingWidth="34.00927734375" />
+      <Text layoutX="1800.0" layoutY="734.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3P" wrappingWidth="34.00927734375" />
+      <Text layoutX="1639.0" layoutY="703.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Random Events" wrappingWidth="240.0">
          <font>
             <Font name="Ubuntu Light" size="30.0" />
          </font>
       </Text>
-      <Text layoutX="1636.0" layoutY="336.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Round:" wrappingWidth="104.248046875">
+      <Text layoutX="1636.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Round:" wrappingWidth="104.248046875">
          <font>
             <Font name="Ubuntu Light" size="30.0" />
          </font>
       </Text>
-      <Text layoutX="1636.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Actions" wrappingWidth="162.0">
+      <Text layoutX="1636.0" layoutY="392.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Actions         Costs" wrappingWidth="240.0">
          <font>
             <Font name="Ubuntu Light" size="30.0" />
          </font>
@@ -198,24 +187,24 @@
             <Font name="Ubuntu Light" size="30.0" />
          </font>
       </Text>
-      <Text fx:id="currentRound" layoutX="1751.0" layoutY="336.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+      <Text fx:id="currentRound" layoutX="1751.0" layoutY="301.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
          <font>
             <Font name="Ubuntu Light" size="30.0" />
          </font>
       </Text>
-      <Text layoutX="1771.0" layoutY="657.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="34.00927734375" />
-      <Text layoutX="1770.0" layoutY="536.0" strokeType="OUTSIDE" strokeWidth="0.0" text="20" wrappingWidth="34.00927734375" />
-      <Text layoutX="1771.0" layoutY="623.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5" wrappingWidth="34.00927734375" />
-      <Text layoutX="1770.0" layoutY="502.0" strokeType="OUTSIDE" strokeWidth="0.0" text="40" wrappingWidth="34.00927734375" />
-      <Text layoutX="1771.0" layoutY="581.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3R + 3" wrappingWidth="51.00927734375" />
-      <Text layoutX="1773.0" layoutY="461.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5R + 15" wrappingWidth="62.00927734375" />
-      <Text layoutX="1767.0" layoutY="420.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10R + 20" wrappingWidth="74.00927734375" />
+      <Text layoutX="1800.0" layoutY="657.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10P" wrappingWidth="34.00927734375" />
+      <Text layoutX="1800.0" layoutY="536.0" strokeType="OUTSIDE" strokeWidth="0.0" text="20P" wrappingWidth="34.00927734375" />
+      <Text layoutX="1800.0" layoutY="623.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5P" wrappingWidth="34.00927734375" />
+      <Text layoutX="1800.0" layoutY="502.0" strokeType="OUTSIDE" strokeWidth="0.0" text="40P" wrappingWidth="34.00927734375" />
+      <Text layoutX="1800.0" layoutY="577.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3R + 3P" wrappingWidth="63.955078125" />
+      <Text layoutX="1800.0" layoutY="461.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5R + 15P" wrappingWidth="62.00927734375" />
+      <Text layoutX="1800.0" layoutY="420.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10R + 20P" wrappingWidth="74.00927734375" />
       <Text layoutX="1636.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="City (to)" wrappingWidth="104.248046875">
          <font>
             <Font name="Ubuntu Light" size="21.0" />
          </font>
       </Text>
-      <Separator layoutX="1625.0" layoutY="1.0" orientation="VERTICAL" prefHeight="992.0" prefWidth="17.0" />
+      <Separator layoutX="1625.0" layoutY="1.0" orientation="VERTICAL" prefHeight="1000.0" prefWidth="17.0" />
       <Text layoutX="1636.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rounds" wrappingWidth="80.248046875">
          <font>
             <Font name="Ubuntu Light" size="21.0" />
@@ -226,7 +215,7 @@
             <Font name="Ubuntu Light" size="21.0" />
          </font>
       </Text>
-      <Button fx:id="quitB" layoutX="1633.0" layoutY="870.0" mnemonicParsing="false" onAction="#quit" prefHeight="110.0" prefWidth="240.0" text="Quit">
+      <Button fx:id="quitB" layoutX="1644.0" layoutY="870.0" mnemonicParsing="false" onAction="#quit" prefHeight="110.0" prefWidth="240.0" text="Quit">
          <font>
             <Font name="Ubuntu Light" size="20.0" />
          </font>
@@ -236,20 +225,20 @@
             <Font name="Ubuntu Light" size="20.0" />
          </font>
       </Button>
-      <Button fx:id="launchCampaignB" layoutX="1633.0" layoutY="828.0" mnemonicParsing="false" onAction="#launchCampaign" prefHeight="25.0" prefWidth="121.0" text="launchCamp." />
-      <Button fx:id="applyHygienicMeasuresB" layoutX="1635.0" layoutY="749.0" mnemonicParsing="false" onAction="#applyHygienicMeasures" prefHeight="25.0" prefWidth="121.0" text="betterHygiene" />
-      <Button fx:id="callElectionsB" layoutX="1633.0" layoutY="789.0" mnemonicParsing="false" onAction="#callElections" prefHeight="25.0" prefWidth="121.0" text="newElections" />
-      <Button fx:id="exertInfluenceB" layoutX="1635.0" layoutY="714.0" mnemonicParsing="false" onAction="#exertInfluence" prefHeight="25.0" prefWidth="121.0" text="changeInfl." />
-      <Button fx:id="deployMedicationB" layoutX="1642.0" layoutY="637.0" mnemonicParsing="false" onAction="#deployMedication" prefHeight="25.0" prefWidth="121.0" text="deployMed." />
+      <Button fx:id="launchCampaignB" layoutX="1639.0" layoutY="828.0" mnemonicParsing="false" onAction="#launchCampaign" prefHeight="25.0" prefWidth="121.0" text="launchCamp." />
+      <Button fx:id="applyHygienicMeasuresB" layoutX="1641.0" layoutY="749.0" mnemonicParsing="false" onAction="#applyHygienicMeasures" prefHeight="25.0" prefWidth="121.0" text="betterHygiene" />
+      <Button fx:id="callElectionsB" layoutX="1639.0" layoutY="789.0" mnemonicParsing="false" onAction="#callElections" prefHeight="25.0" prefWidth="121.0" text="newElections" />
+      <Button fx:id="exertInfluenceB" layoutX="1641.0" layoutY="714.0" mnemonicParsing="false" onAction="#exertInfluence" prefHeight="25.0" prefWidth="121.0" text="changeInfl." />
+      <Button fx:id="deployMedicationB" layoutX="1642.0" layoutY="640.0" mnemonicParsing="false" onAction="#deployMedication" prefHeight="25.0" prefWidth="121.0" text="deployMed." />
       <Button fx:id="developMedicationB" layoutX="1642.0" layoutY="520.0" mnemonicParsing="false" onAction="#developMedication" prefHeight="25.0" prefWidth="121.0" text="developMed." />
       <Button fx:id="deployVaccineB" layoutX="1642.0" layoutY="602.0" mnemonicParsing="false" onAction="#deployVaccine" prefHeight="25.0" prefWidth="121.0" text="deployVaccine" />
       <Button fx:id="developVaccineB" layoutX="1642.0" layoutY="484.0" mnemonicParsing="false" onAction="#developVaccine" prefHeight="25.0" prefWidth="121.0" text="developVaccine" />
       <Button fx:id="closeConnectionB" alignment="TOP_LEFT" layoutX="1642.0" layoutY="561.0" mnemonicParsing="false" onAction="#closeConnection" prefHeight="25.0" prefWidth="121.0" text="closeConnect." />
       <Button fx:id="closeAirportB" layoutX="1642.0" layoutY="444.0" mnemonicParsing="false" onAction="#closeAirport" prefHeight="25.0" prefWidth="121.0" text="closeAirport" />
       <Button fx:id="putUnderQuarantineB" layoutX="1642.0" layoutY="403.0" mnemonicParsing="false" onAction="#putUnderQuarantine" prefHeight="25.0" prefWidth="121.0" text="quarantine" />
-      <Button fx:id="medicateBiggestCitiesB" layoutX="1213.0" layoutY="872.0" mnemonicParsing="false" onAction="#medicateBiggestCities" prefHeight="110.0" prefWidth="403.0" text="Medicate biggest Cities">
+      <Button fx:id="medicateBiggestCitiesB" layoutX="1213.0" layoutY="872.0" mnemonicParsing="false" onAction="#medicateBiggestCities" prefHeight="110.0" prefWidth="186.0" text="Medicate biggest Cities">
          <font>
-            <Font name="Ubuntu Light" size="30.0" />
+            <Font name="Ubuntu Light" size="15.0" />
          </font>
       </Button>
       <TextField fx:id="amountT" layoutX="1740.0" layoutY="187.0" prefHeight="25.0" prefWidth="140.0" />
@@ -261,10 +250,19 @@
             <Font name="Ubuntu Light" size="30.0" />
          </font>
       </Text>
-      <Text fx:id="lastAction" layoutX="1194.0" layoutY="723.0" strokeType="OUTSIDE" strokeWidth="0.0" text="emptyemptyemptyemptyemptyempty" wrappingWidth="431.0">
+      <Text fx:id="lastAction" layoutX="1194.0" layoutY="723.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="431.0">
          <font>
             <Font name="Ubuntu Light" size="19.0" />
          </font>
       </Text>
+      <Separator layoutX="1780.0" layoutY="403.0" orientation="VERTICAL" prefHeight="269.0" prefWidth="8.0" />
+      <Separator layoutX="1780.0" layoutY="716.0" orientation="VERTICAL" prefHeight="145.0" prefWidth="6.0" />
+      <Separator layoutX="1617.0" layoutY="228.0" prefHeight="15.0" prefWidth="284.0" />
+      <Button fx:id="vaccinateBiggestCitiesB" layoutX="1428.0" layoutY="872.0" mnemonicParsing="false" onAction="#vaccinateBiggestCities" prefHeight="110.0" prefWidth="186.0" text="Vaccinate biggest Cities">
+         <font>
+            <Font name="Ubuntu Light" size="15.0" />
+         </font>
+      </Button>
+      <Separator layoutX="1414.0" layoutY="756.0" orientation="VERTICAL" prefHeight="252.0" prefWidth="6.0" />
     </children>
 </AnchorPane>

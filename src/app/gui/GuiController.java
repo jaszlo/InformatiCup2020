@@ -32,60 +32,49 @@ import javafx.scene.canvas.GraphicsContext;
 
 public class GuiController {
 
-	/// Elements of the MAP
-	private City selectedCity = null;
-	private Virus selectedPathogen = null;
-
-	// private booleans for the checkboxes.
-	boolean showConnections, showPopulation, showInfected, showCityNames;
-
-	// All FXML elements that have interaction.
-	@FXML
-	private Button selectCityB, selectAllHealthyCitiesB, selectInfectedCitiesB, resetB;
-
-	@FXML
-	private TextField selectCityT;
-
-	@FXML // CityInfo
-	private Text population, economy, goverment, awareness, hygiene, events;
-
-	@FXML // PathogenInfo
-	private Text infectivity, mobility, duration, lethality, prevalance;
-	
-	@FXML
-	private CheckBox connectionBox, populationBox, infectedBox, cityNamesBox;
-
-	@FXML
-	private ChoiceBox<String> selectedPathogenCB;
-
-	@FXML
-	private Canvas currentMap;
-	private GraphicsContext gc;
-
-	/// Elements of the Controller
-	// All Buttons (each button corresponds to one event.
+	// All Buttons in the GUI
 	@FXML
 	private Button quitB, endRoundB, putUnderQuarantineB, closeAirportB, closeConnectionB, developVaccineB,
 			deployVaccineB, developMedicationB, deployMedicationB, applyHygienicMeasuresB, exertInfluenceB,
-			callElectionsB, launchCampaignB, medicateBiggestCitiesB, autoTurnB;
+			callElectionsB, launchCampaignB, medicateBiggestCitiesB, vaccinateBiggestCities, autoTurnB, selectCityB,
+			selectAllHealthyCitiesB, selectInfectedCitiesB, resetB;
 
+	@FXML // Input fields
+	private TextField cityFrom, cityTo, rounds, amountT, selectCityT;
+	@FXML
+	private ChoiceBox<String> selectedPathogenCB;
+
+	@FXML // CityInfo
+	private Text population, economy, goverment, awareness, hygiene, events;
+	@FXML // PathogenInfo
+	private Text infectivity, mobility, duration, lethality, prevalance;
+	@FXML // OtherInfo
+	private Text currentRound, currentPoints, lastAction;
+
+	@FXML // Draw elements
+	private Canvas currentMap;
+	private GraphicsContext gc;
+	@FXML // Checking what to draw
+	private CheckBox connectionBox, populationBox, infectedBox, cityNamesBox;
+
+	// Backend components of the GUI
+	private static String lastActionString;
 	private GameExchange currentGameExchange;
 	private Game currentGame;
 
-	@FXML
-	private TextField cityFrom, cityTo, rounds, amountT;
+	// Info about current selection
+	private City selectedCity = null;
+	private Virus selectedPathogen = null;
 
-	@FXML
-	private Text currentRound, currentPoints, lastAction;
-	private static String lastActionString;
+	// Booleans corresponding
+	boolean showConnections, showPopulation, showInfected, showCityNames;
+
 	// Constructor
 	public GuiController() {
-
 		/*
 		 * Has no real purpose. The Class-Objects (GUI-elements) will be assigned to the
 		 * corresponding element in the fxml-file.
 		 */
-//		System.out.println("GUI has been created.");
 	}
 
 	public void initialize() {
@@ -95,14 +84,12 @@ public class GuiController {
 		this.populationBox.setSelected(true);
 		this.infectedBox.setSelected(true);
 		this.cityNamesBox.setSelected(true);
+
 		// Set all checkBox booleans as the selection.
 		this.showConnections = true;
 		this.showPopulation = true;
 		this.showInfected = true;
 		this.showCityNames = true;
-
-		// Initialize the canvas as a 2D graphics object.
-		this.gc = this.currentMap.getGraphicsContext2D();
 
 		// Set the selected City/Pathogen back to null
 		this.selectedCity = null;
@@ -115,6 +102,9 @@ public class GuiController {
 		this.rounds.setPromptText("enter duration...");
 		this.amountT.setPromptText("enter the amount ...");
 
+		// Set the last Action in the Text to the static String where it was saved.
+		this.lastAction.setText(lastActionString);
+
 		// Set Points and current Round.
 		if (this.currentGameExchange != null) {
 			this.currentRound.setText(this.currentGame.getRound() + "");
@@ -124,30 +114,39 @@ public class GuiController {
 
 		}
 
-		// Set the last Action in the TextField to the static String where it was saved.
-		this.lastAction.setText(lastActionString);
-
 		// Set the Button Tooltips.
 		this.quitB.setTooltip(new Tooltip("Close the server and this window."));
 		this.endRoundB.setTooltip(new Tooltip("End the current round.\nRequired input:\n none"));
-		this.putUnderQuarantineB.setTooltip(new Tooltip("Put a city under qurantine.\nRequired input:\ncity name\nrounds"));
+		this.putUnderQuarantineB
+				.setTooltip(new Tooltip("Put a city under qurantine.\nRequired input:\ncity name\nrounds"));
 		this.closeAirportB.setTooltip(new Tooltip("Close a city's airport.\nRequired input:\ncity name\nround"));
 		this.closeConnectionB.setTooltip(new Tooltip("Close a connection between two cities.\nRequired input:"));
-		this.developVaccineB.setTooltip(new Tooltip("Develop a vaccine against a certain pathogen.\nRequired input:\npathogen name"));
-		this.deployVaccineB.setTooltip(new Tooltip("Deploy a vaccine in against a certain pathogen in a certain city.\nRequired input:\npathogen name\ncity name"));
-		this.developMedicationB.setTooltip(new Tooltip("Develop a medication against a certain pathogen.\nRequired input:\npathogen name"));
-		this.deployMedicationB.setTooltip(new Tooltip("Deploy a medication in against a certain pathogen in a certain city.\nRequired input:\npathogen name\ncity name"));
-		this.applyHygienicMeasuresB.setTooltip(new Tooltip("Randomly increase hygine in a certain city\nRequired input:\n city name"));
-		this.exertInfluenceB.setTooltip(new Tooltip("Reset the economic strength of a certain city\nRequired input:\ncity name"));
-		this.callElectionsB.setTooltip(new Tooltip("Reset the political strength of a certain city\nRequired input:\ncity name"));
-		this.launchCampaignB.setTooltip(new Tooltip("The attentiveness of a certain city's population will be increased\nRequired input:\ncity name"));
-		this.autoTurnB.setTooltip(new Tooltip("Let the computer play.\nRequired input:\n None. Although an amount of turn can be entered."));
-		
-		// Set the
-		
+		this.developVaccineB.setTooltip(
+				new Tooltip("Develop a vaccine against a certain pathogen.\nRequired input:\npathogen name"));
+		this.deployVaccineB.setTooltip(new Tooltip(
+				"Deploy a vaccine in against a certain pathogen in a certain city.\nRequired input:\npathogen name\ncity name"));
+		this.developMedicationB.setTooltip(
+				new Tooltip("Develop a medication against a certain pathogen.\nRequired input:\npathogen name"));
+		this.deployMedicationB.setTooltip(new Tooltip(
+				"Deploy a medication in against a certain pathogen in a certain city.\nRequired input:\npathogen name\ncity name"));
+		this.applyHygienicMeasuresB
+				.setTooltip(new Tooltip("Randomly increase hygine in a certain city\nRequired input:\n city name"));
+		this.exertInfluenceB
+				.setTooltip(new Tooltip("Reset the economic strength of a certain city\nRequired input:\ncity name"));
+		this.callElectionsB
+				.setTooltip(new Tooltip("Reset the political strength of a certain city\nRequired input:\ncity name"));
+		this.launchCampaignB.setTooltip(new Tooltip(
+				"The attentiveness of a certain city's population will be increased\nRequired input:\ncity name"));
+		this.autoTurnB.setTooltip(new Tooltip(
+				"Let the computer play.\nRequired input:\n None. Although an amount of turn can be entered."));
+		// Set input Tooltip
+
+		// Initialize the canvas as a 2D graphics object.
+		this.gc = this.currentMap.getGraphicsContext2D();
+
 		// Update the ChoiceBox items.
 		this.updatePathogenChoiceBox();
-		
+
 		// Draw Call for the MapCanvas
 		drawMap();
 	}
@@ -231,7 +230,7 @@ public class GuiController {
 		String hygiene = this.selectedCity.getHygiene().toString();
 		String awareness = this.selectedCity.getAwareness().toString();
 		String eventString = this.selectedCity.getPrevalance() + "";
-		
+
 		// Set all the info to the corresponding textElemt.
 		this.population.setText(population);
 		this.economy.setText(economy);
@@ -280,7 +279,7 @@ public class GuiController {
 		this.gc.setFill(Color.WHITE);
 		this.gc.setStroke(Color.BLACK);
 		this.gc.clearRect(0, 0, this.currentMap.getWidth(), this.currentMap.getHeight());
-		
+
 		for (E_Outbreak e : this.currentGame.getOutbreakEvents()) {
 			if (this.selectedPathogen == e.getVirus())
 				drawCity(e.getCity(), currentGame);
@@ -293,7 +292,7 @@ public class GuiController {
 		this.gc.setFill(Color.WHITE);
 		this.gc.setStroke(Color.BLACK);
 		this.gc.clearRect(0, 0, this.currentMap.getWidth(), this.currentMap.getHeight());
-		
+
 		for (City c : this.currentGame.getCities().values()) {
 			if (c.getOutbreak() == null)
 				drawCity(c, currentGame);
@@ -422,7 +421,7 @@ public class GuiController {
 			try {
 				amount = Integer.parseInt(amountString);
 			} catch (Exception e) {
-				
+
 			}
 		}
 		this.autoTurnB.setDisable(true);
@@ -436,14 +435,14 @@ public class GuiController {
 		this.autoTurnB.setDisable(false);
 	}
 
-	//helper methode
+	// helper methode
 	private void setLastAction(String s) {
 		GuiController.lastActionString = s;
 	}
 
 	@FXML
 	private void putUnderQuarantine() {
-		
+
 //		System.out.println("quarantine");
 		this.executeEvent("{\"type\": \"putUnderQuarantine\", \"city\":\"" + this.cityFrom.getText()
 				+ "\", \"rounds\": " + this.rounds.getText() + "}");
@@ -531,11 +530,14 @@ public class GuiController {
 
 			this.executeEvent(GameServer.getReply().evaluate(currentGame));
 		} else {
-
-			System.out.println("developVaccine");
 			this.executeEvent("{\"type\": \"deployVaccine\", \"pathogen\": \"" + selectedPathogen + "\", \"city\": \""
 					+ this.cityFrom.getText() + "\"}");
 		}
+	}
+
+	@FXML
+	private void vaccinateBiggestCities() {
+
 	}
 
 	@FXML
@@ -627,7 +629,7 @@ public class GuiController {
 			return;
 		setLastAction(event);
 		this.currentGameExchange.sendReply(event);
-		
+
 		// close the GUI
 		Stage primaryStage = (Stage) this.selectCityB.getScene().getWindow();
 		if (primaryStage == null)
