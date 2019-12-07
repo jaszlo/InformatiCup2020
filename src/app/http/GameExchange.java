@@ -17,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -84,13 +85,13 @@ public class GameExchange {
 			root = (Parent)loader.load();
 			Scene scene = new Scene(root);
 			
-			//Set the position of the stage. Set Stage boundaries to the upper right corner of the visible bounds of the main screen
-			Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-			GUI.setX(screenBounds.getMaxX() - screenBounds.getWidth());
-			GUI.setY(screenBounds.getMaxY() - screenBounds.getHeight());
+			// Set the background color
+			scene.setFill(Color.BLUE);
+			
+			// Maximaze the stage
+			GUI.setMaximized(true);
 			
 			//Attaches the newly created scene to the stage. Shows the Stage in a resizable window. Also set Title to Pandemie.
-			GUI.setResizable(true);
 			GUI.setScene(scene);
 			GUI.setTitle("Pandemie");
 			GUI.show();

@@ -128,7 +128,7 @@
       <Text fx:id="duration" layoutX="907.0" layoutY="861.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+" />
       <Text fx:id="mobility" layoutX="908.0" layoutY="836.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+" />
       <Text fx:id="infectivity" layoutX="908.0" layoutY="813.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+" />
-      <Button fx:id="selectAllHealthyCitiesB" layoutX="196.0" layoutY="941.0" mnemonicParsing="false" onAction="#selectAllHealthyCities" prefHeight="28.0" prefWidth="545.0" text="Select healthy Cities">
+      <Button fx:id="selectHealthyCitiesB" layoutX="196.0" layoutY="941.0" mnemonicParsing="false" onAction="#selectHealthyCities" prefHeight="28.0" prefWidth="545.0" text="Select healthy Cities">
          <font>
             <Font size="20.0" />
          </font>
@@ -257,7 +257,7 @@
       </Text>
       <Separator layoutX="1780.0" layoutY="403.0" orientation="VERTICAL" prefHeight="269.0" prefWidth="8.0" />
       <Separator layoutX="1780.0" layoutY="716.0" orientation="VERTICAL" prefHeight="145.0" prefWidth="6.0" />
-      <Separator layoutX="1617.0" layoutY="228.0" prefHeight="15.0" prefWidth="284.0" />
+      <Separator layoutX="1640.0" layoutY="228.0" prefHeight="15.0" prefWidth="261.0" />
       <Button fx:id="vaccinateBiggestCitiesB" layoutX="1428.0" layoutY="872.0" mnemonicParsing="false" onAction="#vaccinateBiggestCities" prefHeight="110.0" prefWidth="186.0" text="Vaccinate biggest Cities">
          <font>
             <Font name="Ubuntu Light" size="15.0" />

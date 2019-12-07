@@ -12,6 +12,8 @@ import app.game.events.E_PathogenEncounter;
 import app.game.City;
 import app.game.Game;
 import app.game.Virus;
+import app.game.actions.Action;
+import app.game.actions.ActionType;
 import app.http.GameExchange;
 import app.http.GameServer;
 import app.solver.Main;
@@ -36,8 +38,8 @@ public class GuiController {
 	@FXML
 	private Button quitB, endRoundB, putUnderQuarantineB, closeAirportB, closeConnectionB, developVaccineB,
 			deployVaccineB, developMedicationB, deployMedicationB, applyHygienicMeasuresB, exertInfluenceB,
-			callElectionsB, launchCampaignB, medicateBiggestCitiesB, vaccinateBiggestCities, autoTurnB, selectCityB,
-			selectAllHealthyCitiesB, selectInfectedCitiesB, resetB;
+			callElectionsB, launchCampaignB, medicateBiggestCitiesB, vaccinateBiggestCitiesB, autoTurnB, selectCityB,
+			selectHealthyCitiesB, selectInfectedCitiesB, resetB;
 
 	@FXML // Input fields
 	private TextField cityFrom, cityTo, rounds, amountT, selectCityT;
@@ -116,30 +118,35 @@ public class GuiController {
 
 		// Set the Button Tooltips.
 		this.quitB.setTooltip(new Tooltip("Close the server and this window."));
-		this.endRoundB.setTooltip(new Tooltip("End the current round.\nRequired input:\n none"));
-		this.putUnderQuarantineB
-				.setTooltip(new Tooltip("Put a city under qurantine.\nRequired input:\ncity name\nrounds"));
-		this.closeAirportB.setTooltip(new Tooltip("Close a city's airport.\nRequired input:\ncity name\nround"));
-		this.closeConnectionB.setTooltip(new Tooltip("Close a connection between two cities.\nRequired input:"));
-		this.developVaccineB.setTooltip(
-				new Tooltip("Develop a vaccine against a certain pathogen.\nRequired input:\npathogen name"));
+		this.endRoundB.setTooltip(new Tooltip("End the current round.\nnone"));
+		this.putUnderQuarantineB.setTooltip(
+				new Tooltip("Put a city under qurantine.\ncity (from): city name\nrounds : number of rounds"));
+		this.closeAirportB
+				.setTooltip(new Tooltip("Close a city's airport.\ncity (from): city name\nrounds : number ofrounds"));
+		this.closeConnectionB.setTooltip(new Tooltip(
+				"Close a connection between two cities.\ncity (from) : first city name\ncity (to) : second city name\nrounds : number of rounds"));
+		this.developVaccineB
+				.setTooltip(new Tooltip("Develop a vaccine against a certain pathogen.\npathogen : pathogen name"));
 		this.deployVaccineB.setTooltip(new Tooltip(
-				"Deploy a vaccine in against a certain pathogen in a certain city.\nRequired input:\npathogen name\ncity name"));
-		this.developMedicationB.setTooltip(
-				new Tooltip("Develop a medication against a certain pathogen.\nRequired input:\npathogen name"));
+				"Deploy a vaccine in against a certain pathogen in a certain city.\ncity (from) city name\npathogen : pathogen name\n"));
+		this.developMedicationB
+				.setTooltip(new Tooltip("Develop a medication against a certain pathogen.\npathogen : pathogen name"));
 		this.deployMedicationB.setTooltip(new Tooltip(
-				"Deploy a medication in against a certain pathogen in a certain city.\nRequired input:\npathogen name\ncity name"));
+				"Deploy a medication in against a certain pathogen in a certain city.\ncity (from) : city name\npathogen : pathogen name"));
 		this.applyHygienicMeasuresB
-				.setTooltip(new Tooltip("Randomly increase hygine in a certain city\nRequired input:\n city name"));
+				.setTooltip(new Tooltip("Randomly increase hygine in a certain city\ncity (from) : city name"));
 		this.exertInfluenceB
-				.setTooltip(new Tooltip("Reset the economic strength of a certain city\nRequired input:\ncity name"));
+				.setTooltip(new Tooltip("Reset the economic strength of a certain city\ncity (from) : city name"));
 		this.callElectionsB
-				.setTooltip(new Tooltip("Reset the political strength of a certain city\nRequired input:\ncity name"));
+				.setTooltip(new Tooltip("Reset the political strength of a certain city\ncity (from) : city name"));
 		this.launchCampaignB.setTooltip(new Tooltip(
-				"The attentiveness of a certain city's population will be increased\nRequired input:\ncity name"));
-		this.autoTurnB.setTooltip(new Tooltip(
-				"Let the computer play.\nRequired input:\n None. Although an amount of turn can be entered."));
-		// Set input Tooltip
+				"The attentiveness of a certain city's population will be increased\ncity (from) : city name"));
+		this.autoTurnB.setTooltip(new Tooltip("Let the computer play.\nnamount : amount of actions"));
+		this.medicateBiggestCitiesB.setTooltip(new Tooltip(
+				"Medicate a certain amount of the biggest cities.\npathogen : pathogen name\namount : amount of cities to medicate"));
+		this.vaccinateBiggestCitiesB.setTooltip(new Tooltip(
+				"Vaccinate a certain amount of the biggest cities.\npathogen : pathogen name\namount : amount of cities to vaccinate"));
+		// Set input Tooltip for inputs
 
 		// Initialize the canvas as a 2D graphics object.
 		this.gc = this.currentMap.getGraphicsContext2D();
@@ -287,7 +294,7 @@ public class GuiController {
 	}
 
 	@FXML // Button implementation
-	private void selectAllHealthyCities() {
+	private void selectHealthyCities() {
 
 		this.gc.setFill(Color.WHITE);
 		this.gc.setStroke(Color.BLACK);
@@ -302,8 +309,9 @@ public class GuiController {
 	// Draw Map methodes.
 	public void drawMap() {
 
-		if (this.currentGameExchange == null)
+		if (this.currentGameExchange == null) {
 			return;
+		}
 
 		Game currentGame = this.currentGame;
 
@@ -315,25 +323,10 @@ public class GuiController {
 		// Get the City HashMap
 		HashMap<String, City> cities = currentGame.getCities();
 
-		// Iterate over the City HashMap
-		Iterator<Entry<String, City>> iterator = cities.entrySet().iterator();
-
-		while (iterator.hasNext()) {
-
-			// Get the current City.
-			HashMap.Entry<String, City> pair = (HashMap.Entry<String, City>) iterator.next();
-			City currentCity = pair.getValue();
-
-			// don't ask questions. It works.
-			if ((this.selectedCity != null
-					&& (this.selectedCity == currentCity
-							|| (this.selectedCity.getConnections().contains(currentCity) && this.showConnections))
-					|| this.selectedCity == null)) {
-
-				drawCity(currentCity, currentGame);
-			}
-
-		}
+//		// Iterate over all cities find the one we want to print and print those
+		cities.values().stream().filter(c -> ((this.selectedCity != null
+				&& (this.selectedCity == c || (this.selectedCity.getConnections().contains(c) && this.showConnections))
+				|| this.selectedCity == null))).forEach(c -> drawCity(c, currentGame));
 	}
 
 	// Draws one City on the Canvas (and all additional features)
@@ -400,10 +393,9 @@ public class GuiController {
 
 		for (int i = 0; i < amount; i++) {
 
-			GameServer.addReply((Game g) -> "{\"type\": \"endRound\"}");
+			GameServer.addReply((Game g) -> new Action(g).toString());
 		}
 
-//		System.out.println("endRound");
 		this.executeEvent(GameServer.getReply().evaluate(currentGame));
 
 	}
@@ -442,38 +434,53 @@ public class GuiController {
 
 	@FXML
 	private void putUnderQuarantine() {
-
-//		System.out.println("quarantine");
-		this.executeEvent("{\"type\": \"putUnderQuarantine\", \"city\":\"" + this.cityFrom.getText()
-				+ "\", \"rounds\": " + this.rounds.getText() + "}");
+		Game g = this.currentGame;
+		City c = g.getCities().get(this.cityFrom.getText());
+		int r = Integer.parseInt(this.rounds.getText());
+		this.executeEvent(new Action(ActionType.putUnderQuarantine, g, c, r).toString());
 	}
 
 	@FXML
 	private void closeAirport() {
-
-//		System.out.println("closeAirport");
-		this.executeEvent("{\"type\": \"closeAirport\", \"city\": \"" + this.cityFrom.getText() + "\", \"rounds\": "
-				+ this.rounds.getText() + "}");
+		Game g = this.currentGame;
+		City c = g.getCities().get(this.cityFrom.getText());
+		int r = Integer.parseInt(this.rounds.getText());
+		this.executeEvent(new Action(ActionType.closeAirport, g, c, r).toString());
 	}
 
 	@FXML
 	private void closeConnection() {
-
-//		System.out.println("closeConnection");
-		this.executeEvent("{\"type\": \"closeConnection\", \"fromCity\": \"" + this.cityFrom.getText()
-				+ "\", \"toCity\": \"" + this.cityTo.getText() + "\", \"rounds\": " + this.rounds.getText() + "}");
+		Game g = this.currentGame;
+		City cFrom = g.getCities().get(this.cityFrom.getText());
+		City cTo = g.getCities().get(this.cityTo.getText());
+		int r = Integer.parseInt(this.rounds.getText());
+		this.executeEvent(new Action(g, cFrom, cTo, r).toString());
 	}
-
+	
 	@FXML
 	private void developVaccine() {
-
-//		System.out.println("developVaccine");
-		this.executeEvent(
-				"{\"type\": \"developVaccine\", \"pathogen\": \"" + this.selectedPathogenCB.getValue() + "\"}");
+		Game g = this.currentGame;
+		Virus v = this.selectedPathogen;
+		if (g == null || v == null) {
+			return;
+		}
+		
+		this.executeEvent(new Action(ActionType.developVaccine, g, v).toString());
 	}
 
 	@FXML
-	private void deployVaccine() {
+	private void deployVaccine () {
+		Game g = this.currentGame;
+		City c = g.getCities().get(this.cityFrom.getText());
+		Virus v = this.selectedPathogen;
+		if (g == null || c == null || v == null) {
+			return;
+		}
+		this.executeEvent(new Action(ActionType.deployVaccine, g, c, v).toString());
+	}
+	
+	@FXML
+	private void vaccinateBiggestCities() {
 
 		String cityAmount = this.amountT.getText();
 		String selectedPathogen = this.selectedPathogenCB.getValue();
@@ -489,10 +496,11 @@ public class GuiController {
 
 			// convert to Integer
 			int cityAmountInt = 0;
+			
 			try {
 				cityAmountInt = Integer.parseInt(cityAmount);
 			} catch (NumberFormatException e) {
-//				Amount field empty
+				// AmountField is empty.
 			}
 
 			for (int i = 0; i < cityAmountInt; i++) {
@@ -509,9 +517,11 @@ public class GuiController {
 							if (selectedPathogen.equals(c.getOutbreak().getVirus().getName()))
 								prev = c.getPrevalance();
 						}
+						
 						if (c.getVaccineDeployed() != null) {
 							alreadyVacc = true;
 						}
+						
 						if (!alreadyVacc)
 							citiesPrev.add(new Pair<>(c, prev));
 					}
@@ -522,8 +532,8 @@ public class GuiController {
 							Pair<City, Double> c1) -> (int) ((c1.getKey().getPopulation() * (1 - c1.getValue()))
 									- (c2.getKey().getPopulation()) * (1 - c2.getValue())));
 
-					return "{\"type\": \"deployVaccine\", \"pathogen\": \"" + selectedPathogen + "\", \"city\": \""
-							+ citiesPrev.get(0).getKey().getName() + "\"}";
+					return new Action(ActionType.deployVaccine, g, citiesPrev.get(0).getKey(), this.selectedPathogen).toString();
+					
 				});
 
 			}
@@ -536,24 +546,26 @@ public class GuiController {
 	}
 
 	@FXML
-	private void vaccinateBiggestCities() {
-
-	}
-
-	@FXML
 	private void developMedication() {
-
-		System.out.println("developMedication");
-		this.executeEvent(
-				"{\"type\": \"developMedication\", \"pathogen\": \"" + this.selectedPathogenCB.getValue() + "\"}");
+		Game g = this.currentGame;
+		Virus v = this.selectedPathogen;
+		if (g == null || v == null) {
+			return;
+		}
+		
+		this.executeEvent(new Action(ActionType.developMedication, g, v).toString());
 	}
 
 	@FXML
 	private void deployMedication() {
-
-//		System.out.println("deployMedication");
-		this.executeEvent("{\"type\": \"deployMedication\", \"pathogen\": \"" + this.selectedPathogenCB.getValue()
-				+ "\", \"city\": \"" + this.cityFrom.getText() + "\"}");
+		
+		Game g = this.currentGame;
+		City c = g.getCities().get(this.cityFrom.getText());
+		Virus v = this.selectedPathogen;
+		if (g == null || c == null || v == null) {
+			return;
+		}
+		this.executeEvent(new Action(ActionType.deployMedication, g, c, v).toString());
 	}
 
 	@FXML
