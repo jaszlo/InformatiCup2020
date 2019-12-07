@@ -6,7 +6,6 @@ import java.util.HashSet;
 import app.game.City;
 import app.game.Game;
 import app.game.Virus;
-import app.game.events.E_Outbreak;
 
 public class ActionHeuristic {
 	// FACTOR: The factor by which the score is scaled.
@@ -112,8 +111,7 @@ public class ActionHeuristic {
 				break;
 			case putUnderQuarantine:
 
-				// If a very strong virus breaks out in 2 Cities protect the biggest one
-				// This only helps in the first round
+				// If a very strong virus breaks out in 2 Cities protect the biggest one. For instance seed 4
 				if (city.getOutbreak() == null) {
 					int strongVirusAmount = (int) game.getOutbreakEvents().stream()
 							.filter(e -> doQuarantine(e.getVirus())).count();
@@ -175,7 +173,7 @@ public class ActionHeuristic {
 				break;
 
 			case deployVaccine:
-				// TODO: finetune this
+				// Create a Point buffer. If in a later round a strong Virus breaks out we can quarantine it.
 				if (game.getPoints() <= 25) {
 					break;
 				}
@@ -196,7 +194,8 @@ public class ActionHeuristic {
 				}
 				break;
 			case deployMedication:
-				// TODO: finetune this
+
+				// Create a Point buffer. If in a later round a strong Virus breaks out we can quarantine it.	
 				if (game.getPoints() <= 30) {
 					break;
 				}
