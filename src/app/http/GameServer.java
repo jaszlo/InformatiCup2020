@@ -8,10 +8,7 @@ import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
-import app.WinrateTest;
-import app.game.Game;
 import app.solver.GameEvaluater;
-import app.solver.Main;
 
 public class GameServer {
 	HttpServer server;

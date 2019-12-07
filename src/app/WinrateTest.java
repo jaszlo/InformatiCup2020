@@ -1,8 +1,5 @@
 package app;
 
-import java.io.File;
-import java.io.IOException;
-
 import javax.swing.JFileChooser;
 
 import app.http.GameServer;
@@ -25,13 +22,11 @@ public class WinrateTest extends Application {
 		Platform.setImplicitExit(false);
 		JFileChooser jf = new JFileChooser();
 		jf.showSaveDialog(null);
-		cmdTool = jf.getSelectedFile();
+//		cmdTool = jf.getSelectedFile();
 		//new ProcessBuilder(cmdTool.getAbsolutePath()).start(); //TODO: make it work
 	}
 	
 	private static final int TRIALS = 100;
-
-	private static File cmdTool;
 	
 	private static int wins=0,losses=0;
 	
