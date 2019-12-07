@@ -154,7 +154,7 @@
       <Separator layoutX="1234.0" layoutY="749.0" orientation="VERTICAL" prefHeight="234.0" prefWidth="6.0" />
       <Button fx:id="resetB" layoutX="200.0" layoutY="829.0" mnemonicParsing="false" onAction="#reset" prefHeight="42.0" prefWidth="167.0" text="Reset all Selections" />
       <ChoiceBox fx:id="selectedPathogenCB" layoutX="200.0" layoutY="786.0" onAction="#changeSelectedPathogen" prefHeight="25.0" prefWidth="167.0" />
-      <Button fx:id="autoTurn" layoutX="1213.0" layoutY="751.0" mnemonicParsing="false" onAction="#autoTurn" prefHeight="110.0" prefWidth="201.0" text="autoTurn">
+      <Button fx:id="autoTurnB" layoutX="1213.0" layoutY="751.0" mnemonicParsing="false" onAction="#autoTurn" prefHeight="110.0" prefWidth="201.0" text="autoTurn">
          <font>
             <Font name="Ubuntu Light" size="20.0" />
          </font>

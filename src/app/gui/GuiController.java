@@ -23,6 +23,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -65,8 +66,8 @@ public class GuiController {
 	// All Buttons (each button corresponds to one event.
 	@FXML
 	private Button quitB, endRoundB, putUnderQuarantineB, closeAirportB, closeConnectionB, developVaccineB,
-			deployVaccineB, developMedicationB, deployMedicationB, getGameB, applyHygienicMeasuresB, exertInfluenceB,
-			callElectionsB, launchCampaignB, medicateBiggestCitiesB, autoTurn;
+			deployVaccineB, developMedicationB, deployMedicationB, applyHygienicMeasuresB, exertInfluenceB,
+			callElectionsB, launchCampaignB, medicateBiggestCitiesB, autoTurnB;
 
 	private GameExchange currentGameExchange;
 	private Game currentGame;
@@ -89,7 +90,7 @@ public class GuiController {
 
 	public void initialize() {
 
-		// create a default selection for the CheckBoxes.
+		// Create a default selection for the CheckBoxes.
 		this.connectionBox.setSelected(true);
 		this.populationBox.setSelected(true);
 		this.infectedBox.setSelected(true);
@@ -123,14 +124,32 @@ public class GuiController {
 
 		}
 
-		//set the last Action in the TextField to the static String where it was saved.
+		// Set the last Action in the TextField to the static String where it was saved.
 		this.lastAction.setText(lastActionString);
+
+		// Set the Button Tooltips.
+		this.quitB.setTooltip(new Tooltip("Close the server and this window."));
+		this.endRoundB.setTooltip(new Tooltip("End the current round.\nRequired input:\n none"));
+		this.putUnderQuarantineB.setTooltip(new Tooltip("Put a city under qurantine.\nRequired input:\ncity name\nrounds"));
+		this.closeAirportB.setTooltip(new Tooltip("Close a city's airport.\nRequired input:\ncity name\nround"));
+		this.closeConnectionB.setTooltip(new Tooltip("Close a connection between two cities.\nRequired input:"));
+		this.developVaccineB.setTooltip(new Tooltip("Develop a vaccine against a certain pathogen.\nRequired input:\npathogen name"));
+		this.deployVaccineB.setTooltip(new Tooltip("Deploy a vaccine in against a certain pathogen in a certain city.\nRequired input:\npathogen name\ncity name"));
+		this.developMedicationB.setTooltip(new Tooltip("Develop a medication against a certain pathogen.\nRequired input:\npathogen name"));
+		this.deployMedicationB.setTooltip(new Tooltip("Deploy a medication in against a certain pathogen in a certain city.\nRequired input:\npathogen name\ncity name"));
+		this.applyHygienicMeasuresB.setTooltip(new Tooltip("Randomly increase hygine in a certain city\nRequired input:\n city name"));
+		this.exertInfluenceB.setTooltip(new Tooltip("Reset the economic strength of a certain city\nRequired input:\ncity name"));
+		this.callElectionsB.setTooltip(new Tooltip("Reset the political strength of a certain city\nRequired input:\ncity name"));
+		this.launchCampaignB.setTooltip(new Tooltip("The attentiveness of a certain city's population will be increased\nRequired input:\ncity name"));
+		this.autoTurnB.setTooltip(new Tooltip("Let the computer play.\nRequired input:\n None. Although an amount of turn can be entered."));
+		
+		// Set the
+		
+		// Update the ChoiceBox items.
+		this.updatePathogenChoiceBox();
 		
 		// Draw Call for the MapCanvas
 		drawMap();
-		// Update the ChoiceBox items.
-		this.updatePathogenChoiceBox();
-//		System.out.println("GuiController has been initialized.");
 	}
 
 	// Getter (for the GUI-Controller)
@@ -406,7 +425,7 @@ public class GuiController {
 				
 			}
 		}
-		this.autoTurn.setDisable(true);
+		this.autoTurnB.setDisable(true);
 		for (int i = 0; i < amount; i++) {
 			GameServer.addReply((Game g) -> {
 				String result = Main.solve(g);
@@ -414,7 +433,7 @@ public class GuiController {
 			});
 		}
 		this.executeEvent(GameServer.getReply().evaluate(this.currentGame));
-		this.autoTurn.setDisable(false);
+		this.autoTurnB.setDisable(false);
 	}
 
 	//helper methode
