@@ -35,18 +35,6 @@ public class GameServer {
     	}
     	new Thread(() -> {
 	    		GameExchange ge = new GameExchange(exchange);
-//	    		System.out.println(ge.getGame().getOutcome());
-//	    		if (!ge.getGame().getUprisingEvents().isEmpty()) {
-//	    			System.out.println("FOUND UPRISING IN ROUND " + ge.getGame().getRound());
-//	    			ge.getGame().getUprisingEvents().stream().forEach(e -> System.out.print(e.getCity()));
-//	    			System.out.println();
-//	    		}
-//	    		if (ge.getGame().getPanicStart() >= 0) {
-//	    			System.out.println("large Scale Panic started in Round " + ge.getGame().getPanicStart());
-//	     		}
-//	    		if (ge.getGame().getEcoCrisisStart() >= 0) {
-//	    			System.out.println("Eco Crisis started in Round " + ge.getGame().getEcoCrisisStart());
-//	    		}
 	    		if (!ge.getGame().getOutcome().equals("pending")) {
 		    		if (ge.getGame().getOutcome().equals("win")) {
 		    			wins++;
