@@ -43,7 +43,7 @@ public class GameExchange {
             OutputStream os = exchange.getResponseBody();
             os.write(response.getBytes("UTF-8"));
             os.close();
-//            System.out.println(response);
+            System.out.println(response);
             this.exchange = null;
         } catch (IOException e){
         	System.err.println("Error while sending response!");

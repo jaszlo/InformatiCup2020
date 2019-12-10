@@ -48,7 +48,7 @@
             <Font name="Ubuntu Light" size="23.0" />
          </font>
       </Text>
-      <TextField fx:id="selectCityT" layoutX="487.0" layoutY="786.0" prefHeight="24.0" prefWidth="255.0" promptText="enter City manually...">
+      <TextField fx:id="selectCityT" layoutX="487.0" layoutY="786.0" prefHeight="24.0" prefWidth="255.0">
          <font>
             <Font size="10.0" />
          </font>
