@@ -95,13 +95,15 @@ public class ActionHeuristic {
 		return true;
 	}
 
-	public static int getValue(Action action) {
-		return getValue(new HashSet<Action>(Arrays.asList(action)));
+	public static int getValue(HashSet<Action> actions) {
+		int sum = 0;
+		for(Action a : actions)
+			sum+=getValue(a);
+		return sum;
 	}
 
-	public static int getValue(HashSet<Action> actions) {
+	public static int getValue(Action action) {
 		int score = 0;
-		for (Action action : actions) {
 			City city = action.getCity();
 			Game game = action.getGame();
 			Virus virus = action.getVirus();
@@ -213,7 +215,6 @@ public class ActionHeuristic {
 				break;
 			}
 
-		}
 		return score;
 	}
 
