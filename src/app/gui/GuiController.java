@@ -1,11 +1,7 @@
 package app.gui;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Optional;
-
 import app.game.events.E_Outbreak;
-import app.game.events.E_PathogenEncounter;
 import app.game.City;
 import app.game.Game;
 import app.game.Pathogen;
@@ -14,8 +10,6 @@ import app.game.actions.ActionType;
 import app.http.GameExchange;
 import app.http.GameServer;
 import app.solver.Main;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
@@ -37,9 +31,9 @@ public class GuiController {
 			selectHealthyCitiesB, selectInfectedCitiesB, resetB;
 
 	@FXML // Input fields
-	private TextField cityFrom, cityTo, rounds, amountT, selectCityT;
+	private TextField rounds, amountT;
 	@FXML
-	private ChoiceBox<String> selectedPathogenCB;
+	private ChoiceBox<String> pathogenesCB, citiesCB, citiesToCB;
 
 	@FXML // CityInfo
 	private Text population, economy, goverment, awareness, hygiene, events;
@@ -60,8 +54,9 @@ public class GuiController {
 	private Game currentGame;
 
 	// Info about current selection
-	private static City selectedCity;
-	private static Pathogen selectedPathogen;
+	private static String selectedCity;
+	private static String selectedCityTo;
+	private static String selectedPathogen;
 
 	// Booleans corresponding
 	private static boolean showConnections, showPopulation, showInfected, showCityNames;
@@ -85,6 +80,7 @@ public class GuiController {
 			showInfected = true;
 			showCityNames = true;
 			selectedCity = null;
+			selectedCityTo = null;
 			selectedPathogen = null;
 			init = false;
 		}
@@ -106,25 +102,27 @@ public class GuiController {
 			this.currentPoints.setText(this.currentGame.getPoints() + "");
 		}
 
-		// Update the ChoiceBox items.
-		updatePathogenChoiceBox();
+		// Update the ChoiceBoxes items.
+		updateChoiceBox();
 
 		// Set PathogenChoiceBox selected field to the selected Pathogen
 		if (selectedPathogen != null) {
-			this.selectedPathogenCB.setValue(selectedPathogen.getName());
+			this.pathogenesCB.setValue(selectedPathogen);
+		}
+
+		// Set SelectedCityChoiceBox field to the selected City
+		if (selectedCity != null) {
+			this.citiesCB.setValue(selectedCity);
+		}
+
+		if (selectedCityTo != null) {
+			this.citiesToCB.setValue(selectedCityTo);
 		}
 
 		// Setting up a prompt text in the textField. Therefore when selected it will
 		// disappear.
-		this.cityFrom.setPromptText("enter city...");
-		this.cityTo.setPromptText("enter city...");
 		this.rounds.setPromptText("enter duration...");
 		this.amountT.setPromptText("enter the amount ...");
-		this.selectCityT.setPromptText("enter city manually ...");
-		// If there is a selected City set as text in the TextField
-		if (selectedCity != null) {
-			this.selectCityT.setText(selectedCity.getName());
-		}
 
 		// Set the Button Tooltips.
 		this.quitB.setTooltip(new Tooltip("Close the server and this window."));
@@ -156,7 +154,7 @@ public class GuiController {
 				"Medicate a certain amount of the biggest cities.\npathogen : pathogen name\namount : amount of cities to medicate"));
 		this.vaccinateBiggestCitiesB.setTooltip(new Tooltip(
 				"Vaccinate a certain amount of the biggest cities.\npathogen : pathogen name\namount : amount of cities to vaccinate"));
-		// Set input Tooltip for inputs
+		// Set input Tooltip for inputs TODO
 
 		// Draw Call for the MapCanvas
 		drawMap();
@@ -219,13 +217,16 @@ public class GuiController {
 	}
 
 	@FXML // selectCityButton
-	private void selectCity() {
+	private void setInfo() {
 
 		// Get the city's name from the textField
-		String selectedCityString = this.selectCityT.getText();
+		String selectedCityString = this.citiesCB.getValue();
+
+		// Set the static GuiController.selectedCity
+		selectedCity = selectedCityString;
 
 		// Get the city object via its name.
-		selectedCity = this.currentGame.getCities().get(selectedCityString);
+		City selectedCity = this.currentGame.getCities().get(selectedCityString);
 
 		// Only set the info of the selected city if there is a selected city.
 		if (selectedCity != null) {
@@ -247,6 +248,8 @@ public class GuiController {
 
 		// Only set the info of the selected pathogen if there is a selected pathogen.
 		if (selectedPathogen != null) {
+			Pathogen selectedPathogen = this.currentGame.getPathogenes().get(GuiController.selectedPathogen);
+
 			// Get all the infos of the selected Pathogen as String
 			String infectivity = selectedPathogen.getInfectivity().toString();
 			String mobility = selectedPathogen.getMobility().toString();
@@ -283,6 +286,7 @@ public class GuiController {
 
 	@FXML // Button implementation
 	private void selectInfectedCities() {
+		Pathogen selectedPathogen = this.currentGame.getPathogenes().get(GuiController.selectedPathogen);
 
 		if (selectedPathogen == null)
 			return;
@@ -322,15 +326,34 @@ public class GuiController {
 
 	@FXML // onAction call for the selectPathogen choiceBox
 	private void changeSelectedPathogen() {
+		selectedPathogen = this.pathogenesCB.getValue();
 
-		Game currentGame = this.currentGame;
-		String pathogen = this.selectedPathogenCB.getValue();
-		selectedPathogen = currentGame.getPathogenes().get(pathogen);
-
-		// A methode that is called when a the selectCityButton has been pressed. It
+		// A method that is called when a the selectCityButton has been pressed. It
 		// updates the city and the pathogen info
 		// Therefore it can be used to do just that at this point.
-		selectCity();
+		setInfo();
+		drawMap();
+	}
+
+	@FXML
+	private void changeSelectedCity() {
+		selectedCity = this.citiesCB.getValue();
+
+		// A method that is called when a the selectCityButton has been pressed. It
+		// updates the city and the pathogen info
+		// Therefore it can be used to do just that at this point.
+		setInfo();
+		drawMap();
+	}
+
+	@FXML
+	private void changeSelectedCityTo() {
+		selectedCityTo = this.citiesToCB.getValue();
+
+		// A method that is called when a the selectCityButton has been pressed. It
+		// updates the city and the pathogen info
+		// Therefore it can be used to do just that at this point.
+		setInfo();
 		drawMap();
 	}
 
@@ -383,14 +406,14 @@ public class GuiController {
 	}
 
 	// helper methode
-	private void setLastAction(String s) {
+	public static void setLastAction(String s) {
 		GuiController.lastActionString = s;
 	}
 
 	@FXML
 	private void putUnderQuarantine() {
 		Game g = this.currentGame;
-		City c = g.getCities().get(this.cityFrom.getText());
+		City c = g.getCities().get(selectedCity);
 		int r = 1;
 		try {
 			r = Integer.parseInt(this.rounds.getText());
@@ -404,7 +427,7 @@ public class GuiController {
 	@FXML
 	private void closeAirport() {
 		Game g = this.currentGame;
-		City c = g.getCities().get(this.cityFrom.getText());
+		City c = g.getCities().get(selectedCity);
 		int r = 1;
 		try {
 			r = Integer.parseInt(this.rounds.getText());
@@ -418,8 +441,8 @@ public class GuiController {
 	@FXML
 	private void closeConnection() {
 		Game g = this.currentGame;
-		City cFrom = g.getCities().get(this.cityFrom.getText());
-		City cTo = g.getCities().get(this.cityTo.getText());
+		City cFrom = g.getCities().get(selectedCity);
+		City cTo = g.getCities().get(selectedCityTo);
 		int r = Integer.parseInt(this.rounds.getText());
 		this.executeEvent(new Action(g, cFrom, cTo, r).toString());
 	}
@@ -427,24 +450,24 @@ public class GuiController {
 	@FXML
 	private void developVaccine() {
 		Game g = this.currentGame;
-		Pathogen v = selectedPathogen;
-		if (g == null || v == null) {
+		Pathogen p = g.getPathogenes().get(selectedPathogen);
+		if (g == null || p == null) {
 			return;
 		}
 
-		this.executeEvent(new Action(ActionType.developVaccine, g, v).toString());
+		this.executeEvent(new Action(ActionType.developVaccine, g, p).toString());
 	}
 
 	@FXML
 	private void deployVaccine() {
 		Game g = this.currentGame;
-		City c = g.getCities().get(this.cityFrom.getText());
-		Pathogen v = selectedPathogen;
-		if (g == null || c == null || v == null) {
+		City c = g.getCities().get(selectedCity);
+		Pathogen p = g.getPathogenes().get(selectedPathogen);
+		if (g == null || c == null || p == null) {
 			return;
 		}
 		System.out.println("DEPVAC");
-		this.executeEvent(new Action(ActionType.deployVaccine, g, c, v).toString());
+		this.executeEvent(new Action(ActionType.deployVaccine, g, c, p).toString());
 	}
 
 	@FXML
@@ -452,16 +475,12 @@ public class GuiController {
 
 		String cityAmountText = this.amountT.getText();
 
-		if (selectedPathogen == null || selectedPathogen.equals("")) {
+		if (selectedPathogen == null) {
 			return;
 		}
 
-		// check if the actions can be added.
-		if (cityAmountText == null || cityAmountText.equals("")) {
-			cityAmountText = "1";
-		}
 		// Initialize Integer we want to convert to
-		int cityAmount = 0;
+		int cityAmount = 1;
 
 		try {
 			// Convert to Integer
@@ -473,20 +492,36 @@ public class GuiController {
 		for (int i = 0; i < cityAmount; i++) {
 
 			GameServer.addReply((Game g) -> {
+				Pathogen selectedPathogen = g.getPathogenes().get(GuiController.selectedPathogen);
 
-				// First get all unvaccinated cities. Then check in which city the most people
-				// can be vaccinated.
-				Object bestCities[] = g.getCities().values().stream().filter(c -> c.getVaccineDeployed() == null
-						|| (c.getVaccineDeployed().stream().filter(e -> e.getPathogen() != selectedPathogen)) != null)
-						.sorted(((City c1, City c2) -> {
-							return (int) (c1.getPopulation() * c1.getPrevalance())
-									- (int) (c2.getPopulation() * c2.getPrevalance());
-						})).toArray();
-				// Return the new Action which vacinates the city where currently the most
-				// people are influenced by the selected Pathogen.
-				return new Action(ActionType.deployVaccine, g, ((City) bestCities[0]), selectedPathogen).toString();
+				// First get all infected cities. Then check in which city the most people can
+				// be medicated
+				// Set PathogenChoiceBox selected field to the selected Pathogen
+				City bestCity = g.getCities().values().stream()
+						.filter(c -> c.getVaccineDeployed().stream()
+								.allMatch(e -> e.getPathogen() != selectedPathogen))
+						.max((City c1, City c2) -> {
+							// Get the healthy population as we want to vaccinate the city which impacts the most people
+							double healthyPopulation1 = c1.isInfected(selectedPathogen) ? 1 - c1.getPrevalance(): 1;
+							double healthyPopulation2 = c2.isInfected(selectedPathogen) ? 1 - c2.getPrevalance(): 1;
+							
+							return (int) (c1.getPopulation() * healthyPopulation1
+								- c2.getPopulation() * healthyPopulation2);
+						}).orElseGet(() -> null);
+
+				// If no city is infected by the selected pathogen just end the round
+				if (bestCity == null) {
+					GameServer.clearReplies();
+					return new Action(g).toString();
+				}
+
+
+				// Return the new Action which medicates the city where currently the most
+				// people are influenced by the selected pathogen.
+				return new Action(ActionType.deployVaccine, g, bestCity, selectedPathogen).toString();
 			});
 		}
+
 		// Check if there is an event to execute
 		if (!GameServer.hasReplies()) {
 			return;
@@ -494,35 +529,36 @@ public class GuiController {
 
 		// Execute the Action generated addReply methode above.
 		this.executeEvent(GameServer.getReply().evaluate(currentGame));
+
 	}
 
 	@FXML
 	private void developMedication() {
 		Game g = this.currentGame;
-		Pathogen v = selectedPathogen;
-		if (g == null || v == null) {
+		Pathogen p = g.getPathogenes().get(selectedPathogen);
+		if (g == null || p == null) {
 			return;
 		}
 
-		this.executeEvent(new Action(ActionType.developMedication, g, v).toString());
+		this.executeEvent(new Action(ActionType.developMedication, g, p).toString());
 	}
 
 	@FXML
 	private void deployMedication() {
 
 		Game g = this.currentGame;
-		City c = g.getCities().get(this.cityFrom.getText());
-		Pathogen v = selectedPathogen;
-		if (g == null || c == null || v == null) {
+		City c = g.getCities().get(selectedCity);
+		Pathogen p = g.getPathogenes().get(selectedPathogen);
+		if (g == null || c == null || p == null) {
 			return;
 		}
-		this.executeEvent(new Action(ActionType.deployMedication, g, c, v).toString());
+		this.executeEvent(new Action(ActionType.deployMedication, g, c, p).toString());
 	}
 
 	@FXML
 	private void applyHygienicMeasures() {
 		Game g = this.currentGame;
-		City c = selectedCity;
+		City c = g.getCities().get(selectedCity);
 		if (g == null || c == null) {
 			return;
 		}
@@ -532,7 +568,7 @@ public class GuiController {
 	@FXML
 	private void exertInfluence() {
 		Game g = this.currentGame;
-		City c = selectedCity;
+		City c = g.getCities().get(selectedCity);
 		if (g == null || c == null) {
 			return;
 		}
@@ -542,7 +578,7 @@ public class GuiController {
 	@FXML
 	private void callElections() {
 		Game g = this.currentGame;
-		City c = selectedCity;
+		City c = g.getCities().get(selectedCity);
 		if (g == null || c == null) {
 			return;
 		}
@@ -552,7 +588,7 @@ public class GuiController {
 	@FXML
 	private void launchCampaign() {
 		Game g = this.currentGame;
-		City c = selectedCity;
+		City c = g.getCities().get(selectedCity);
 		if (g == null || c == null) {
 			return;
 		}
@@ -563,16 +599,12 @@ public class GuiController {
 	private void medicateBiggestCities() {
 		String cityAmountText = this.amountT.getText();
 
-		if (selectedPathogen == null || selectedPathogen.equals("")) {
+		if (selectedPathogen == null) {
 			return;
 		}
 
-		// check if the actions can be added.
-		if (cityAmountText == null || cityAmountText.equals("")) {
-			cityAmountText = "1";
-		}
 		// Initialize Integer we want to convert to
-		int cityAmount = 0;
+		int cityAmount = 1;
 
 		try {
 			// Convert to Integer
@@ -584,33 +616,39 @@ public class GuiController {
 		for (int i = 0; i < cityAmount; i++) {
 
 			GameServer.addReply((Game g) -> {
+				Pathogen selectedPathogen = g.getPathogenes().get(GuiController.selectedPathogen);
 
 				// First get all infected cities. Then check in which city the most people can
-				// be medicated.
-				Optional<City> bestCity = g.getCities().values().stream()
-						.filter(c -> c.getOutbreak() != null && c.getOutbreak().getPathogen() == selectedPathogen)
-						.max((City c1, City c2) -> {
-							return (int) (c1.getPopulation() * c1.getPrevalance())
-									- (int) (c2.getPopulation() * c2.getPrevalance());
-						});
+				// be medicated
+				// Set PathogenChoiceBox selected field to the selected Pathogen
 
-				if (!bestCity.isPresent()) {
-					return "";
+				City bestCity = g
+						.getCities().values().stream().filter(
+								c -> c.isInfected(selectedPathogen))
+						.max((City c1, City c2) -> (int) (c1.getPopulation() * c1.getPrevalance()
+								- c2.getPopulation() * c2.getPrevalance()))
+						.orElseGet(() -> null);
+
+				// If no city is infected by the selected pathogen just end the round
+				if (bestCity == null) {
+					GameServer.clearReplies();
+					return new Action(g).toString();
 				}
 
 				// Return the new Action which medicates the city where currently the most
 				// people are influenced by the selected pathogen.
-				return new Action(ActionType.deployMedication, g, bestCity.get(), selectedPathogen).toString();
+				return new Action(ActionType.deployMedication, g, bestCity, selectedPathogen).toString();
 			});
-
-			// Check if there is an event to execute
-			if (!GameServer.hasReplies()) {
-				return;
-			}
-
-			// Execute the Action generated addReply methode above.
-			this.executeEvent(GameServer.getReply().evaluate(currentGame));
 		}
+
+		// Check if there is an event to execute
+		if (!GameServer.hasReplies()) {
+			return;
+		}
+
+		// Execute the Action generated addReply methode above.
+		this.executeEvent(GameServer.getReply().evaluate(currentGame));
+
 	}
 
 	private void executeEvent(String event) {
@@ -619,8 +657,6 @@ public class GuiController {
 			return;
 		}
 
-		// Set the lastActionString and execute the event
-		setLastAction(event);
 		this.currentGameExchange.sendReply(event);
 
 		// Close the GUI
@@ -632,7 +668,7 @@ public class GuiController {
 		primaryStage.close();
 	}
 
-	private void updatePathogenChoiceBox() {
+	private void updateChoiceBox() {
 
 		// Check if there is an active GameExchange
 		Game currentGame = this.currentGame;
@@ -640,21 +676,24 @@ public class GuiController {
 			return;
 		}
 
-		// Create a new ArrayList of all active pathogens
-		ArrayList<E_PathogenEncounter> pathogensEncountered = new ArrayList<E_PathogenEncounter>(
-				currentGame.getPathEncounterEvents());
-		ArrayList<String> activePathogens = new ArrayList<>();
-		// Add all pathogens to this ArrayList that are not allready in it.
-		for (E_PathogenEncounter p : pathogensEncountered) {
-			activePathogens.add(p.getPathogen().getName());
-		}
+		// Remove all pathogen encounters and add them again (else they would be added
+		// again and again).
+		this.pathogenesCB.getItems().clear();
+		currentGame.getPathEncounterEvents().stream()
+				.forEach(p -> this.pathogenesCB.getItems().add(p.getPathogen().getName()));
 
-		// Convert the ArrayList values to the choiceBox
-		ObservableList<String> activePathogensList = FXCollections.observableList(activePathogens);
-		this.selectedPathogenCB.setItems(activePathogensList);
+		// Remove all cities and add them again (else they would be added again and
+		// again).
+		this.citiesCB.getItems().clear();
+		currentGame.getCities().values().stream().map(c -> c.getName()).sorted()
+				.forEachOrdered(c -> this.citiesCB.getItems().add(c));
+
+		// Do the same as aboive for the CitiesTo ChoiceBox
+		this.citiesToCB.getItems().clear();
+		currentGame.getCities().values().stream().map(c -> c.getName()).sorted()
+				.forEachOrdered(c -> this.citiesToCB.getItems().add(c));
 
 	}
-	
 
 	// Draw Map methodes.
 	public void drawMap() {
@@ -675,7 +714,7 @@ public class GuiController {
 
 		// Get the City HashMap
 		HashMap<String, City> cities = currentGame.getCities();
-
+		City selectedCity = this.currentGame.getCities().get(GuiController.selectedCity);
 //			// Iterate over all cities find the one we want to print and print those
 		cities.values().stream()
 				.filter(c -> ((selectedCity != null
@@ -686,6 +725,8 @@ public class GuiController {
 
 	// Draws one City on the Canvas (and all additional features)
 	private void drawCity(City currentCity, Game currentGame) {
+
+		Pathogen selectedPathogen = this.currentGame.getPathogenes().get(GuiController.selectedPathogen);
 
 		// Initialize the canvas as a 2D graphics object.
 		GraphicsContext gc = this.currentMap.getGraphicsContext2D();

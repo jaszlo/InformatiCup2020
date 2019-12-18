@@ -9,46 +9,39 @@
 
 <GridPane maxHeight="1000.0" maxWidth="1900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <GridPane layoutX="1635.0" layoutY="19.0" prefHeight="594.0" prefWidth="415.0" GridPane.columnIndex="1"  HBox.hgrow="ALWAYS">
+      <GridPane layoutX="1635.0" layoutY="19.0" prefHeight="594.0" prefWidth="415.0" GridPane.columnIndex="1" HBox.hgrow="ALWAYS">
          <children>
             <GridPane layoutX="1640.0" layoutY="19.0" prefHeight="212.0" prefWidth="302.0">
                <children>
-                  <TextField fx:id="rounds" layoutX="1740.0" layoutY="147.0" prefHeight="25.0" prefWidth="140.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <Text layoutX="1636.0" layoutY="51.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="Parameters" wrappingWidth="162.0">
+                  <TextField fx:id="rounds" layoutX="1740.0" layoutY="147.0" prefHeight="25.0" prefWidth="140.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Text layoutX="1636.0" layoutY="51.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="Aditional parameters" wrappingWidth="162.0">
                      <font>
                         <Font name="Ubuntu Light" size="30.0" />
                      </font>
                   </Text>
-                  <Text layoutX="1636.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Amount" wrappingWidth="124.248046875" GridPane.rowIndex="4">
+                  <Text layoutX="1636.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Amount" wrappingWidth="124.248046875" GridPane.rowIndex="3">
                      <font>
                         <Font name="Ubuntu Light" size="21.0" />
                      </font>
                   </Text>
-                  <Text layoutX="1636.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="City (to)" wrappingWidth="104.248046875" GridPane.rowIndex="2">
+                  <Text layoutX="1636.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Close Connection to City" wrappingWidth="181.248046875" GridPane.rowIndex="1">
                      <font>
                         <Font name="Ubuntu Light" size="21.0" />
                      </font>
                   </Text>
-                  <Text layoutX="1636.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="City (from)" wrappingWidth="104.248046875" GridPane.rowIndex="1">
+                  <TextField fx:id="amountT" layoutX="1740.0" layoutY="187.0" prefHeight="25.0" prefWidth="140.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Text layoutX="1636.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rounds" wrappingWidth="80.248046875" GridPane.rowIndex="2">
                      <font>
                         <Font name="Ubuntu Light" size="21.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="amountT" layoutX="1740.0" layoutY="187.0" prefHeight="25.0" prefWidth="140.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <TextField fx:id="cityTo" layoutX="1742.0" layoutY="106.0" prefHeight="25.0" prefWidth="140.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <TextField fx:id="cityFrom" layoutX="1742.0" layoutY="66.0" prefHeight="23.0" prefWidth="118.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Text layoutX="1636.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rounds" wrappingWidth="80.248046875" GridPane.rowIndex="3">
-                     <font>
-                        <Font name="Ubuntu Light" size="21.0" />
-                     </font>
-                  </Text>
+                  <ChoiceBox fx:id="citiesToCB" onAction="#changeSelectedCityTo" prefHeight="26.0" prefWidth="183.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </children>
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                </columnConstraints>
                <rowConstraints>
-                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
@@ -316,18 +309,13 @@
                         <Font name="Ubuntu Light" size="23.0" />
                      </font>
                   </Text>
-                  <ChoiceBox fx:id="selectedPathogenCB" layoutX="200.0" layoutY="786.0" onAction="#changeSelectedPathogen" prefHeight="28.0" prefWidth="268.0" GridPane.rowIndex="1" />
-                  <TextField fx:id="selectCityT" layoutX="487.0" layoutY="786.0" prefHeight="31.0" prefWidth="275.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <font>
-                        <Font size="10.0" />
-                     </font>
-                  </TextField>
+                  <ChoiceBox fx:id="pathogenesCB" layoutX="200.0" layoutY="786.0" onAction="#changeSelectedPathogen" prefHeight="28.0" prefWidth="268.0" GridPane.rowIndex="1" />
                   <Button fx:id="selectInfectedCitiesB" layoutX="197.0" layoutY="888.0" mnemonicParsing="false" onAction="#selectInfectedCities" prefHeight="42.0" prefWidth="269.0" text="Select infected Cities" GridPane.rowIndex="3">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Button>
-                  <Button fx:id="selectCityB" layoutX="487.0" layoutY="830.0" mnemonicParsing="false" onAction="#selectCity" prefHeight="42.0" prefWidth="284.0" text="Select" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <Button fx:id="selectCityB" layoutX="487.0" layoutY="830.0" mnemonicParsing="false" onAction="#setInfo" prefHeight="42.0" prefWidth="284.0" text="Select" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -337,6 +325,7 @@
                         <Font size="20.0" />
                      </font>
                   </Button>
+                  <ChoiceBox fx:id="citiesCB" onAction="#changeSelectedCity" prefHeight="28.0" prefWidth="268.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </children>
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="531.0" minWidth="10.0" prefWidth="283.0" />

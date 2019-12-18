@@ -15,7 +15,7 @@ public class GameServer {
 	public static double games = 0;
 	public static double wins = 0;
 	
-	public static LinkedBlockingDeque<GameEvaluater> repliesToSend = new LinkedBlockingDeque<>();;
+	private static LinkedBlockingDeque<GameEvaluater> repliesToSend = new LinkedBlockingDeque<>();;
 	
 	public GameServer() {
 		try {
@@ -60,5 +60,9 @@ public class GameServer {
     
     public static boolean hasReplies() {
     	return !repliesToSend.isEmpty();
+    }
+    
+    public static void clearReplies() {
+    	repliesToSend.clear();
     }
 }

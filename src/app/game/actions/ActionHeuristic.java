@@ -185,6 +185,7 @@ public class ActionHeuristic {
 					break;
 
 				// TODO: Adjust formula
+//				double healthyPopulation = 
 				score += DEP_VACCINE_FACTOR * (1 - city.getPrevalance()) * city.getPopulation()
 						* pathogen.getLethality().getNumericRepresentation();
 				break;

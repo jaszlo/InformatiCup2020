@@ -14,11 +14,8 @@ import app.game.Game;
 import app.gui.GuiController;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class GameExchange {
@@ -45,6 +42,7 @@ public class GameExchange {
             OutputStream os = exchange.getResponseBody();
             os.write(response.getBytes("UTF-8"));
             os.close();
+            GuiController.setLastAction(response);
 //           System.out.println(response);
             this.exchange = null;
         } catch (IOException e){
