@@ -654,6 +654,7 @@ public class GuiController {
 		this.selectedPathogenCB.setItems(activePathogensList);
 
 	}
+	
 
 	// Draw Map methodes.
 	public void drawMap() {

@@ -14,9 +14,11 @@ import app.game.Game;
 import app.gui.GuiController;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class GameExchange {
@@ -83,9 +85,6 @@ public class GameExchange {
 			root = (Parent)loader.load();
 			Scene scene = new Scene(root);
 			
-			// Set the background color
-			scene.setFill(Color.BLUE);
-			
 			// Maximaze the stage
 			GUI.setMaximized(true);
 			
@@ -93,6 +92,7 @@ public class GameExchange {
 			GUI.setScene(scene);
 			GUI.setTitle("Pandemie");
 			GUI.show();
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
