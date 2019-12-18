@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 import com.sun.net.httpserver.HttpExchange;
 
 import app.game.Game;
-import app.game.actions.ActionHeuristic;
 import app.gui.GuiController;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;

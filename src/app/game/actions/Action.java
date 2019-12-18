@@ -4,7 +4,7 @@ import java.util.HashSet;
 
 import app.game.City;
 import app.game.Game;
-import app.game.Virus;
+import app.game.Pathogen;
 import app.knapsack.Item;
 
 public class Action extends Item {
@@ -16,17 +16,17 @@ public class Action extends Item {
 	// Parameters for the actions
 	private final City city;
 	private final City toCity;
-	private final Virus virus;
+	private final Pathogen pathogen;
 	private final int rounds;
 
 	// Basis constructor
-	public Action(ActionType type, Game game, City city, City toCity, Virus virus, int rounds) {
+	public Action(ActionType type, Game game, City city, City toCity, Pathogen pathogen, int rounds) {
 		super(type.getPoints(rounds));
 		this.type = type;
 		this.game = game;
 		this.city = city;
 		this.toCity = toCity;
-		this.virus = virus;
+		this.pathogen = pathogen;
 		this.rounds = rounds;
 	}
 
@@ -41,13 +41,13 @@ public class Action extends Item {
 	}
 
 	// developVaccine or developMedication constructor
-	public Action(ActionType type, Game game, Virus virus) {
-		this(type, game, null, null, virus, 0);
+	public Action(ActionType type, Game game, Pathogen pathogen) {
+		this(type, game, null, null, pathogen, 0);
 	}
 
 	// deployVaccine or deployMedication constructor
-	public Action(ActionType type, Game game, City city, Virus virus) {
-		this(type, game, city, null, virus, 0);
+	public Action(ActionType type, Game game, City city, Pathogen pathogen) {
+		this(type, game, city, null, pathogen, 0);
 	}
 
 	// closeConnection constructor
@@ -80,18 +80,18 @@ public class Action extends Item {
 					this.getCity().getName(), this.getToCity().getName(), this.getRounds());
 
 		case developMedication:
-			return String.format("{\"type\": \"developMedication\", \"pathogen\":\"%s\"}", this.getVirus().getName());
+			return String.format("{\"type\": \"developMedication\", \"pathogen\":\"%s\"}", this.getPathogen().getName());
 
 		case deployMedication:
 			return String.format("{\"type\": \"deployMedication\", \"pathogen\":\"%s\", \"city\": \"%s\"}",
-					this.getVirus().getName(), this.getCity().getName());
+					this.getPathogen().getName(), this.getCity().getName());
 
 		case developVaccine:
-			return String.format("{\"type\": \"developVaccine\", \"pathogen\":\"%s\"}", this.getVirus().getName());
+			return String.format("{\"type\": \"developVaccine\", \"pathogen\":\"%s\"}", this.getPathogen().getName());
 
 		case deployVaccine:
 			return String.format("{\"type\": \"deployVaccine\", \"pathogen\":\"%s\", \"city\": \"%s\"}",
-					this.getVirus().getName(), this.getCity().getName());
+					this.getPathogen().getName(), this.getCity().getName());
 
 		case exertInfluence:
 			return String.format("{\"type\": \"exertInfluence\", \"city\": \"%s\"}", this.getCity().getName());
@@ -130,8 +130,8 @@ public class Action extends Item {
 		return toCity;
 	}
 
-	public Virus getVirus() {
-		return virus;
+	public Pathogen getPathogen() {
+		return pathogen;
 	}
 
 	public int getRounds() {

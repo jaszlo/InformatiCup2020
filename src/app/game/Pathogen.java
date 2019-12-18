@@ -1,6 +1,6 @@
 package app.game;
 
-public class Virus {
+public class Pathogen {
 
 	private final String name;
 	
@@ -8,13 +8,13 @@ public class Virus {
 	
 	/**
 	 * 
-	 * @param name The name of the virus
-	 * @param infectivity The infectivity of virus 
-	 * @param mobility The mobility of virus
-	 * @param duration The duration of virus
-	 * @param lethality The deadliness of virus
+	 * @param name The name of the pathogen
+	 * @param infectivity The infectivity of pathogen 
+	 * @param mobility The mobility of pathogen
+	 * @param duration The duration of pathogen
+	 * @param lethality The deadliness of pathogen
 	 */
-	public Virus(String name, Scale infectivity, Scale mobility, Scale duration, Scale lethality) {
+	public Pathogen(String name, Scale infectivity, Scale mobility, Scale duration, Scale lethality) {
 		this.name = name;
 		this.infectivity = infectivity;
 		this.mobility = mobility;
@@ -24,7 +24,7 @@ public class Virus {
 
 	/**
 	 * 
-	 * @return Name of virus
+	 * @return Name of pathogen
 	 */
 	public String getName() {
 		return name;
@@ -32,7 +32,7 @@ public class Virus {
 
 	/**
 	 * 
-	 * @return the infectivity of virus
+	 * @return the infectivity of pathogen
 	 */
 	public Scale getInfectivity() {
 		return infectivity;
@@ -40,7 +40,7 @@ public class Virus {
 
 	/**
 	 * 
-	 * @return the mobility of virus.
+	 * @return the mobility of pathogen.
 	 */
 	public Scale getMobility() {
 		return mobility;
@@ -48,7 +48,7 @@ public class Virus {
 
 	/**
 	 * 
-	 * @return the duration of virus.
+	 * @return the duration of pathogen.
 	 */
 	public Scale getDuration() {
 		return duration;
@@ -56,14 +56,14 @@ public class Virus {
 
 	/**
 	 * 
-	 * @return the lethality of virus.
+	 * @return the lethality of pathogen.
 	 */
 	public Scale getLethality() {
 		return lethality;
 	}
 	
 	/**
-	 * @return the basic information of virus as String, in the following format
+	 * @return the basic information of pathogen as String, in the following format
 	 * [%name,%infectivity,%mobility,%duration,%lethality]
 	 */
 	@Override

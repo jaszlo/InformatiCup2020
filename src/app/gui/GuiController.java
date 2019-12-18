@@ -8,7 +8,7 @@ import app.game.events.E_Outbreak;
 import app.game.events.E_PathogenEncounter;
 import app.game.City;
 import app.game.Game;
-import app.game.Virus;
+import app.game.Pathogen;
 import app.game.actions.Action;
 import app.game.actions.ActionType;
 import app.http.GameExchange;
@@ -61,7 +61,7 @@ public class GuiController {
 
 	// Info about current selection
 	private static City selectedCity;
-	private static Virus selectedPathogen;
+	private static Pathogen selectedPathogen;
 
 	// Booleans corresponding
 	private static boolean showConnections, showPopulation, showInfected, showCityNames;
@@ -297,7 +297,7 @@ public class GuiController {
 
 		// Draw all the infected cities
 		for (E_Outbreak e : this.currentGame.getOutbreakEvents()) {
-			if (selectedPathogen == e.getVirus())
+			if (selectedPathogen == e.getPathogen())
 				drawCity(e.getCity(), currentGame);
 		}
 	}
@@ -315,7 +315,7 @@ public class GuiController {
 
 		// Draw all uninfected cities
 		for (City c : this.currentGame.getCities().values()) {
-			if (c.getOutbreak() == null)
+			if (!c.isInfected())
 				drawCity(c, currentGame);
 		}
 	}
@@ -325,7 +325,7 @@ public class GuiController {
 
 		Game currentGame = this.currentGame;
 		String pathogen = this.selectedPathogenCB.getValue();
-		selectedPathogen = currentGame.getViruses().get(pathogen);
+		selectedPathogen = currentGame.getPathogenes().get(pathogen);
 
 		// A methode that is called when a the selectCityButton has been pressed. It
 		// updates the city and the pathogen info
@@ -427,7 +427,7 @@ public class GuiController {
 	@FXML
 	private void developVaccine() {
 		Game g = this.currentGame;
-		Virus v = selectedPathogen;
+		Pathogen v = selectedPathogen;
 		if (g == null || v == null) {
 			return;
 		}
@@ -439,7 +439,7 @@ public class GuiController {
 	private void deployVaccine() {
 		Game g = this.currentGame;
 		City c = g.getCities().get(this.cityFrom.getText());
-		Virus v = selectedPathogen;
+		Pathogen v = selectedPathogen;
 		if (g == null || c == null || v == null) {
 			return;
 		}
@@ -477,7 +477,7 @@ public class GuiController {
 				// First get all unvaccinated cities. Then check in which city the most people
 				// can be vaccinated.
 				Object bestCities[] = g.getCities().values().stream().filter(c -> c.getVaccineDeployed() == null
-						|| (c.getVaccineDeployed().stream().filter(e -> e.getVirus() != selectedPathogen)) != null)
+						|| (c.getVaccineDeployed().stream().filter(e -> e.getPathogen() != selectedPathogen)) != null)
 						.sorted(((City c1, City c2) -> {
 							return (int) (c1.getPopulation() * c1.getPrevalance())
 									- (int) (c2.getPopulation() * c2.getPrevalance());
@@ -499,7 +499,7 @@ public class GuiController {
 	@FXML
 	private void developMedication() {
 		Game g = this.currentGame;
-		Virus v = selectedPathogen;
+		Pathogen v = selectedPathogen;
 		if (g == null || v == null) {
 			return;
 		}
@@ -512,7 +512,7 @@ public class GuiController {
 
 		Game g = this.currentGame;
 		City c = g.getCities().get(this.cityFrom.getText());
-		Virus v = selectedPathogen;
+		Pathogen v = selectedPathogen;
 		if (g == null || c == null || v == null) {
 			return;
 		}
@@ -588,7 +588,7 @@ public class GuiController {
 				// First get all infected cities. Then check in which city the most people can
 				// be medicated.
 				Optional<City> bestCity = g.getCities().values().stream()
-						.filter(c -> c.getOutbreak() != null && c.getOutbreak().getVirus() == selectedPathogen)
+						.filter(c -> c.getOutbreak() != null && c.getOutbreak().getPathogen() == selectedPathogen)
 						.max((City c1, City c2) -> {
 							return (int) (c1.getPopulation() * c1.getPrevalance())
 									- (int) (c2.getPopulation() * c2.getPrevalance());
@@ -646,7 +646,7 @@ public class GuiController {
 		ArrayList<String> activePathogens = new ArrayList<>();
 		// Add all pathogens to this ArrayList that are not allready in it.
 		for (E_PathogenEncounter p : pathogensEncountered) {
-			activePathogens.add(p.getVirus().getName());
+			activePathogens.add(p.getPathogen().getName());
 		}
 
 		// Convert the ArrayList values to the choiceBox
@@ -699,7 +699,7 @@ public class GuiController {
 
 		// Get prevalance in the current city.
 		for (E_Outbreak e : currentGame.getOutbreakEvents()) {
-			if (e.getCity() == currentCity && (selectedPathogen == null || e.getVirus() == selectedPathogen))
+			if (e.getCity() == currentCity && (selectedPathogen == null || e.getPathogen() == selectedPathogen))
 				// Get the strongest infection in one city (if multiple infections are to be
 				// shown).
 				prev = Math.max(prev, e.getPrevalence());

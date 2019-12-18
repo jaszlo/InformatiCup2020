@@ -1,7 +1,6 @@
 package app.game;
 
 import java.util.HashMap;
-
 import java.util.HashSet;
 
 import app.game.events.E_AirportClosed;
@@ -15,6 +14,7 @@ import app.game.events.E_Uprising;
 import app.game.events.E_VaccineDeployed;
 import app.game.events.Event;
 import app.game.events.EventType;
+import app.game.Pathogen;
 
 public class City {
 
@@ -40,7 +40,7 @@ public class City {
 	 * @param economy The strength of the economy
 	 * @param government The stability of government
 	 * @param hygiene Hygiene standards of city
-	 * @param awareness The awareness towards viruses of the citizens
+	 * @param awareness The awareness towards pathogenes of the citizens
 	 */
 	public City(String name, double x, double y, HashSet<City> connections, int population,
 			Scale economy, Scale government, Scale hygiene, Scale awareness) {
@@ -107,7 +107,7 @@ public class City {
 
 	/**
 	 * 
-	 * @return The awareness towards viruses of the citizens
+	 * @return The awareness towards pathogenes of the citizens
 	 */
 	public Scale getAwareness() {
 		return awareness;
@@ -115,7 +115,7 @@ public class City {
 
 	/**
 	 * 
-	 * @param awareness The awareness towards viruses of the citizens
+	 * @param awareness The awareness towards pathogenes of the citizens
 	 */
 	public void setAwareness(Scale awareness) {
 		this.awareness = awareness;
@@ -187,7 +187,7 @@ public class City {
 	
 	/**
 	 * 
-	 * @return The prevalence of virus in city. If no virus exists in City, 0 is returned.
+	 * @return The prevalence of pathogen in city. If no pathogen exists in City, 0 is returned.
 	 */
 	public double getPrevalance () {
 		E_Outbreak outbreak = this.getOutbreak();
@@ -281,4 +281,30 @@ public class City {
 		
 		return (HashSet<E_VaccineDeployed>) this.multipleEvents.get(EventType.vaccineDeployed);
 	}
-}
+	
+	/**
+	 * 
+	 * @return Get the pathogen in this city. If the city is not infected return null.
+	 */
+	public Pathogen getPathogen () {
+		return this.getOutbreak() != null ? this.getOutbreak().getPathogen() : null;
+	}
+	
+	/**
+	 * 
+	 * @return Returns true if a city is infected by any pathogen and false if it is not infected at all.
+	 */
+	public boolean isInfected() {
+		return !this.isInfected(null);
+	}
+	
+	/**
+	 * @param pathogen Check if the City infected by this pathogen
+	 * @return Returns true if the city is infected by the given pathogen
+	 */
+	public boolean isInfected(Pathogen pathogen) {
+		return this.getPathogen() == pathogen;
+	}
+	
+
+ }

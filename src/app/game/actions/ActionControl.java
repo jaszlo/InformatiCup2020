@@ -6,7 +6,7 @@ import java.util.HashSet;
 
 import app.game.City;
 import app.game.Game;
-import app.game.Virus;
+import app.game.Pathogen;
 import app.game.events.E_MedicationAvailable;
 import app.game.events.E_Outbreak;
 import app.game.events.E_VaccineAvailable;
@@ -56,33 +56,33 @@ public class ActionControl {
 	private static void addDeployVaccActions(Game game, HashSet<Action> actions) {
 		for (E_VaccineAvailable e : game.getVaccAvailableEvents()) {
 			for (City city : game.getCities().values()) {
-				Action a = new Action(ActionType.deployVaccine, game, city, e.getVirus());
+				Action a = new Action(ActionType.deployVaccine, game, city, e.getPathogen());
 				actions.add(a);
 			}
 		}
 	}
 
 	private static void addDeployMedActions(Game game, HashSet<Action> actions) {
-		HashMap<Virus, E_MedicationAvailable> medAvailable = new HashMap<>();
+		HashMap<Pathogen, E_MedicationAvailable> medAvailable = new HashMap<>();
 
 		for (E_MedicationAvailable e : game.getMedAvailableEvents()) {
-			medAvailable.put(e.getVirus(), e);
+			medAvailable.put(e.getPathogen(), e);
 		}
 
 		for (E_Outbreak outbreak : game.getOutbreakEvents()) {
-			if (medAvailable.get(outbreak.getVirus()) != null) {
-				Action a = new Action(ActionType.deployMedication, game, outbreak.getCity(), outbreak.getVirus());
+			if (medAvailable.get(outbreak.getPathogen()) != null) {
+				Action a = new Action(ActionType.deployMedication, game, outbreak.getCity(), outbreak.getPathogen());
 				actions.add(a);
 			}
 		}
 	}
 
 	private static void addVaccineDevActions(Game game, HashSet<Action> actions) {
-		for (Virus virus : game.getViruses().values()) {
-			Action a = new Action(ActionType.developVaccine, game, virus);
+		for (Pathogen pathogen : game.getPathogenes().values()) {
+			Action a = new Action(ActionType.developVaccine, game, pathogen);
 			// Only add the DevVacc event if it is not already developed or being developed.
-			if (!(game.getVaccAvailableEvents().stream().anyMatch(e -> e.getVirus() == a.getVirus())
-					|| game.getVaccDevEvents().stream().anyMatch(e -> e.getVirus() == a.getVirus()))) {
+			if (!(game.getVaccAvailableEvents().stream().anyMatch(e -> e.getPathogen() == a.getPathogen())
+					|| game.getVaccDevEvents().stream().anyMatch(e -> e.getPathogen() == a.getPathogen()))) {
 
 				actions.add(a);
 			}
@@ -90,11 +90,11 @@ public class ActionControl {
 	}
 
 	private static void addMedDevActions(Game game, HashSet<Action> actions) {
-		for (Virus virus : game.getViruses().values()) {
-			Action a = new Action(ActionType.developMedication, game, virus);
+		for (Pathogen pathogen : game.getPathogenes().values()) {
+			Action a = new Action(ActionType.developMedication, game, pathogen);
 			// Only add the DevMed event if it is not already developed or being developed.
-			if (!(game.getMedAvailableEvents().stream().anyMatch(e -> e.getVirus() == a.getVirus())
-					|| game.getMedDevEvents().stream().anyMatch(e -> e.getVirus() == a.getVirus()))) {
+			if (!(game.getMedAvailableEvents().stream().anyMatch(e -> e.getPathogen() == a.getPathogen())
+					|| game.getMedDevEvents().stream().anyMatch(e -> e.getPathogen() == a.getPathogen()))) {
 				actions.add(a);
 			}
 		}

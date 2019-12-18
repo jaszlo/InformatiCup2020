@@ -1,11 +1,10 @@
 package app.game.actions;
 
-import java.util.Arrays;
 import java.util.HashSet;
 
 import app.game.City;
 import app.game.Game;
-import app.game.Virus;
+import app.game.Pathogen;
 
 public class ActionHeuristic {
 	// FACTOR: The factor by which the score is scaled.
@@ -28,7 +27,7 @@ public class ActionHeuristic {
 	// Medication over vaccination therefore multiply the factor by 3.
 	static final int DEV_MEDICATION_FACTOR = DEV_VACCINE_FACTOR * 3;
 	static final int DEV_MEDICATION_THRESHOLD = DEV_VACCINE_THRESHOLD;
-	// If a Virus usualy does not require medication but this global prevalance is
+	// If a Pathogen usualy does not require medication but this global prevalance is
 	// reached develop it anyway.
 	static final double DEV_MEDICATION_PREVALANCE_THRESHOLD = DEV_VACCINE_PREVALANCE_THRESHOLD;
 
@@ -38,13 +37,13 @@ public class ActionHeuristic {
 	static final int DEP_MEDICATION_FACTOR = DEV_VACCINE_FACTOR;
 	static final int DEP_MEDICATION_THRESHOLD = DEV_VACCINE_THRESHOLD;
 
-	private static boolean doQuarantine(Virus virus) {
-		int infectivity = virus.getInfectivity().getNumericRepresentation();
-		int lethality = virus.getLethality().getNumericRepresentation();
-		int mobility = virus.getMobility().getNumericRepresentation();
-		int duration = virus.getDuration().getNumericRepresentation();
+	private static boolean doQuarantine(Pathogen pathogen) {
+		int infectivity = pathogen.getInfectivity().getNumericRepresentation();
+		int lethality = pathogen.getLethality().getNumericRepresentation();
+		int mobility = pathogen.getMobility().getNumericRepresentation();
+		int duration = pathogen.getDuration().getNumericRepresentation();
 
-		// Factors that contribute to a dangerous virus killing lots of people in a
+		// Factors that contribute to a dangerous pathogen killing lots of people in a
 		// short amount of time
 		// get multiplied. High duration would lead to a long and therefore expensive
 		// Quaratine. Therefore we reverse the
@@ -54,35 +53,35 @@ public class ActionHeuristic {
 		return score >= QUARANTINE_THRESHOLD;
 	}
 
-	private static boolean doDevVaccine(Virus virus, Game game) {
-		int infectivity = virus.getInfectivity().getNumericRepresentation();
-		int mobility = virus.getMobility().getNumericRepresentation();
+	private static boolean doDevVaccine(Pathogen pathogen, Game game) {
+		int infectivity = pathogen.getInfectivity().getNumericRepresentation();
+		int mobility = pathogen.getMobility().getNumericRepresentation();
 
 		int score = mobility * infectivity;
 
-		// If a virus expands fast vaccines should not be developed.
+		// If a pathogen expands fast vaccines should not be developed.
 		return score <= DEV_VACCINE_THRESHOLD;
 	}
 
-	private static boolean doDevMedication(Virus virus, Game game) {
-		int infectivity = virus.getInfectivity().getNumericRepresentation();
-		int mobility = virus.getMobility().getNumericRepresentation();
+	private static boolean doDevMedication(Pathogen pathogen, Game game) {
+		int infectivity = pathogen.getInfectivity().getNumericRepresentation();
+		int mobility = pathogen.getMobility().getNumericRepresentation();
 
 		int score = mobility * infectivity;
 
-		// Because quarantine only contains a virus within one city it is not worth the
+		// Because quarantine only contains a pathogen within one city it is not worth the
 		// points to develop a medication
-		if (doQuarantine(virus)) {
+		if (doQuarantine(pathogen)) {
 			return false;
 		}
 
-		// If a virus is not expanding fast, medication should not be developed.
+		// If a pathogen is not expanding fast, medication should not be developed.
 		// Unless it already has infected enough (see the
 		// DEV_MEDICATION_PREVALANCE_THRESHOLD)
 		if (score <= DEV_MEDICATION_THRESHOLD) {
 			double totalPopulation = game.getPopulation();
 			double infectedPopulation = game.getCities().values().stream()
-					.filter(c -> c.getOutbreak() != null && c.getOutbreak().getVirus() == virus)
+					.filter(c -> c.isInfected(pathogen))
 					.mapToDouble(c -> c.getPrevalance() * c.getPopulation()).sum();
 
 			double globalPrevalance = infectedPopulation / totalPopulation;
@@ -106,7 +105,7 @@ public class ActionHeuristic {
 		int score = 0;
 			City city = action.getCity();
 			Game game = action.getGame();
-			Virus virus = action.getVirus();
+			Pathogen pathogen = action.getPathogen();
 
 			switch (action.getType()) {
 			case endRound:
@@ -114,32 +113,32 @@ public class ActionHeuristic {
 				break;
 			case putUnderQuarantine:
 
-				// If a very strong virus breaks out in 2 Cities protect the biggest one. For instance seed 4
-				if (city.getOutbreak() == null) {
-					int strongVirusAmount = (int) game.getOutbreakEvents().stream()
-							.filter(e -> doQuarantine(e.getVirus())).count();
+				// If a very strong pathogen breaks out in 2 Cities protect the biggest one. For instance seed 4
+				if (!city.isInfected()) {
+					int strongPathogenAmount = (int) game.getOutbreakEvents().stream()
+							.filter(e -> doQuarantine(e.getPathogen())).count();
 
-					// If there are more than 2 qurantinable viruses we can not quarantine both.
+					// If there are more than 2 qurantinable pathogenes we can not quarantine both.
 					// Therefore we quarantine the biggest city and hope for the best
-					if (strongVirusAmount > 1) {
+					if (strongPathogenAmount > 1) {
 						score += QUARANTINE_FACTOR * action.getCost() * city.getPopulation();
 					}
 				}
 
 				// The city does not need to be quarantined without an outbreak
-				if (city.getOutbreak() == null)
+				if (!city.isInfected())
 					break;
 
-				// The city does not need to be quarantined if the virus is to mild
-				if (!doQuarantine(city.getOutbreak().getVirus()))
+				// The city does not need to be quarantined if the pathogen is to mild
+				if (!doQuarantine(city.getPathogen()))
 					break;
 
 				// The city does not need to be quarantined if it is already under quarantine
 				if (city.getQuarantine() != null)
 					break;
 
-				// Check if there is another uninfected city we want to protect from this Virus.
-				if (!game.getCities().values().stream().anyMatch((City c) -> c.getOutbreak() == null)) {
+				// Check if there is another uninfected city we want to protect from this Pathogen.
+				if (!game.getCities().values().stream().anyMatch((City c) -> !c.isInfected())) {
 					break;
 				}
 
@@ -153,8 +152,8 @@ public class ActionHeuristic {
 			case developVaccine:
 
 				// Only develop vaccine if necessary
-				if (!doDevVaccine(virus, game)
-						&& game.getCities().values().stream().filter(c -> c.getOutbreak() == null)
+				if (!doDevVaccine(pathogen, game)
+						&& game.getCities().values().stream().filter(c -> !c.isInfected())
 								.mapToDouble(c -> c.getPopulation()).sum() <= 0.1 * game.getPopulation()) {
 					break;
 				}
@@ -163,49 +162,49 @@ public class ActionHeuristic {
 				// infected vaccines are useless
 				double totalPopulation = game.getPopulation();
 				double infectedPopulation = game.getCities().values().stream()
-						.filter(c -> c.getOutbreak() != null && c.getOutbreak().getVirus() == virus)
+						.filter(c -> c.isInfected(pathogen))
 						.mapToDouble(c -> c.getPrevalance() * c.getPopulation()).sum();
 
 				double globalPrevalance = infectedPopulation / totalPopulation;
 
 				// Only if prevalence is low enough add score
 				if (globalPrevalance < DEV_VACCINE_PREVALANCE_THRESHOLD) {
-					score += (DEV_VACCINE_FACTOR * virus.getLethality().getNumericRepresentation());
+					score += (DEV_VACCINE_FACTOR * pathogen.getLethality().getNumericRepresentation());
 				}
 
 				break;
 
 			case deployVaccine:
-				// Create a Point buffer. If in a later round a strong Virus breaks out we can quarantine it.
+				// Create a Point buffer. If in a later round a strong Pathogen breaks out we can quarantine it.
 				if (game.getPoints() <= 25) {
 					break;
 				}
 				
 				// Cities only need to be vaccinated once
-				if (city.getVaccineDeployed().stream().anyMatch(e -> e.getVirus() == virus))
+				if (city.getVaccineDeployed().stream().anyMatch(e -> e.getPathogen() == pathogen))
 					break;
 
 				// TODO: Adjust formula
 				score += DEP_VACCINE_FACTOR * (1 - city.getPrevalance()) * city.getPopulation()
-						* virus.getLethality().getNumericRepresentation();
+						* pathogen.getLethality().getNumericRepresentation();
 				break;
 			case developMedication:
-				// If virus is strong enough develop medication
-				if (doDevMedication(virus, game)) {
-					score += (DEV_MEDICATION_FACTOR * virus.getLethality().getNumericRepresentation());
+				// If pathogen is strong enough develop medication
+				if (doDevMedication(pathogen, game)) {
+					score += (DEV_MEDICATION_FACTOR * pathogen.getLethality().getNumericRepresentation());
 
 				}
 				break;
 			case deployMedication:
 
-				// Create a Point buffer. If in a later round a strong Virus breaks out we can quarantine it.	
+				// Create a Point buffer. If in a later round a strong Pathogen breaks out we can quarantine it.	
 				if (game.getPoints() <= 30) {
 					break;
 				} 
 				
 				// TODO: Adjust formula
 				score += DEP_MEDICATION_FACTOR * city.getPrevalance() * city.getPopulation()
-						* virus.getLethality().getNumericRepresentation();
+						* pathogen.getLethality().getNumericRepresentation();
 				break;
 			case exertInfluence:
 			case callElections:

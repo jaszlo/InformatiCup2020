@@ -1,6 +1,6 @@
 package app.game.events;
 
-import app.game.Virus;
+import app.game.Pathogen;
 
 /**
  * Class to hold information about the ingame MedicationAvailable Event
@@ -9,32 +9,32 @@ public class E_MedicationAvailable extends Event{
 
 	private final int sinceRound;
 	
-	private final Virus virus;
+	private final Pathogen pathogen;
 	
 	/**
 	 * 
 	 * @param sinceRound the round in which this event started
-	 * @param virus The virus for which medication is available 
+	 * @param pathogen The pathogen for which medication is available 
 	 */
-	public E_MedicationAvailable(int sinceRound, Virus virus) {
+	public E_MedicationAvailable(int sinceRound, Pathogen pathogen) {
 		super(EventType.medicationAvailable);
 		this.sinceRound = sinceRound;
-		this.virus = virus;
+		this.pathogen = pathogen;
 	}
 
 	/**
 	 * 
-	 * @return The virus for which medication is available
+	 * @return The pathogen for which medication is available
 	 */
-	public Virus getVirus() {
-		return virus;
+	public Pathogen getPathogen() {
+		return pathogen;
 	}
 	
 	/**
 	 * @return general information about this event as String
 	 */
 	public String toString() {
-		return super.toString()+", Since: "+getSinceRound()+",Virus: "+getVirus().toString();
+		return super.toString()+", Since: "+getSinceRound()+",Pathogen: "+getPathogen().toString();
 	}
 
 	/**

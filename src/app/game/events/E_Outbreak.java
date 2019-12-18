@@ -1,7 +1,7 @@
 package app.game.events;
 
 import app.game.City;
-import app.game.Virus;
+import app.game.Pathogen;
 
 /**
  * Class to hold information about the ingame Outbreak Event
@@ -10,7 +10,7 @@ public class E_Outbreak extends Event{
 
 	private final int sinceRound;
 	
-	private final Virus virus;
+	private final Pathogen pathogen;
 	
 	private final double prevalence;
 	
@@ -20,23 +20,23 @@ public class E_Outbreak extends Event{
 	 * 
 	 * @param city the city in which the outbreak takes place
 	 * @param sinceRound the round in which this event started
-	 * @param virus the virus which broke out
+	 * @param pathogen the pathogen which broke out
 	 * @param prevalence the percentage of citizens infected. prevalence lies in the interval [0,1]
 	 */
-	public E_Outbreak(City city, int sinceRound, Virus virus, double prevalence) {
+	public E_Outbreak(City city, int sinceRound, Pathogen pathogen, double prevalence) {
 		super(EventType.outbreak);
 		this.sinceRound = sinceRound;
-		this.virus = virus;
+		this.pathogen = pathogen;
 		this.prevalence = prevalence;
 		this.city = city;
 	}
 
 	/**
 	 * 
-	 * @return the virus which broke out
+	 * @return the pathogen which broke out
 	 */
-	public Virus getVirus() {
-		return virus;
+	public Pathogen getPathogen() {
+		return pathogen;
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class E_Outbreak extends Event{
 	@Override
 	public String toString() {
 		return super.toString()+". Since: "+getSinceRound()+", City:  "+getCity().getName()+
-				", prevalence: "+getPrevalence()+", Virus:"+getVirus().toString();
+				", prevalence: "+getPrevalence()+", Pathogen:"+getPathogen().toString();
 	}
 
 	/**

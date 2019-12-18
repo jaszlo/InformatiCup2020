@@ -1,14 +1,14 @@
 package app.game.events;
 
 import app.game.City;
-import app.game.Virus;
+import app.game.Pathogen;
 
 /**
  * Class to hold information about the ingame BioTerrorism Event
  */
 public class E_BioTerror extends Event{
 
-	private final Virus virus;
+	private final Pathogen pathogen;
 	
 	private final City city;
 	
@@ -18,21 +18,21 @@ public class E_BioTerror extends Event{
 	 * 
 	 * @param city the City in which this event takes place
 	 * @param sinceRound the round in which this event started
-	 * @param virus The virus being spread 
+	 * @param pathogen The pathogen being spread 
 	 */
-	public E_BioTerror(City city, int sinceRound, Virus virus) {
+	public E_BioTerror(City city, int sinceRound, Pathogen pathogen) {
 		super(EventType.bioTerrorism);
 		this.sinceRound = sinceRound;
-		this.virus = virus;
+		this.pathogen = pathogen;
 		this.city = city;
 	}
 
 	/**
 	 * 
-	 * @return the virus being spread by this event
+	 * @return the pathogen being spread by this event
 	 */
-	public Virus getVirus() {
-		return virus;
+	public Pathogen getPathogen() {
+		return pathogen;
 	}
 
 	/**
@@ -56,6 +56,6 @@ public class E_BioTerror extends Event{
 	 */
 	@Override
 	public String toString() {
-		return super.toString()+". Since: "+getSinceRound()+", City:  "+getCity().getName()+", Virus: "+getVirus().toString();
+		return super.toString()+". Since: "+getSinceRound()+", City:  "+getCity().getName()+", Pathogen: "+getPathogen().toString();
 	}
 }

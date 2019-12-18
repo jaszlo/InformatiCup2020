@@ -1,33 +1,33 @@
 package app.game.events;
 
-import app.game.Virus;
+import app.game.Pathogen;
 
 /**
  * Class to hold information about the ingame PathogenEncounter Event
  */
 public class E_PathogenEncounter extends Event{
 
-	private final Virus virus;
+	private final Pathogen pathogen;
 	
 	private final int round;
 	
 	/**
 	 * 
 	 * @param round the round the pathogen was first encountered
-	 * @param virus the virus that is encountered
+	 * @param pathogen the pathogen that is encountered
 	 */
-	public E_PathogenEncounter(int round, Virus virus) {	
+	public E_PathogenEncounter(int round, Pathogen pathogen) {	
 		super(EventType.pathogenEncountered);
 		this.round = round;
-		this.virus = virus;
+		this.pathogen = pathogen;
 	}
 
 	/**
 	 * 
-	 * @return the virus that is encountered
+	 * @return the pathogen that is encountered
 	 */
-	public Virus getVirus() {
-		return virus;
+	public Pathogen getPathogen() {
+		return pathogen;
 	}
 
 	/**
@@ -36,7 +36,7 @@ public class E_PathogenEncounter extends Event{
 	@Override
 	public String toString() {
 		return super.toString()+". Round: "+getRound()+
-				", Virus:"+getVirus().toString();
+				", Pathogen:"+getPathogen().toString();
 	}
 
 	/**

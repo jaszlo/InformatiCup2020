@@ -8,7 +8,6 @@ import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
-import app.game.actions.ActionHeuristic;
 import app.solver.GameEvaluater;
 
 public class GameServer {

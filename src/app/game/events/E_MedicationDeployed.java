@@ -1,7 +1,7 @@
 package app.game.events;
 
 import app.game.City;
-import app.game.Virus;
+import app.game.Pathogen;
 
 
 /**
@@ -11,20 +11,20 @@ public class E_MedicationDeployed extends Event{
 
 	private final int round;
 	
-	private final Virus virus;
+	private final Pathogen pathogen;
 	
 	private final City city;
 	
 	/**
 	 * 
 	 * @param round the current round of the game
-	 * @param virus the virus for which medication is deployed
+	 * @param pathogen the pathogen for which medication is deployed
 	 * @param city the city in which the medication is deployed
 	 */
-	public E_MedicationDeployed(int round, Virus virus, City city) {
+	public E_MedicationDeployed(int round, Pathogen pathogen, City city) {
 		super(EventType.medicationDeployed);
 		this.round = round;
-		this.virus = virus;
+		this.pathogen = pathogen;
 		this.city = city;
 	}
 
@@ -38,10 +38,10 @@ public class E_MedicationDeployed extends Event{
 
 	/**
 	 * 
-	 * @return the virus for which medication is deployed
+	 * @return the pathogen for which medication is deployed
 	 */
-	public Virus getVirus() {
-		return virus;
+	public Pathogen getVirus() {
+		return pathogen;
 	}
 
 	/**

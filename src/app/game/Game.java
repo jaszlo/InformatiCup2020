@@ -30,7 +30,7 @@ public class Game {
 
 	// General
 	private final HashMap<String, City> cities = new HashMap<String, City>();
-	private final HashMap<String, Virus> viruses = new HashMap<String, Virus>();
+	private final HashMap<String, Pathogen> pathogenes = new HashMap<String, Pathogen>();
 	// private final HashMap<City,HashSet<Event>> eventsByCity = new
 	// HashMap<City,HashSet<Event>>();
 	private final HashMap<EventType, HashSet<? extends Event>> events = new HashMap<EventType, HashSet<? extends Event>>(); // Eventtypen
@@ -74,17 +74,17 @@ public class Game {
 		return game;
 	}
 
-	private Virus parseVirus(JSONObject virus) {
-		String name = (String) virus.get("name");
-		if (getViruses().containsKey(name))
-			return getViruses().get(name);
+	private Pathogen parsePathogen(JSONObject pathogen) {
+		String name = (String) pathogen.get("name");
+		if (getPathogenes().containsKey(name))
+			return getPathogenes().get(name);
 		else {
-			Scale infectivity = Scale.parse((String) virus.get("infectivity"));
-			Scale mobility = Scale.parse((String) virus.get("mobility"));
-			Scale duration = Scale.parse((String) virus.get("duration"));
-			Scale lethality = Scale.parse((String) virus.get("lethality"));
-			Virus v = new Virus(name, infectivity, mobility, duration, lethality);
-			viruses.put(name, v);
+			Scale infectivity = Scale.parse((String) pathogen.get("infectivity"));
+			Scale mobility = Scale.parse((String) pathogen.get("mobility"));
+			Scale duration = Scale.parse((String) pathogen.get("duration"));
+			Scale lethality = Scale.parse((String) pathogen.get("lethality"));
+			Pathogen v = new Pathogen(name, infectivity, mobility, duration, lethality);
+			pathogenes.put(name, v);
 			return v;
 		}
 	}
@@ -94,14 +94,14 @@ public class Game {
 		if (type.equals("outbreak")) { // stadt
 			int sinceRound = Integer.parseInt(event.get("sinceRound").toString());
 			double prevalence = Double.parseDouble(event.get("prevalence").toString());
-			Virus virus = parseVirus((JSONObject) event.get("pathogen"));
-			E_Outbreak e = new E_Outbreak(city, sinceRound, virus, prevalence);
+			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
+			E_Outbreak e = new E_Outbreak(city, sinceRound, pathogen, prevalence);
 			addToGeneralEventMap(e);
 			addToCityEventMap(e, city);
 		} else if (type.equals("bioTerrorism")) { // stadt
 			int sinceRound = Integer.parseInt(event.get("round").toString());
-			Virus virus = parseVirus((JSONObject) event.get("pathogen"));
-			E_BioTerror e = new E_BioTerror(city, sinceRound, virus);
+			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
+			E_BioTerror e = new E_BioTerror(city, sinceRound, pathogen);
 			addToGeneralEventMap(e);
 			addToCityEventMap(e, city);
 		} else if (type.equals("antiVaccinationism")) { // stadt
@@ -111,8 +111,8 @@ public class Game {
 			addToCityEventMap(e, city);
 		} else if (type.equals("pathogenEncountered")) { // global
 			int round = Integer.parseInt(event.get("round").toString());
-			Virus virus = parseVirus((JSONObject) event.get("pathogen"));
-			E_PathogenEncounter e = new E_PathogenEncounter(round, virus);
+			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
+			E_PathogenEncounter e = new E_PathogenEncounter(round, pathogen);
 			addToGeneralEventMap(e);
 		} else if (type.equals("largeScalePanic")) { // global
 			panicStart = Integer.parseInt(event.get("sinceRound").toString());
@@ -133,24 +133,24 @@ public class Game {
 		} else if (type.equals("vaccineInDevelopment")) {
 			int until = Integer.parseInt(event.get("untilRound").toString());
 			int since = Integer.parseInt(event.get("sinceRound").toString());
-			Virus virus = parseVirus((JSONObject) event.get("pathogen"));
-			E_VaccineInDevelopment e = new E_VaccineInDevelopment(since, until, virus);
+			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
+			E_VaccineInDevelopment e = new E_VaccineInDevelopment(since, until, pathogen);
 			addToGeneralEventMap(e);
 		} else if (type.equals("vaccineAvailable")) {
 			int since = Integer.parseInt(event.get("sinceRound").toString());
-			Virus virus = parseVirus((JSONObject) event.get("pathogen"));
-			E_VaccineAvailable e = new E_VaccineAvailable(since, virus);
+			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
+			E_VaccineAvailable e = new E_VaccineAvailable(since, pathogen);
 			addToGeneralEventMap(e);
 		} else if (type.equals("medicationInDevelopment")) {
 			int until = Integer.parseInt(event.get("untilRound").toString());
 			int since = Integer.parseInt(event.get("sinceRound").toString());
-			Virus virus = parseVirus((JSONObject) event.get("pathogen"));
-			E_MedicationInDevelopment e = new E_MedicationInDevelopment(since, until, virus);
+			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
+			E_MedicationInDevelopment e = new E_MedicationInDevelopment(since, until, pathogen);
 			addToGeneralEventMap(e);
 		} else if (type.equals("medicationAvailable")) {
 			int since = Integer.parseInt(event.get("sinceRound").toString());
-			Virus virus = parseVirus((JSONObject) event.get("pathogen"));
-			E_MedicationAvailable e = new E_MedicationAvailable(since, virus);
+			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
+			E_MedicationAvailable e = new E_MedicationAvailable(since, pathogen);
 			addToGeneralEventMap(e);
 			;
 		} else if (type.equals("connectionClosed")) {
@@ -168,14 +168,14 @@ public class Game {
 			addToCityEventMap(e, city);
 		} else if (type.equals("medicationDeployed")) {
 			int round = Integer.parseInt(event.get("round").toString());
-			Virus virus = parseVirus((JSONObject) event.get("pathogen"));
-			E_MedicationDeployed e = new E_MedicationDeployed(round, virus, city);
+			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
+			E_MedicationDeployed e = new E_MedicationDeployed(round, pathogen, city);
 			addToGeneralEventMap(e);
 			addToCityEventMap(e, city);
 		} else if (type.equals("vaccineDeployed")) {
 			int round = Integer.parseInt(event.get("round").toString());
-			Virus virus = parseVirus((JSONObject) event.get("pathogen"));
-			E_VaccineDeployed e = new E_VaccineDeployed(round, virus, city);
+			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
+			E_VaccineDeployed e = new E_VaccineDeployed(round, pathogen, city);
 			addToGeneralEventMap(e);
 			addToCityEventMap(e, city);
 		} else {
@@ -320,7 +320,7 @@ public class Game {
 
 	/**
 	 * 
-	 * @return A set of all virus-outbreaks
+	 * @return A set of all pathogen-outbreaks
 	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_Outbreak> getOutbreakEvents() {
@@ -497,10 +497,10 @@ public class Game {
 	
 	/**
 	 * 
-	 * @return All Map of all Viruses. The Key is the name of the Virus.
+	 * @return All Map of all Pathogenes. The Key is the name of the Pathogen.
 	 */
 	@Deprecated
-	public HashMap<String, Virus> getViruses() {
-		return viruses;
+	public HashMap<String, Pathogen> getPathogenes() {
+		return pathogenes;
 	}
 }

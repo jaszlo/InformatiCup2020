@@ -1,6 +1,6 @@
 package app.game.events;
 
-import app.game.Virus;
+import app.game.Pathogen;
 
 
 /**
@@ -10,19 +10,19 @@ public class E_MedicationInDevelopment extends Event{
 
 	private final int untilRound, sinceRound;
 	
-	private final Virus virus;
+	private final Pathogen pathogen;
 	
 	/**
 	 * 
 	 * @param sinceRound the round in which this event started
 	 * @param untilRound the round until this event remains active
-	 * @param virus the virus for which medication is being developed
+	 * @param pathogen the pathogen for which medication is being developed
 	 */
-	public E_MedicationInDevelopment(int sinceRound, int untilRound, Virus virus) {
+	public E_MedicationInDevelopment(int sinceRound, int untilRound, Pathogen pathogen) {
 		super(EventType.medicationInDevelopment);
 		this.sinceRound = sinceRound;
 		this.untilRound = untilRound;
-		this.virus = virus;
+		this.pathogen = pathogen;
 	}
 
 	/**
@@ -35,17 +35,17 @@ public class E_MedicationInDevelopment extends Event{
 
 	/**
 	 * 
-	 * @return the virus for which medication is being developed
+	 * @return the pathogen for which medication is being developed
 	 */
-	public Virus getVirus() {
-		return virus;
+	public Pathogen getPathogen() {
+		return pathogen;
 	}
 
 	/**
 	 * @return general information about this event as String
 	 */
 	public String toString() {
-		return super.toString()+", Since: "+getSinceRound()+",Until: "+getUntilRound()+", Virus: "+getVirus().toString();
+		return super.toString()+", Since: "+getSinceRound()+",Until: "+getUntilRound()+", Pathogen: "+getPathogen().toString();
 	}
 
 	/**
