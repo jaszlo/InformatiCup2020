@@ -421,6 +421,7 @@ public class GuiController {
 			// r could not be parsed. As a default it will be set to one.
 			r = 1;
 		}
+		// CHECK FOR NPE TODO
 		this.executeEvent(new Action(ActionType.putUnderQuarantine, g, c, r).toString());
 	}
 
