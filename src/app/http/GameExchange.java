@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import com.sun.net.httpserver.HttpExchange;
 
 import app.game.Game;
+import app.game.actions.ActionHeuristic;
 import app.gui.GuiController;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -43,7 +44,7 @@ public class GameExchange {
             OutputStream os = exchange.getResponseBody();
             os.write(response.getBytes("UTF-8"));
             os.close();
-            System.out.println(response);
+//           System.out.println(response);
             this.exchange = null;
         } catch (IOException e){
         	System.err.println("Error while sending response!");

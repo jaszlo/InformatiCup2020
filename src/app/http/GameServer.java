@@ -8,6 +8,7 @@ import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
+import app.game.actions.ActionHeuristic;
 import app.solver.GameEvaluater;
 
 public class GameServer {
@@ -40,7 +41,7 @@ public class GameServer {
 		    			wins++;
 		    		} 
 		    		games++;
-	    			System.out.println(ge.getGame().getOutcome() + " - current winRate = " + ((wins/games)*100) + "%.");
+	    			System.out.println("GameNR: " + games + ge.getGame().getOutcome() + " - current winRate = " + ((wins/games)*100) + "%.");
 	    		}
 	    		if(hasReplies())
 	    			ge.sendReply(getReply().evaluate(ge.getGame()));
