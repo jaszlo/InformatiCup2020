@@ -3,6 +3,7 @@ package app.game;
 import java.util.HashMap;
 
 import java.util.HashSet;
+import java.util.Optional;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -33,10 +34,12 @@ public class Game {
 	private final HashMap<String, Pathogen> pathogenes = new HashMap<String, Pathogen>();
 	// private final HashMap<City,HashSet<Event>> eventsByCity = new
 	// HashMap<City,HashSet<Event>>();
-	private final HashMap<EventType, HashSet<? extends Event>> events = new HashMap<EventType, HashSet<? extends Event>>(); // Eventtypen
-																															// nach
-																															// Namen
-
+	private final HashMap<EventType, HashSet<? extends Event>> events = new HashMap<>(); // Eventtypen nach Namen
+	
+	// A map with all pathogenes we want to ignore in out heueristic
+	private HashMap<Pathogen, Boolean> ignoredPathogenes = new HashMap<>();
+	
+	
 	private int ecoCrisisStart = -1, panicStart = -1;
 
 	private int initialPopulation = -1; // -1 if not known
@@ -51,6 +54,7 @@ public class Game {
 
 	/**
 	 * Creates a game object
+	 * 
 	 * @param game The String representing the game in UTF-8 format.
 	 */
 	public Game(String game) {
@@ -184,7 +188,7 @@ public class Game {
 		}
 	}
 
-	//helper method to put an Event into the events map
+	// helper method to put an Event into the events map
 	@SuppressWarnings("unchecked")
 	private void addToGeneralEventMap(Event event) {
 		String name = event.getName();
@@ -198,7 +202,7 @@ public class Game {
 		}
 	}
 
-	//helper method to add an event to a city
+	// helper method to add an event to a city
 	private void addToCityEventMap(Event event, City city) {
 		city.addEvent(event);
 	}
@@ -206,14 +210,14 @@ public class Game {
 	private void parseGame(String game) {
 		try {
 			JSONObject obj = (JSONObject) new JSONParser().parse(game);
-			//parse general information
+			// parse general information
 			round = Integer.parseInt(obj.get("round").toString());
 			outcome = (String) obj.get("outcome");
 			points = Integer.parseInt(obj.get("points").toString());
 
 			JSONObject cities = (JSONObject) obj.get("cities");
 			int totalPop = 0;
-			//parse Cities
+			// parse Cities
 			for (Object o : cities.values()) {
 				JSONObject city = (JSONObject) o;
 				Scale government = Scale.parse((String) city.get("government"));
@@ -229,7 +233,7 @@ public class Game {
 				City c = new City(name, x, y, new HashSet<City>(), pop, economy, government, hygiene, awareness);
 				this.cities.put(name, c);
 			}
-			//parse City connections
+			// parse City connections
 			for (Object o : cities.values()) {
 				JSONObject city = (JSONObject) o;
 				City source = getCities().get(city.get("name"));
@@ -245,13 +249,13 @@ public class Game {
 					}
 				}
 			}
-			//Set, if possible, the initial population. Only possible at round 1. 
+			// Set, if possible, the initial population. Only possible at round 1.
 			population = totalPop;
 			if (getRound() == 1)
 				initialPopulation = getPopulation();
 			else
 				initialPopulation = -1;
-			//Parse non city-specific Events
+			// Parse non city-specific Events
 			JSONArray globalEvents = (JSONArray) obj.get("events"); // parse global events
 			if (globalEvents != null) {
 				for (Object event : globalEvents)
@@ -288,7 +292,8 @@ public class Game {
 
 	/**
 	 * 
-	 * @return The current total population. Equal to the sum of population of all cities.
+	 * @return The current total population. Equal to the sum of population of all
+	 *         cities.
 	 */
 	public int getPopulation() {
 		return population;
@@ -390,7 +395,6 @@ public class Game {
 			return new HashSet<E_VaccineAvailable>();
 	}
 
-	
 	/**
 	 * 
 	 * @return A set of all medication currently in development
@@ -465,7 +469,8 @@ public class Game {
 
 	/**
 	 * 
-	 * @return The outcome of the game as String. This can either be 'loss', 'win' or 'pending'
+	 * @return The outcome of the game as String. This can either be 'loss', 'win'
+	 *         or 'pending'
 	 */
 	public String getOutcome() {
 		return outcome;
@@ -473,7 +478,8 @@ public class Game {
 
 	/**
 	 * 
-	 * @return The round the large scale panic started. If it hasn't started yet, -1 is returned.
+	 * @return The round the large scale panic started. If it hasn't started yet, -1
+	 *         is returned.
 	 */
 	public int getPanicStart() {
 		return panicStart;
@@ -481,7 +487,8 @@ public class Game {
 
 	/**
 	 * 
-	 * @return The round the economic crisis has started. If it hasn't started yet, -1 is returned.
+	 * @return The round the economic crisis has started. If it hasn't started yet,
+	 *         -1 is returned.
 	 */
 	public int getEcoCrisisStart() {
 		return ecoCrisisStart;
@@ -494,7 +501,7 @@ public class Game {
 	public int getPoints() {
 		return points;
 	}
-	
+
 	/**
 	 * 
 	 * @return All Map of all Pathogenes. The Key is the name of the Pathogen.
@@ -502,5 +509,37 @@ public class Game {
 	@Deprecated
 	public HashMap<String, Pathogen> getPathogenes() {
 		return pathogenes;
+	}
+
+	public boolean ignorePathogenThisRound(Pathogen pathogen) {
+
+		if (pathogen == null) {
+			return false;
+		}
+		
+		if (this.ignoredPathogenes.containsKey(pathogen)) {
+			return this.ignoredPathogenes.get(pathogen);
+		}
+
+		Optional<E_PathogenEncounter> encounter = this.getPathEncounterEvents().stream()
+				.filter(e -> e.getPathogen() == pathogen).findAny();
+
+		// Ignore useless bio terror.
+		if (!encounter.isPresent()) {
+			this.ignoredPathogenes.put(pathogen, true);
+			return true;
+		}
+
+		// Check if a pathogen is no longer active by checking if it has been there for
+		// over 10 rounds and has not infected more than 10% of all citie's population
+		// on
+		// average or has not infected more than 5 cities.
+		// This is to guess stateless that a pathogen is old and no longer a threat.
+		this.ignoredPathogenes.put(pathogen, (this.getRound() - encounter.get().getRound() >= 10
+				&& (this.getOutbreakEvents().stream().filter(e -> e.getPathogen() == pathogen)
+						.mapToDouble(e -> e.getPrevalence()).average().orElseGet(() -> 0) <= 0.10)
+				|| this.getOutbreakEvents().stream().filter(e -> e.getPathogen() == pathogen).count() <= 5));
+		return ignorePathogenThisRound(pathogen);
+
 	}
 }
