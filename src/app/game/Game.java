@@ -58,7 +58,7 @@ public class Game {
 	 */
 	public Game(String game) {
 		parseGame(game);
-		// Main.solve(this);
+		this.getPathogenes().values().stream().forEach(p -> ignorePathogenThisRound(p));
 	}
 
 	/**
@@ -88,7 +88,6 @@ public class Game {
 			Scale lethality = Scale.parse((String) pathogen.get("lethality"));
 			Pathogen v = new Pathogen(name, infectivity, mobility, duration, lethality);
 			pathogenes.put(name, v);
-			ignorePathogenThisRound(v);
 			return v;
 		}
 	}
