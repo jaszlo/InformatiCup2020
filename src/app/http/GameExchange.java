@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import com.sun.net.httpserver.HttpExchange;
 
+import app.Testing;
 import app.game.Game;
 import app.gui.GuiController;
 import javafx.application.Platform;
@@ -61,40 +62,7 @@ public class GameExchange {
 	}
 	
 	public void playGui() {
-		Platform.runLater(() -> this.startGui());
+		Testing.guiController.setGame(this);
 	}
 	
-	private void startGui() {
-		try {
-			
-			//Create the stages for the gui.
-			Stage GUI = new Stage();
-			//Create the loader for the gui.
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/resources/gui.fxml"));			
-			
-			//Create and assign the controllers.
-			GuiController guiController = new GuiController();
-			guiController.setGame(this);
-			loader.setController(guiController);
-			Parent root = null;
-		
-			//Create the scenes for the gui
-			root = (Parent)loader.load();
-			Scene scene = new Scene(root);
-			
-			// Maximaze the stage
-			GUI.setMaximized(true);
-			
-			//Attaches the newly created scene to the stage. Shows the Stage in a resizable window. Also set Title to Pandemie.
-			GUI.setScene(scene);
-			GUI.setTitle("Pandemie");
-			GUI.show();
-			
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("An error occoured while starting the GUI.");
-		}
-	}
 }
