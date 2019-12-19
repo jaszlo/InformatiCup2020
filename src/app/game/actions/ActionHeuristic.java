@@ -163,6 +163,7 @@ public class ActionHeuristic {
 				if ((game.getOutbreakEvents().stream().filter(e -> e.getPathogen() == onlyActivePathogen).count() == 1)
 						&& city.getOutbreak().getPathogen() == onlyActivePathogen) {
 
+					
 					score += QUARANTINE_FACTOR * action.getRounds();
 					break;
 				}
