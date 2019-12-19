@@ -16,6 +16,7 @@ import app.game.actions.ActionType;
 import app.http.GameExchange;
 import app.http.GameServer;
 import app.solver.Main;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -651,15 +652,16 @@ public class GuiController {
 				ObservableList<String>::addAll));
 
 		// Add all cities to the cities ChoiceBox
-		ObservableList<String> o = currentGame.getCities().values().stream().map(c -> c.getName()).collect(
+		ObservableList<String> o = currentGame.getCities().values().stream().map(c -> c.getName()).sorted().collect(
 				FXCollections::<String>observableArrayList, ObservableList<String>::add,
 				ObservableList<String>::addAll);
+		
 		// Update ChoiceBox in a new thread to boost performance
-		new Thread(() -> this.citiesCB.setItems(o)).start();
+		Platform.runLater(() -> this.citiesCB.setItems(o));
 		
 		// Show only connections of selected city in city to ChoiceBox
 		Collection<City> cities = selectedCity == null? new HashSet<>(): currentGame.getCity(selectedCity).getConnections();
-		this.citiesToCB.setItems(cities.stream().map(c -> c.getName()).collect(
+		this.citiesToCB.setItems(cities.stream().map(c -> c.getName()).sorted().collect(
 				FXCollections::<String>observableArrayList, ObservableList<String>::add,
 				ObservableList<String>::addAll));
 	}
