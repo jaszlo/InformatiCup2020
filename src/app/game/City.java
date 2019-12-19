@@ -299,8 +299,11 @@ public class City {
 	}
 	
 	/**
-	 * @param pathogen Check if the City infected by this pathogen
-	 * @return Returns true if the city is infected by the given pathogen
+	 * Returns true if the city is infected by the given Pathogen. If the pathogen is null
+	 * true is returned if the city is uninfected
+	 * 
+	 * @param pathogen Pathogen to check against
+	 * @return True if city is infected by pathogen
 	 */
 	public boolean isInfected(Pathogen pathogen) {
 		return this.getPathogen() == pathogen;

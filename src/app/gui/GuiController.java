@@ -1,6 +1,8 @@
 package app.gui;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Collection;
 import app.game.events.E_Outbreak;
 import app.game.City;
 import app.game.Game;
@@ -10,6 +12,8 @@ import app.game.actions.ActionType;
 import app.http.GameExchange;
 import app.http.GameServer;
 import app.solver.Main;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
@@ -21,6 +25,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.canvas.GraphicsContext;
+
 
 public class GuiController {
 
@@ -59,7 +64,8 @@ public class GuiController {
 	private static String selectedPathogen;
 
 	// Booleans corresponding
-	private static boolean showConnections, showPopulation, showInfected, showCityNames;
+	private static boolean showConnections, showPopulation, showInfected, showCityNames, showHealthyCities,
+			showInfectedCities;
 	private static boolean init = true;
 
 	// Constructor
@@ -79,6 +85,8 @@ public class GuiController {
 			showPopulation = true;
 			showInfected = true;
 			showCityNames = true;
+			showHealthyCities = false;
+			showInfectedCities = false;
 			selectedCity = null;
 			selectedCityTo = null;
 			selectedPathogen = null;
@@ -161,12 +169,13 @@ public class GuiController {
 	}
 
 	public void setGame(GameExchange exchange) {
-		if(exchange == null) return;
+		if (exchange == null)
+			return;
 		this.currentGameExchange = exchange;
 		this.currentGame = this.currentGameExchange.getGame();
 		this.initialize();
 	}
-	
+
 	public boolean ready() {
 		return this.currentGameExchange == null;
 	}
@@ -193,25 +202,25 @@ public class GuiController {
 
 	@FXML
 	private void checkShowConnections() {
-		showConnections = !showConnections;
+		showConnections = connectionBox.isSelected();
 		drawMap();
 	}
 
 	@FXML
 	private void checkShowPopulation() {
-		showPopulation = !showPopulation;
+		showPopulation = populationBox.isSelected();
 		drawMap();
 	}
 
 	@FXML
 	private void checkShowInfected() {
-		showInfected = !showInfected;
+		showInfected = infectedBox.isSelected();
 		drawMap();
 	}
 
 	@FXML
 	private void checkShowCityNames() {
-		showCityNames = !showCityNames;
+		showCityNames = cityNamesBox.isSelected();
 		drawMap();
 	} // End of checkBox methodes
 
@@ -292,42 +301,16 @@ public class GuiController {
 
 	@FXML // Button implementation
 	private void selectInfectedCities() {
-		Pathogen selectedPathogen = this.currentGame.getPathogenes().get(GuiController.selectedPathogen);
-
-		if (selectedPathogen == null)
-			return;
-
-		// Initialize the canvas as a 2D graphics object.
-		GraphicsContext gc = this.currentMap.getGraphicsContext2D();
-
-		// Clear the Canvas
-		gc.setFill(Color.WHITE);
-		gc.setStroke(Color.BLACK);
-		gc.clearRect(0, 0, this.currentMap.getWidth(), this.currentMap.getHeight());
-
-		// Draw all the infected cities
-		for (E_Outbreak e : this.currentGame.getOutbreakEvents()) {
-			if (selectedPathogen == e.getPathogen())
-				drawCity(e.getCity(), currentGame);
-		}
+		showInfectedCities = true;
+		showHealthyCities = false;
+		drawMap();
 	}
 
 	@FXML // Button implementation
 	private void selectHealthyCities() {
-
-		// Initialize the canvas as a 2D graphics object.
-		GraphicsContext gc = this.currentMap.getGraphicsContext2D();
-
-		// Clear the Canvas
-		gc.setFill(Color.WHITE);
-		gc.setStroke(Color.BLACK);
-		gc.clearRect(0, 0, this.currentMap.getWidth(), this.currentMap.getHeight());
-
-		// Draw all uninfected cities
-		for (City c : this.currentGame.getCities().values()) {
-			if (!c.isInfected())
-				drawCity(c, currentGame);
-		}
+		showHealthyCities = true;
+		showInfectedCities = false;
+		drawMap();
 	}
 
 	@FXML // onAction call for the selectPathogen choiceBox
@@ -478,68 +461,6 @@ public class GuiController {
 	}
 
 	@FXML
-	private void vaccinateBiggestCities() {
-
-		String cityAmountText = this.amountT.getText();
-
-		if (selectedPathogen == null) {
-			return;
-		}
-
-		// Initialize Integer we want to convert to
-		int cityAmount = 1;
-
-		try {
-			// Convert to Integer
-			cityAmount = Integer.parseInt(cityAmountText);
-		} catch (NumberFormatException e) {
-			// Error parsing to an Integer
-		}
-
-		for (int i = 0; i < cityAmount; i++) {
-
-			GameServer.addReply((Game g) -> {
-				Pathogen selectedPathogen = g.getPathogenes().get(GuiController.selectedPathogen);
-
-				// First get all infected cities. Then check in which city the most people can
-				// be medicated
-				// Set PathogenChoiceBox selected field to the selected Pathogen
-				City bestCity = g.getCities().values().stream()
-						.filter(c -> c.getVaccineDeployed().stream()
-								.allMatch(e -> e.getPathogen() != selectedPathogen))
-						.max((City c1, City c2) -> {
-							// Get the healthy population as we want to vaccinate the city which impacts the most people
-							double healthyPopulation1 = c1.isInfected(selectedPathogen) ? 1 - c1.getPrevalance(): 1;
-							double healthyPopulation2 = c2.isInfected(selectedPathogen) ? 1 - c2.getPrevalance(): 1;
-							
-							return (int) (c1.getPopulation() * healthyPopulation1
-								- c2.getPopulation() * healthyPopulation2);
-						}).orElseGet(() -> null);
-
-				// If no city is infected by the selected pathogen just end the round
-				if (bestCity == null) {
-					GameServer.clearReplies();
-					return new Action(g).toString();
-				}
-
-
-				// Return the new Action which medicates the city where currently the most
-				// people are influenced by the selected pathogen.
-				return new Action(ActionType.deployVaccine, g, bestCity, selectedPathogen).toString();
-			});
-		}
-
-		// Check if there is an event to execute
-		if (!GameServer.hasReplies()) {
-			return;
-		}
-
-		// Execute the Action generated addReply methode above.
-		this.executeEvent(GameServer.getReply().evaluate(currentGame));
-
-	}
-
-	@FXML
 	private void developMedication() {
 		Game g = this.currentGame;
 		Pathogen p = g.getPathogenes().get(selectedPathogen);
@@ -601,6 +522,67 @@ public class GuiController {
 		}
 		this.executeEvent(new Action(ActionType.launchCampaign, g, c).toString());
 	}
+	
+	@FXML
+	private void vaccinateBiggestCities() {
+
+		String cityAmountText = this.amountT.getText();
+
+		if (selectedPathogen == null) {
+			return;
+		}
+
+		// Initialize Integer we want to convert to
+		int cityAmount = 1;
+
+		try {
+			// Convert to Integer
+			cityAmount = Integer.parseInt(cityAmountText);
+		} catch (NumberFormatException e) {
+			// Error parsing to an Integer
+		}
+
+		for (int i = 0; i < cityAmount; i++) {
+
+			GameServer.addReply((Game g) -> {
+				Pathogen selectedPathogen = g.getPathogenes().get(GuiController.selectedPathogen);
+
+				// First get all infected cities. Then check in which city the most people can
+				// be medicated
+				// Set PathogenChoiceBox selected field to the selected Pathogen
+				City bestCity = g.getCities().values().stream()
+						.filter(c -> c.getVaccineDeployed().stream().allMatch(e -> e.getPathogen() != selectedPathogen))
+						.max((City c1, City c2) -> {
+							// Get the healthy population as we want to vaccinate the city which impacts the
+							// most people
+							double healthyPopulation1 = c1.isInfected(selectedPathogen) ? 1 - c1.getPrevalance() : 1;
+							double healthyPopulation2 = c2.isInfected(selectedPathogen) ? 1 - c2.getPrevalance() : 1;
+
+							return (int) (c1.getPopulation() * healthyPopulation1
+									- c2.getPopulation() * healthyPopulation2);
+						}).orElseGet(() -> null);
+
+				// If no city is infected by the selected pathogen just end the round
+				if (bestCity == null) {
+					GameServer.clearReplies();
+					return new Action(g).toString();
+				}
+
+				// Return the new Action which medicates the city where currently the most
+				// people are influenced by the selected pathogen.
+				return new Action(ActionType.deployVaccine, g, bestCity, selectedPathogen).toString();
+			});
+		}
+
+		// Check if there is an event to execute
+		if (!GameServer.hasReplies()) {
+			return;
+		}
+
+		// Execute the Action generated addReply methode above.
+		this.executeEvent(GameServer.getReply().evaluate(currentGame));
+
+	}
 
 	@FXML // Button implementation
 	private void medicateBiggestCities() {
@@ -661,6 +643,7 @@ public class GuiController {
 	private void executeEvent(String event) {
 		// Check if there is an active GameExchange
 		if (this.currentGameExchange == null || !this.currentGameExchange.isAlive()) {
+			this.currentGameExchange = null;
 			return;
 		}
 
@@ -670,82 +653,85 @@ public class GuiController {
 
 	private void updateChoiceBox() {
 
-		// Check if there is an active GameExchange
+		// Check if there is a game
 		Game currentGame = this.currentGame;
 		if (currentGame == null) {
 			return;
 		}
+		
+		
+		// Add all pathogens to the pathogens ChoiceBox
+		this.pathogenesCB.setItems(currentGame.getPathogenes().values().stream().map(p -> p.getName()).collect(
+				FXCollections::<String>observableArrayList, ObservableList<String>::add,
+				ObservableList<String>::addAll));
 
-		// Remove all pathogen encounters and add them again (else they would be added
-		// again and again).
-		this.pathogenesCB.getItems().clear();
-		currentGame.getPathEncounterEvents().stream()
-				.forEach(p -> this.pathogenesCB.getItems().add(p.getPathogen().getName()));
-
-		// Remove all cities and add them again (else they would be added again and
-		// again).
-		this.citiesCB.getItems().clear();
-		currentGame.getCities().values().stream().map(c -> c.getName()).sorted()
-				.forEachOrdered(c -> this.citiesCB.getItems().add(c));
-
-		// Do the same as aboive for the CitiesTo ChoiceBox
-		this.citiesToCB.getItems().clear();
-		currentGame.getCities().values().stream().map(c -> c.getName()).sorted()
-				.forEachOrdered(c -> this.citiesToCB.getItems().add(c));
-
+		// Add all cities to the cities ChoiceBox
+		ObservableList<String> o = currentGame.getCities().values().stream().map(c -> c.getName()).collect(
+				FXCollections::<String>observableArrayList, ObservableList<String>::add,
+				ObservableList<String>::addAll);
+		// Update ChoiceBox in a new thread to boost performance
+		new Thread(() -> this.citiesCB.setItems(o)).start();
+		
+		// Show only connections of selected city in city to ChoiceBox
+		Collection<City> cities = selectedCity == null? new HashSet<>(): currentGame.getCity(selectedCity).getConnections();
+		this.citiesToCB.setItems(cities.stream().map(c -> c.getName()).collect(
+				FXCollections::<String>observableArrayList, ObservableList<String>::add,
+				ObservableList<String>::addAll));
 	}
 
-	// Draw Map methodes.
+	/**
+	 * Draws the map on the canvas
+	 */
 	public void drawMap() {
 
 		// Initialize the canvas as a 2D graphics object.
 		GraphicsContext gc = this.currentMap.getGraphicsContext2D();
 
-		if (this.currentGameExchange == null) {
+		if (this.currentGame == null) {
 			return;
 		}
-
-		Game currentGame = this.currentGame;
 
 		// Clear the Canvas
 		gc.setFill(Color.WHITE);
 		gc.setStroke(Color.BLACK);
 		gc.clearRect(0, 0, this.currentMap.getWidth(), this.currentMap.getHeight());
 
-		// Get the City HashMap
-		HashMap<String, City> cities = currentGame.getCities();
+		// Get the selected city and the selected pathogen
+		HashMap<String, City> cities = this.currentGame.getCities();
 		City selectedCity = this.currentGame.getCities().get(GuiController.selectedCity);
-//			// Iterate over all cities find the one we want to print and print those
-		cities.values().stream()
-				.filter(c -> ((selectedCity != null
-						&& (selectedCity == c || (selectedCity.getConnections().contains(c) && showConnections))
-						|| selectedCity == null)))
-				.forEach(c -> drawCity(c, currentGame));
+		Pathogen selectedPathogen = this.currentGame.getPathogenes().get(GuiController.selectedPathogen);
+
+		// Iterate over all cities find the one we want to print and print those
+		cities.values().stream().filter(c -> !showHealthyCities || !c.isInfected())
+				.filter(c -> !showInfectedCities || c.isInfected(selectedPathogen) && selectedPathogen != null
+						|| selectedPathogen == null && c.isInfected())
+				.filter(c -> selectedCity == null || selectedCity == c
+						|| (selectedCity.getConnections().contains(c) && showConnections))
+				.forEach(c -> drawCity(c));
 	}
 
-	// Draws one City on the Canvas (and all additional features)
-	private void drawCity(City currentCity, Game currentGame) {
+	/**
+	 * Draws a city on the canvas including name and prevalence
+	 * 
+	 * @param city City to draw
+	 */
+	private void drawCity(City city) {
 
 		Pathogen selectedPathogen = this.currentGame.getPathogenes().get(GuiController.selectedPathogen);
 
 		// Initialize the canvas as a 2D graphics object.
 		GraphicsContext gc = this.currentMap.getGraphicsContext2D();
 
-		currentGame = this.currentGame;
 		// Get all the info from the current city.
-		String cityName = currentCity.getName();
-		int diameter = currentCity.getPopulation() / 120;
-		int x = (int) currentCity.getX() + 180;
-		int y = (int) -currentCity.getY() + 90;
-		double prev = 0;
+		String cityName = city.getName();
+		int diameter = city.getPopulation() / 120;
+		int x = (int) city.getX() + 180;
+		int y = (int) -city.getY() + 90;
 
-		// Get prevalance in the current city.
-		for (E_Outbreak e : currentGame.getOutbreakEvents()) {
-			if (e.getCity() == currentCity && (selectedPathogen == null || e.getPathogen() == selectedPathogen))
-				// Get the strongest infection in one city (if multiple infections are to be
-				// shown).
-				prev = Math.max(prev, e.getPrevalence());
-		}
+		// If no pathogen is selected or the selected pathogen matches the cities
+		// outbreak
+		// set the prevalence
+		double prev = selectedPathogen == null || city.getPathogen() == selectedPathogen ? city.getPrevalance() : 0.0;
 
 		gc.setFill(new Color(prev, 0, 0, prev));
 
@@ -764,5 +750,5 @@ public class GuiController {
 			gc.strokeText(cityName, x, y);
 
 	}
-	// End of draw map methodes.
+	// End of draw map methods.
 }
