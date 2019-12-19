@@ -35,11 +35,10 @@ public class Game {
 	// private final HashMap<City,HashSet<Event>> eventsByCity = new
 	// HashMap<City,HashSet<Event>>();
 	private final HashMap<EventType, HashSet<? extends Event>> events = new HashMap<>(); // Eventtypen nach Namen
-	
+
 	// A map with all pathogenes we want to ignore in out heueristic
 	private HashMap<Pathogen, Boolean> ignoredPathogenes = new HashMap<>();
-	
-	
+
 	private int ecoCrisisStart = -1, panicStart = -1;
 
 	private int initialPopulation = -1; // -1 if not known
@@ -516,7 +515,7 @@ public class Game {
 		if (pathogen == null) {
 			return false;
 		}
-		
+
 		if (this.ignoredPathogenes.containsKey(pathogen)) {
 			return this.ignoredPathogenes.get(pathogen);
 		}
@@ -535,10 +534,11 @@ public class Game {
 		// on
 		// average or has not infected more than 5 cities.
 		// This is to guess stateless that a pathogen is old and no longer a threat.
-		this.ignoredPathogenes.put(pathogen, (this.getRound() - encounter.get().getRound() >= 10
-				&& (this.getOutbreakEvents().stream().filter(e -> e.getPathogen() == pathogen)
-						.mapToDouble(e -> e.getPrevalence()).average().orElseGet(() -> 0) <= 0.10)
-				|| this.getOutbreakEvents().stream().filter(e -> e.getPathogen() == pathogen).count() <= 5));
+		this.ignoredPathogenes.put(pathogen,
+				(this.getRound() - encounter.get().getRound() >= 10) && (this.getOutbreakEvents().stream()
+						.filter(e -> e.getPathogen() == pathogen).mapToDouble(e -> e.getPrevalence()).average()
+						.orElseGet(() -> 0) <= 0.10
+						|| this.getOutbreakEvents().stream().filter(e -> e.getPathogen() == pathogen).count() <= 5));
 		return ignorePathogenThisRound(pathogen);
 
 	}

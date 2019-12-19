@@ -1,12 +1,9 @@
 package app.game.actions;
 
 import java.util.HashSet;
-import java.util.Optional;
-
 import app.game.City;
 import app.game.Game;
 import app.game.Pathogen;
-import app.game.events.E_PathogenEncounter;
 
 public class ActionHeuristic {
 	// FACTOR: The factor by which the score is scaled.
@@ -37,33 +34,8 @@ public class ActionHeuristic {
 	static final int DEP_VACCINE_FACTOR = 50;
 	static final int DEP_VACCINE_THRESHOLD = 40;
 
-	static final int DEP_MEDICATION_FACTOR = DEV_VACCINE_FACTOR;
+	static final int DEP_MEDICATION_FACTOR = 52;
 	static final int DEP_MEDICATION_THRESHOLD = DEV_VACCINE_THRESHOLD;
-
-	private static boolean ignorePathogen(Game game, Pathogen pathogen) {
-
-		if (pathogen == null) {
-			return false;
-		}
-
-		Optional <E_PathogenEncounter> encounter = game.getPathEncounterEvents().stream().filter(e -> e.getPathogen() == pathogen)
-				.findAny();
-		
-		if (!encounter.isPresent()) {
-			System.out.println(encounter.get());
-			return false;
-		}
-
-		// Check if a pathogen is no longer active by checking if it has been there for
-		// over 10 rounds and has not infected more than 10% of all citie's population on
-		// average or has not infected more than 5 cities.
-		// This is to guess stateless that a pathogen is old and no longer a threat.
-		return (game.getRound() - encounter.get().getRound() >= 10
-				&& (game.getOutbreakEvents().stream().filter(e -> e.getPathogen() == pathogen)
-						.mapToDouble(e -> e.getPrevalence()).average().orElseGet(() -> 0) <= 0.10)
-				|| game.getOutbreakEvents().stream().filter(e -> e.getPathogen() == pathogen).count() <= 5);
-
-	}
 
 	private static boolean doQuarantine(Pathogen pathogen) {
 		int infectivity = pathogen.getInfectivity().getNumericRepresentation();
@@ -139,7 +111,8 @@ public class ActionHeuristic {
 		Game game = action.getGame();
 		Pathogen pathogen = action.getPathogen();
 
-		if (ignorePathogen(game, pathogen)) {
+		if (game != null && game.ignorePathogenThisRound(pathogen)) {
+
 			return score;
 		}
 
@@ -159,7 +132,24 @@ public class ActionHeuristic {
 				// Therefore we quarantine the biggest city and hope for the best
 				if (strongPathogenAmount > 1) {
 					score += QUARANTINE_FACTOR * action.getRounds() * city.getPopulation();
+
+					break;
 				}
+			}
+
+			System.out.println("amount of pathogenes we do not ignore: " + game.getPathEncounterEvents().stream()
+					.filter(e -> !game.ignorePathogenThisRound(e.getPathogen())).count());
+
+			System.out.println("amount of cities the non ignored pathognes has infected: " + game.getOutbreakEvents().stream().filter(e -> e.getPathogen() == pathogen).count());
+			System.out.println("Outbreaks with our pathogen" + game.getOutbreakEvents().stream().filter(e -> e.getPathogen() == pathogen));
+			// Check if only one active pathogen is only in one city in the current game.
+			// If so put it under quarantine as that way it can do the least amount of
+			// damage
+			if ((game.getPathEncounterEvents().stream().filter(e -> !game.ignorePathogenThisRound(e.getPathogen()))
+					.count() == 1)
+					&& (game.getOutbreakEvents().stream().filter(e -> e.getPathogen() == pathogen).count() == 1)) {
+				score += QUARANTINE_FACTOR * action.getRounds();
+				break;
 			}
 
 			// The city does not need to be quarantined without an outbreak
@@ -266,6 +256,7 @@ public class ActionHeuristic {
 			// TODO: Adjust formula
 			score += DEP_MEDICATION_FACTOR * city.getPrevalance() * city.getPopulation()
 					* pathogen.getLethality().getNumericRepresentation();
+
 			break;
 		case exertInfluence:
 		case callElections:
