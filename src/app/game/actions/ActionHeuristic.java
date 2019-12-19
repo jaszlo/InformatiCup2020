@@ -123,6 +123,11 @@ public class ActionHeuristic {
 			break;
 		case putUnderQuarantine:
 
+			// The city does not need to be quarantined if it is already under quarantine
+			if (city.getQuarantine() != null) {
+				break;
+			}
+			
 			// If a very strong pathogen breaks out in 2 Cities protect the biggest one. For
 			// instance seed 4
 			if (!city.isInfected()) {
@@ -169,10 +174,6 @@ public class ActionHeuristic {
 
 			// The city does not need to be quarantined if the pathogen is to mild
 			if (!doQuarantine(city.getPathogen()))
-				break;
-
-			// The city does not need to be quarantined if it is already under quarantine
-			if (city.getQuarantine() != null)
 				break;
 
 			// Check wheather every city is infected and the quarantined pathogen can not
