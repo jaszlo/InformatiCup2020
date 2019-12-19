@@ -146,9 +146,8 @@ public class GuiController {
 				"Vaccinate a certain amount of the biggest cities.\npathogen : pathogen name\namount : amount of cities to vaccinate"));
 		// Set input Tooltip for inputs TODO
 		
+		// Update and draw
 		this.update();
-		// Draw Call for the MapCanvas
-		drawMap();
 	}
 	
 	public void update() {
@@ -180,7 +179,9 @@ public class GuiController {
 		if (selectedCityTo != null) {
 			this.citiesToCB.setValue(selectedCityTo);
 		}
-
+		
+		// Draw Call for the MapCanvas
+		drawMap();
 	}
 
 	public void setGame(GameExchange exchange) {
