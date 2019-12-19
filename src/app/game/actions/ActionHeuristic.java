@@ -35,7 +35,7 @@ public class ActionHeuristic {
 	static final int DEP_VACCINE_FACTOR = 50;
 	static final int DEP_VACCINE_THRESHOLD = 40;
 
-	static final int DEP_MEDICATION_FACTOR = 52;
+	static final int DEP_MEDICATION_FACTOR = 50;
 	static final int DEP_MEDICATION_THRESHOLD = DEV_VACCINE_THRESHOLD;
 
 	private static boolean doQuarantine(Pathogen pathogen) {
