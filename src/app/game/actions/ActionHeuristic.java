@@ -4,6 +4,7 @@ import java.util.HashSet;
 import app.game.City;
 import app.game.Game;
 import app.game.Pathogen;
+import app.game.events.E_Outbreak;
 
 public class ActionHeuristic {
 	// FACTOR: The factor by which the score is scaled.
@@ -132,24 +133,34 @@ public class ActionHeuristic {
 				// Therefore we quarantine the biggest city and hope for the best
 				if (strongPathogenAmount > 1) {
 					score += QUARANTINE_FACTOR * action.getRounds() * city.getPopulation();
-
 					break;
 				}
 			}
 
-			System.out.println("amount of pathogenes we do not ignore: " + game.getPathEncounterEvents().stream()
-					.filter(e -> !game.ignorePathogenThisRound(e.getPathogen())).count());
-
-			System.out.println("amount of cities the non ignored pathognes has infected: " + game.getOutbreakEvents().stream().filter(e -> e.getPathogen() == pathogen).count());
-//			System.out.println("Outbreaks with our pathogen" + game.getOutbreakEvents().stream().filter(e -> e.getPathogen() == pathogen));
 			// Check if only one active pathogen is only in one city in the current game.
 			// If so put it under quarantine as that way it can do the least amount of
 			// damage
-			if ((game.getPathEncounterEvents().stream().filter(e -> !game.ignorePathogenThisRound(e.getPathogen()))
-					.count() == 1)
-					&& (game.getOutbreakEvents().stream().filter(e -> e.getPathogen() == pathogen).count() == 1)) {
-				score += QUARANTINE_FACTOR * action.getRounds();
-				break;
+			if (game.getPathEncounterEvents().stream().filter(e -> !game.ignorePathogenThisRound(e.getPathogen()))
+					.count() == 1) {
+
+				// In this case we want to enclose a pathogen inside a city. But if said city is
+				// not infected we can break at this point
+				if (city.getOutbreak() == null) {
+					break;
+				}
+
+				// Safe the only pathogen as a variable as we will need it later two times.
+				Pathogen onlyActivePathogen = game.getPathEncounterEvents().stream()
+						.filter(e -> !game.ignorePathogenThisRound(e.getPathogen())).findAny().get().getPathogen();
+
+				// Check that there is only one outbreak event of the onlyActivePathogen and
+				// that it is in the city for the current action
+				if ((game.getOutbreakEvents().stream().filter(e -> e.getPathogen() == onlyActivePathogen).count() == 1)
+						&& city.getOutbreak().getPathogen() == onlyActivePathogen) {
+
+					score += QUARANTINE_FACTOR * action.getRounds();
+					break;
+				}
 			}
 
 			// The city does not need to be quarantined without an outbreak
