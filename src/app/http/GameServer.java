@@ -14,7 +14,7 @@ public class GameServer {
 	HttpServer server;
 	public static double games = 0;
 	public static double wins = 0;
-	
+	final static double population = 756371;
 	private static LinkedBlockingDeque<GameEvaluater> repliesToSend = new LinkedBlockingDeque<>();;
 	
 	public GameServer() {
@@ -42,6 +42,7 @@ public class GameServer {
 		    		games++;
 	    			System.out.println("GameNR: " + games + ge.getGame().getOutcome() + " - current winRate = " + ((wins/games)*100) + "%.");
 	    		}
+//	    		System.out.println("Population %" + (100 * (ge.getGame().getPopulation() / population)) + "%");
 	    		if(hasReplies())
 	    			ge.sendReply(getReply().evaluate(ge.getGame()));
 	    		else

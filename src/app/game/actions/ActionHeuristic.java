@@ -1,10 +1,12 @@
 package app.game.actions;
 
 import java.util.HashSet;
+import java.util.Optional;
 
 import app.game.City;
 import app.game.Game;
 import app.game.Pathogen;
+import app.game.events.E_PathogenEncounter;
 
 public class ActionHeuristic {
 	// FACTOR: The factor by which the score is scaled.
@@ -38,6 +40,31 @@ public class ActionHeuristic {
 	static final int DEP_MEDICATION_FACTOR = DEV_VACCINE_FACTOR;
 	static final int DEP_MEDICATION_THRESHOLD = DEV_VACCINE_THRESHOLD;
 
+	private static boolean ignorePathogen(Game game, Pathogen pathogen) {
+
+		if (pathogen == null) {
+			return false;
+		}
+
+		Optional <E_PathogenEncounter> encounter = game.getPathEncounterEvents().stream().filter(e -> e.getPathogen() == pathogen)
+				.findAny();
+		
+		if (!encounter.isPresent()) {
+			System.out.println(encounter.get());
+			return false;
+		}
+
+		// Check if a pathogen is no longer active by checking if it has been there for
+		// over 10 rounds and has not infected more than 10% of all citie's population on
+		// average or has not infected more than 5 cities.
+		// This is to guess stateless that a pathogen is old and no longer a threat.
+		return (game.getRound() - encounter.get().getRound() >= 10
+				&& (game.getOutbreakEvents().stream().filter(e -> e.getPathogen() == pathogen)
+						.mapToDouble(e -> e.getPrevalence()).average().orElseGet(() -> 0) <= 0.10)
+				|| game.getOutbreakEvents().stream().filter(e -> e.getPathogen() == pathogen).count() <= 5);
+
+	}
+
 	private static boolean doQuarantine(Pathogen pathogen) {
 		int infectivity = pathogen.getInfectivity().getNumericRepresentation();
 		int lethality = pathogen.getLethality().getNumericRepresentation();
@@ -50,7 +77,7 @@ public class ActionHeuristic {
 		// Quaratine. Therefore we reverse the
 		// scale of the duration.
 		int score = infectivity * lethality * mobility * (6 - duration);
-		
+
 		return score >= QUARANTINE_THRESHOLD;
 	}
 
@@ -80,7 +107,6 @@ public class ActionHeuristic {
 		if (doQuarantine(pathogen)) {
 			return false;
 		}
-		
 
 		// If a pathogen is not expanding fast, medication should not be developed.
 		// Unless it already has infected enough (see the
@@ -113,6 +139,10 @@ public class ActionHeuristic {
 		Game game = action.getGame();
 		Pathogen pathogen = action.getPathogen();
 
+		if (ignorePathogen(game, pathogen)) {
+			return score;
+		}
+
 		switch (action.getType()) {
 		case endRound:
 			score += 1; // EndRound as default action
@@ -143,7 +173,7 @@ public class ActionHeuristic {
 			// The city does not need to be quarantined if it is already under quarantine
 			if (city.getQuarantine() != null)
 				break;
-			
+
 			// Check wheather every city is infected and the quarantined pathogen can not
 			// spread any further hence no quarantine is required
 			if (game.getCities().values().stream().allMatch((City c) -> c.isInfected())) {
@@ -158,11 +188,12 @@ public class ActionHeuristic {
 			break;
 		case developVaccine:
 
-			// Check if there is a pathogen that was put under quarantine. If so do not do anything else but repeat that process
+			// Check if there is a pathogen that was put under quarantine. If so do not do
+			// anything else but repeat that process
 			if (!game.getQuarantineEvents().isEmpty()) {
 				break;
 			}
-			
+
 			// Check if the Virus is even still active
 			if (game.getOutbreakEvents().stream().allMatch(e -> e.getPathogen() != pathogen)) {
 				break;
@@ -174,8 +205,7 @@ public class ActionHeuristic {
 					.mapToDouble(c -> c.getPopulation()).sum() <= 0.1 * game.getPopulation()) {
 				break;
 			}
-	
-			
+
 			// Calculate the global prevalance. If everyone is already
 			// infected vaccines are useless
 			double totalPopulation = game.getPopulation();
@@ -208,11 +238,12 @@ public class ActionHeuristic {
 					* pathogen.getLethality().getNumericRepresentation();
 			break;
 		case developMedication:
-			// Check if there is a pathogen that was put under quarantine. If so do not do anything else but repeat that process
+			// Check if there is a pathogen that was put under quarantine. If so do not do
+			// anything else but repeat that process
 			if (!game.getQuarantineEvents().isEmpty()) {
 				break;
 			}
-			
+
 			// Check if the Virus is even still active
 			if (game.getOutbreakEvents().stream().allMatch(e -> e.getPathogen() != pathogen)) {
 				break;
