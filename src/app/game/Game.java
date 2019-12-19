@@ -88,6 +88,7 @@ public class Game {
 			Scale lethality = Scale.parse((String) pathogen.get("lethality"));
 			Pathogen v = new Pathogen(name, infectivity, mobility, duration, lethality);
 			pathogenes.put(name, v);
+			ignorePathogenThisRound(v);
 			return v;
 		}
 	}
