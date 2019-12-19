@@ -267,6 +267,15 @@ public class Game {
 
 	/**
 	 * 
+	 * @param cityName
+	 * @return the City with the given name.
+	 */
+	public City getCity (String cityName) {
+		return this.cities.get(cityName);
+	}
+	
+	/**
+	 * 
 	 * @return A Map of Cities in the game. The Key is the unique name of the City.
 	 */
 	public HashMap<String, City> getCities() {
