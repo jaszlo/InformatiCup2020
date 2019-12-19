@@ -130,22 +130,22 @@
                         <Font name="Ubuntu Light" size="23.0" />
                      </font>
                   </Text>
-                  <CheckBox fx:id="populationBox" layoutX="28.0" layoutY="836.0" mnemonicParsing="false" onAction="#checkShowPopulation" text="Population" GridPane.rowIndex="2">
+                  <CheckBox fx:id="populationBox" layoutX="28.0" layoutY="836.0" mnemonicParsing="false" text="Population" GridPane.rowIndex="2">
                      <font>
                         <Font name="Ubuntu Light" size="20.0" />
                      </font>
                   </CheckBox>
-                  <CheckBox fx:id="connectionBox" layoutX="28.0" layoutY="790.0" mnemonicParsing="false" onAction="#checkShowConnections" text="Connections" GridPane.rowIndex="1">
+                  <CheckBox fx:id="connectionBox" layoutX="28.0" layoutY="790.0" mnemonicParsing="false" text="Connections" GridPane.rowIndex="1">
                      <font>
                         <Font name="Ubuntu Light" size="20.0" />
                      </font>
                   </CheckBox>
-                  <CheckBox fx:id="cityNamesBox" layoutX="28.0" layoutY="934.0" mnemonicParsing="false" onAction="#checkShowCityNames" text="City names" GridPane.rowIndex="4">
+                  <CheckBox fx:id="cityNamesBox" layoutX="28.0" layoutY="934.0" mnemonicParsing="false" text="City names" GridPane.rowIndex="4">
                      <font>
                         <Font name="Ubuntu Light" size="20.0" />
                      </font>
                   </CheckBox>
-                  <CheckBox fx:id="infectedBox" layoutX="29.0" layoutY="883.0" mnemonicParsing="false" onAction="#checkShowInfected" text="Infected" GridPane.rowIndex="3">
+                  <CheckBox fx:id="infectedBox" layoutX="29.0" layoutY="883.0" mnemonicParsing="false" text="Infected" GridPane.rowIndex="3">
                      <font>
                         <Font name="Ubuntu Light" size="20.0" />
                      </font>

@@ -2,6 +2,10 @@ package app.gui;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.stream.Collectors;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Collection;
 import app.game.events.E_Outbreak;
 import app.game.City;
@@ -64,9 +68,7 @@ public class GuiController {
 	private static String selectedPathogen;
 
 	// Booleans corresponding
-	private static boolean showConnections, showPopulation, showInfected, showCityNames, showHealthyCities,
-			showInfectedCities;
-	private static boolean init = true;
+	private static boolean  showHealthyCities, showInfectedCities;
 
 	// Constructor
 	public GuiController() {
@@ -76,57 +78,36 @@ public class GuiController {
 	}
 
 	public void initialize() {
-
+		
+		// If game is not set return 
+		if(this.currentGame == null) { 
+			ClassLoader classLoader = getClass().getClassLoader();
+			
+			InputStream jsonStream = classLoader.getResourceAsStream("resources/EmptyGame.json");
+		    BufferedReader reader = new BufferedReader(new InputStreamReader(jsonStream));
+			String json = reader.lines().collect(Collectors.joining(System.lineSeparator()));
+			
+			this.currentGame = new Game(json);
+		}
+		
 		// Set all checkBox booleans as selected but only of this is the first
 		// initialize.
 		// Also initialize the selectedCity and selectedPathogen as null
-		if (init) {
-			showConnections = true;
-			showPopulation = true;
-			showInfected = true;
-			showCityNames = true;
-			showHealthyCities = false;
-			showInfectedCities = false;
-			selectedCity = null;
-			selectedCityTo = null;
-			selectedPathogen = null;
-			init = false;
-		}
+		
+		// Set ChoiceBoxes to default
+		this.connectionBox.setSelected(true);
+		this.populationBox.setSelected(true);
+		this.infectedBox.setSelected(true);
+		this.cityNamesBox.setSelected(true);
+		
+		// Set default values
+		showHealthyCities = false;
+		showInfectedCities = false;
+		selectedCity = null;
+		selectedCityTo = null;
+		selectedPathogen = null;
 
-		// Set selection for the CheckBoxes.
-		this.connectionBox.setSelected(showConnections);
-		this.populationBox.setSelected(showPopulation);
-		this.infectedBox.setSelected(showInfected);
-		this.cityNamesBox.setSelected(showCityNames);
-
-		// Set the last Action in the Text to the static String where it was saved.
-		this.lastAction.setText(lastActionString);
-
-		// Set Points and current Round.
-		if (this.currentGameExchange != null) {
-
-			// Set the current round and points.
-			this.currentRound.setText(this.currentGame.getRound() + "");
-			this.currentPoints.setText(this.currentGame.getPoints() + "");
-		}
-
-		// Update the ChoiceBoxes items.
-		updateChoiceBox();
-
-		// Set PathogenChoiceBox selected field to the selected Pathogen
-		if (selectedPathogen != null) {
-			this.pathogenesCB.setValue(selectedPathogen);
-		}
-
-		// Set SelectedCityChoiceBox field to the selected City
-		if (selectedCity != null) {
-			this.citiesCB.setValue(selectedCity);
-		}
-
-		if (selectedCityTo != null) {
-			this.citiesToCB.setValue(selectedCityTo);
-		}
-
+		
 		// Setting up a prompt text in the textField. Therefore when selected it will
 		// disappear.
 		this.rounds.setPromptText("enter duration...");
@@ -163,9 +144,42 @@ public class GuiController {
 		this.vaccinateBiggestCitiesB.setTooltip(new Tooltip(
 				"Vaccinate a certain amount of the biggest cities.\npathogen : pathogen name\namount : amount of cities to vaccinate"));
 		// Set input Tooltip for inputs TODO
-
+		
+		this.update();
 		// Draw Call for the MapCanvas
 		drawMap();
+	}
+	
+	public void update() {
+		
+		// Set the last Action in the Text to the static String where it was saved.
+		this.lastAction.setText(lastActionString);
+		
+		// Set Points and current Round.
+		if (this.currentGameExchange != null) {
+
+			// Set the current round and points.
+			this.currentRound.setText(this.currentGame.getRound() + "");
+			this.currentPoints.setText(this.currentGame.getPoints() + "");
+		}
+				
+		// Update the ChoiceBoxes items.
+		updateChoiceBox();
+
+		// Set PathogenChoiceBox selected field to the selected Pathogen
+		if (selectedPathogen != null) {
+			this.pathogenesCB.setValue(selectedPathogen);
+		}
+
+		// Set SelectedCityChoiceBox field to the selected City
+		if (selectedCity != null) {
+			this.citiesCB.setValue(selectedCity);
+		}
+
+		if (selectedCityTo != null) {
+			this.citiesToCB.setValue(selectedCityTo);
+		}
+
 	}
 
 	public void setGame(GameExchange exchange) {
@@ -173,7 +187,7 @@ public class GuiController {
 			return;
 		this.currentGameExchange = exchange;
 		this.currentGame = this.currentGameExchange.getGame();
-		this.initialize();
+		this.update();
 	}
 
 	public boolean ready() {
@@ -189,46 +203,17 @@ public class GuiController {
 
 		// If there was no primaryStage found something went wrong.
 		if (primaryStage == null)
-			System.out.println("error");
-
-		// Reset the init value. If a new ic20 is executed the window will be
-		// initialized
-		init = true;
+			System.err.println("Could not find primary stage");
 
 		// Close the primaryStage and close the Server (terminate the Programm)
 		primaryStage.close();
 		System.exit(1);
 	}
 
-	@FXML
-	private void checkShowConnections() {
-		showConnections = connectionBox.isSelected();
-		drawMap();
-	}
-
-	@FXML
-	private void checkShowPopulation() {
-		showPopulation = populationBox.isSelected();
-		drawMap();
-	}
-
-	@FXML
-	private void checkShowInfected() {
-		showInfected = infectedBox.isSelected();
-		drawMap();
-	}
-
-	@FXML
-	private void checkShowCityNames() {
-		showCityNames = cityNamesBox.isSelected();
-		drawMap();
-	} // End of checkBox methodes
 
 	@FXML // Reset Button
 	private void reset() {
-		init = true;
 		initialize();
-		drawMap();
 	}
 
 	@FXML // selectCityButton
@@ -706,7 +691,7 @@ public class GuiController {
 				.filter(c -> !showInfectedCities || c.isInfected(selectedPathogen) && selectedPathogen != null
 						|| selectedPathogen == null && c.isInfected())
 				.filter(c -> selectedCity == null || selectedCity == c
-						|| (selectedCity.getConnections().contains(c) && showConnections))
+						|| (selectedCity.getConnections().contains(c) && connectionBox.isSelected()))
 				.forEach(c -> drawCity(c));
 	}
 
@@ -740,13 +725,13 @@ public class GuiController {
 		y *= 5;
 
 		// Draw Population Circle. If wanted.
-		if (showPopulation)
+		if (populationBox.isSelected())
 			gc.strokeOval(x - diameter / 2, y - diameter / 2, diameter, diameter);
 		// Color for infectedRate. If a pathogen is selected and showInfected is true.
-		if (showInfected)
+		if (infectedBox.isSelected())
 			gc.fillOval(x - diameter / 2, y - diameter / 2, diameter, diameter);
 		// Draw City Name. If wanted.
-		if (showCityNames)
+		if (cityNamesBox.isSelected())
 			gc.strokeText(cityName, x, y);
 
 	}
