@@ -8,7 +8,11 @@ import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
+import app.Testing;
+import app.game.actions.ActionHeuristic;
+import app.knapsack.Solver;
 import app.solver.GameEvaluater;
+import app.solver.Main;
 
 public class GameServer {
 	HttpServer server;
@@ -45,8 +49,10 @@ public class GameServer {
 //	    		System.out.println("Population %" + (100 * (ge.getGame().getPopulation() / population)) + "%");
 	    		if(hasReplies())
 	    			ge.sendReply(getReply().evaluate(ge.getGame()));
-	    		else
+	    		else if(Testing.guiController.ready())
 	    			ge.playGui();
+	    		else
+	    			ge.sendReply(Main.solve(ge.getGame()));
     		
     		}).start();
     }

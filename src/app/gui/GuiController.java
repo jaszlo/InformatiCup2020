@@ -161,8 +161,14 @@ public class GuiController {
 	}
 
 	public void setGame(GameExchange exchange) {
+		if(exchange == null) return;
 		this.currentGameExchange = exchange;
 		this.currentGame = this.currentGameExchange.getGame();
+		this.initialize();
+	}
+	
+	public boolean ready() {
+		return this.currentGameExchange == null;
 	}
 
 	// is called from the quitButton from the GuiController.
@@ -659,14 +665,7 @@ public class GuiController {
 		}
 
 		this.currentGameExchange.sendReply(event);
-
-		// Close the GUI
-		Stage primaryStage = (Stage) this.selectCityB.getScene().getWindow();
-
-		// If there was no GUI at this point something went wrong.
-		if (primaryStage == null)
-			System.out.println("error");
-		primaryStage.close();
+		this.currentGameExchange = null;
 	}
 
 	private void updateChoiceBox() {
