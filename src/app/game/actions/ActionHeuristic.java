@@ -141,7 +141,7 @@ public class ActionHeuristic {
 					.filter(e -> !game.ignorePathogenThisRound(e.getPathogen())).count());
 
 			System.out.println("amount of cities the non ignored pathognes has infected: " + game.getOutbreakEvents().stream().filter(e -> e.getPathogen() == pathogen).count());
-			System.out.println("Outbreaks with our pathogen" + game.getOutbreakEvents().stream().filter(e -> e.getPathogen() == pathogen));
+//			System.out.println("Outbreaks with our pathogen" + game.getOutbreakEvents().stream().filter(e -> e.getPathogen() == pathogen));
 			// Check if only one active pathogen is only in one city in the current game.
 			// If so put it under quarantine as that way it can do the least amount of
 			// damage

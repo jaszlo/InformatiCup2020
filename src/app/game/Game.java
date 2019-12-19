@@ -100,18 +100,18 @@ public class Game {
 			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
 			E_Outbreak e = new E_Outbreak(city, sinceRound, pathogen, prevalence);
 			addToGeneralEventMap(e);
-			addToCityEventMap(e, city);
+			addEventToCity(e, city);
 		} else if (type.equals("bioTerrorism")) { // stadt
 			int sinceRound = Integer.parseInt(event.get("round").toString());
 			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
 			E_BioTerror e = new E_BioTerror(city, sinceRound, pathogen);
 			addToGeneralEventMap(e);
-			addToCityEventMap(e, city);
+			addEventToCity(e, city);
 		} else if (type.equals("antiVaccinationism")) { // stadt
 			int sinceRound = Integer.parseInt(event.get("sinceRound").toString());
 			E_AntiVacc e = new E_AntiVacc(city, sinceRound);
 			addToGeneralEventMap(e);
-			addToCityEventMap(e, city);
+			addEventToCity(e, city);
 		} else if (type.equals("pathogenEncountered")) { // global
 			int round = Integer.parseInt(event.get("round").toString());
 			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
@@ -126,13 +126,13 @@ public class Game {
 			int participants = Integer.parseInt(event.get("participants").toString());
 			E_Uprising e = new E_Uprising(city, round, participants);
 			addToGeneralEventMap(e);
-			addToCityEventMap(e, city);
+			addEventToCity(e, city);
 		} else if (type.equals("quarantine")) {
 			int until = Integer.parseInt(event.get("untilRound").toString());
 			int since = Integer.parseInt(event.get("sinceRound").toString());
 			E_Quarantine e = new E_Quarantine(until, since, city);
 			addToGeneralEventMap(e);
-			addToCityEventMap(e, city);
+			addEventToCity(e, city);
 		} else if (type.equals("vaccineInDevelopment")) {
 			int until = Integer.parseInt(event.get("untilRound").toString());
 			int since = Integer.parseInt(event.get("sinceRound").toString());
@@ -162,25 +162,25 @@ public class Game {
 			City to = getCities().get((String) event.get("city"));
 			E_ConnectionClosed e = new E_ConnectionClosed(since, until, city, to);
 			addToGeneralEventMap(e);
-			addToCityEventMap(e, city);
+			addEventToCity(e, city);
 		} else if (type.equals("airportClosed")) {
 			int until = Integer.parseInt(event.get("untilRound").toString());
 			int since = Integer.parseInt(event.get("sinceRound").toString());
 			E_AirportClosed e = new E_AirportClosed(since, until, city);
 			addToGeneralEventMap(e);
-			addToCityEventMap(e, city);
+			addEventToCity(e, city);
 		} else if (type.equals("medicationDeployed")) {
 			int round = Integer.parseInt(event.get("round").toString());
 			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
 			E_MedicationDeployed e = new E_MedicationDeployed(round, pathogen, city);
 			addToGeneralEventMap(e);
-			addToCityEventMap(e, city);
+			addEventToCity(e, city);
 		} else if (type.equals("vaccineDeployed")) {
 			int round = Integer.parseInt(event.get("round").toString());
 			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
 			E_VaccineDeployed e = new E_VaccineDeployed(round, pathogen, city);
 			addToGeneralEventMap(e);
-			addToCityEventMap(e, city);
+			addEventToCity(e, city);
 		} else {
 			System.out.println(event + "  NOT IMPLEMENTED");
 			System.exit(0);
@@ -202,7 +202,7 @@ public class Game {
 	}
 
 	// helper method to add an event to a city
-	private void addToCityEventMap(Event event, City city) {
+	private void addEventToCity(Event event, City city) {
 		city.addEvent(event);
 	}
 
