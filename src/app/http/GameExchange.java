@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 import com.sun.net.httpserver.HttpExchange;
 
-import app.Testing;
+import app.App;
 import app.game.Game;
 import app.gui.GuiController;
 
@@ -57,7 +57,7 @@ public class GameExchange {
 	}
 	
 	public void playGui() {
-		Testing.guiController.setGame(this);
+		App.guiController.setGame(this);
 	}
 	
 }

@@ -11,9 +11,8 @@ import app.knapsack.Solver;
 public class Main {
 
 	public static String solve(Game game) {
-		return ActionControl.generatePossibleActions(game).parallelStream().filter(a -> a.getCost() <= game.getPoints())
-				.max((Action a, Action b) -> ActionHeuristic.getValue(a) - ActionHeuristic.getValue(b))
-				.orElse(new Action(game)).toString();
+		return  ActionControl.generatePossibleActions(game).parallelStream().filter(a -> a.getCost() <= game.getPoints())
+				.max((Action a, Action b) -> a.getScore() - b.getScore()).orElse(new Action(game)).toString();
 	}
 
 	public static String solveKnappsack(Game game) {

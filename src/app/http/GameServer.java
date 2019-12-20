@@ -8,7 +8,7 @@ import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
-import app.Testing;
+import app.App;
 import app.game.actions.ActionHeuristic;
 import app.knapsack.Solver;
 import app.solver.GameEvaluater;
@@ -18,7 +18,6 @@ public class GameServer {
 	HttpServer server;
 	public static double games = 0;
 	public static double wins = 0;
-	final static double population = 756371;
 	private static LinkedBlockingDeque<GameEvaluater> repliesToSend = new LinkedBlockingDeque<>();;
 	
 	public GameServer() {
@@ -49,7 +48,7 @@ public class GameServer {
 //	    		System.out.println("Population %" + (100 * (ge.getGame().getPopulation() / population)) + "%");
 	    		if(hasReplies())
 	    			ge.sendReply(getReply().evaluate(ge.getGame()));
-	    		else if(Testing.guiController.ready())
+	    		else if(App.guiController.ready())
 	    			ge.playGui();
 	    		else
 	    			ge.sendReply(Main.solve(ge.getGame()));
