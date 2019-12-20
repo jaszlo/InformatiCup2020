@@ -1,14 +1,11 @@
 package app.gui;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Collection;
-import app.game.events.E_Outbreak;
+import java.util.stream.Collectors;
+
 import app.game.City;
 import app.game.Game;
 import app.game.Pathogen;
@@ -22,15 +19,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.scene.canvas.GraphicsContext;
 
 public class GuiController {
 
@@ -42,7 +40,9 @@ public class GuiController {
 	@FXML // Input fields
 	private TextField roundsT, amountT;
 	@FXML
-	private ChoiceBox<String> pathogenesCB, citiesCB, citiesToCB, showDistinctCityCB;
+	private ChoiceBox<String> pathogenesCB, citiesToCB, showDistinctCityCB;
+	@FXML
+	private ComboBox<String> citiesCB;
 
 	@FXML // CityInfo
 	private Text population, economy, goverment, awareness, hygiene, events;
@@ -73,7 +73,7 @@ public class GuiController {
 	}
 
 	public void initialize() {
-
+		
 		// If game is not set return
 		if (this.currentGame == null) {
 			ClassLoader classLoader = getClass().getClassLoader();
@@ -157,7 +157,7 @@ public class GuiController {
 		this.updateChoiceBox();
 		
 		// Update the Info views
-		this.setInfo();
+		this.updateInfo();
 
 		// Draw Call for the MapCanvas
 		this.drawMap();
@@ -175,6 +175,8 @@ public class GuiController {
 		ObservableList<String> allPathogens = this.currentGame.getPathogens().stream().map(p -> p.getName())
 				.sorted().collect(FXCollections::<String>observableArrayList, ObservableList<String>::add,
 						ObservableList<String>::addAll);
+		// Add no pathogen as choice
+		allPathogens.add(0, null);
 		if (!this.pathogenesCB.getItems().equals(allPathogens)) {
 			this.pathogenesCB.setItems(allPathogens);
 		}
@@ -183,10 +185,11 @@ public class GuiController {
 		ObservableList<String> allCities = currentGame.getCities().values().stream().map(c -> c.getName()).sorted()
 				.collect(FXCollections::<String>observableArrayList, ObservableList<String>::add,
 						ObservableList<String>::addAll);
-
+		// Add no city as choice
+		allCities.add(0, null);
 		// Update ChoiceBox if changed in a new thread to boost performance
-		if (!this.citiesToCB.getItems().equals(allCities)) {
-			Platform.runLater(() -> this.citiesCB.setItems(allCities));
+		if (!this.citiesCB.getItems().equals(allCities)) {
+			this.citiesCB.setItems(allCities);
 		}
 
 		// Show only connections of selected city in city to ChoiceBox
@@ -196,15 +199,19 @@ public class GuiController {
 		ObservableList<String> citiesTo = cities.stream().map(c -> c.getName()).sorted().collect(
 				FXCollections::<String>observableArrayList, ObservableList<String>::add,
 				ObservableList<String>::addAll);
+		// Add no city as choice
+		citiesTo.add(0, null);
 		// Update ChoiceBox if changed
-		if (this.citiesToCB.getItems().equals(citiesTo)) {
+		if (!this.citiesToCB.getItems().equals(citiesTo)) {
 			this.citiesToCB.setItems(citiesTo);
 		}
 	}
 
 	public void setGame(GameExchange exchange) {
-		if (exchange == null)
+		if (exchange == null || !this.ready()) {
 			return;
+		}
+		
 		this.currentGameExchange = exchange;
 		this.currentGame = this.currentGameExchange.getGame();
 		this.update();
@@ -236,8 +243,11 @@ public class GuiController {
 		System.exit(0);
 	}
 
-	// TODO: Refactor name
-	private void setInfo() {
+	/**
+	 * Updates the text fields with information about the selected pathogen
+	 * and the selected city.
+	 */
+	private void updateInfo() {
 
 		// Get the selected city.
 		City selectedCity = this.getSelectedCity();
@@ -271,7 +281,7 @@ public class GuiController {
 			String mobility = selectedPathogen.getMobility().toString();
 			String duration = selectedPathogen.getDuration().toString();
 			String lethality = selectedPathogen.getLethality().toString();
-			String prevalance = selectedCity.getPrevalance() + "";
+			String prevalance = selectedCity != null? selectedCity.getPrevalance() + "": "";
 
 			// Only get 5 chars of the prevalance
 			if (prevalance.length() > 5) {
