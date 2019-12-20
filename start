@@ -1,12 +1,12 @@
 #!/bin/sh
-
-i=1
+rm log
+i=2
 while [ $i -lt 1000 ]
 do
     processes=`ps | grep ic20 | wc -l`
     if [ "${processes}" -lt "20" ]
         then 
-            ./ic20_linux -t 0 -s $i -o log &
+            ./ic20_linux -t 0 -s $i -u https://udi8pt9vo9.execute-api.us-east-1.amazonaws.com/Beta/ >> log &
             i=`expr ${i} + 1`
    else sleep 1
     fi 
