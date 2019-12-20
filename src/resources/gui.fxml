@@ -6,6 +6,7 @@
 <?import javafx.scene.canvas.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections ?>
 
 <GridPane maxHeight="1000.0" maxWidth="1900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -169,7 +170,15 @@
                         <Font name="Ubuntu Light" size="22.0" />
                      </font>
                   </CheckBox>
-                  <ChoiceBox fx:id="showDistinctCityCB" onAction="#update" prefHeight="28.0" prefWidth="220.0" GridPane.rowIndex="1" />
+                  <ChoiceBox fx:id="showDistinctCityCB" value="All" onAction="#update" prefHeight="28.0" prefWidth="220.0" GridPane.rowIndex="1">
+                     <items>
+                        <FXCollections fx:factory="observableArrayList">
+                           <String fx:value="All" />
+                           <String fx:value="Healthy" />
+                           <String fx:value="Infected" />
+                        </FXCollections>
+                     </items>
+                  </ChoiceBox>
                </children>
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />

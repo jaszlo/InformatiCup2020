@@ -62,8 +62,6 @@ public class GuiController {
 	private GameExchange currentGameExchange;
 	private Game currentGame;
 
-	// Booleans corresponding
-	private static boolean showHealthyCities, showInfectedCities;
 
 	// Constructor
 	public GuiController() {
@@ -95,9 +93,6 @@ public class GuiController {
 		this.infectedBox.setSelected(true);
 		this.cityNamesBox.setSelected(true);
 
-		// Set default values
-		showHealthyCities = false;
-		showInfectedCities = false;
 
 		// Setting up a prompt text in the textField. Therefore when selected it will
 		// disappear.
@@ -709,8 +704,8 @@ public class GuiController {
 		Pathogen selectedPathogen = this.getSelectedPathogen();
 
 		// Iterate over all cities find the one we want to print and print those
-		cities.stream().filter(c -> !showHealthyCities || !c.isInfected())
-				.filter(c -> !showInfectedCities || c.isInfected(selectedPathogen) && selectedPathogen != null
+		cities.stream().filter(c -> !this.showDistinctCityCB.getValue().equals("Healthy") || !c.isInfected())
+				.filter(c -> !this.showDistinctCityCB.getValue().equals("Infected") || c.isInfected(selectedPathogen) && selectedPathogen != null
 						|| selectedPathogen == null && c.isInfected())
 				.filter(c -> selectedCity == null || selectedCity == c
 						|| (selectedCity.getConnections().contains(c) && connectionBox.isSelected()))
