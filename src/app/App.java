@@ -11,7 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Testing extends Application {
+public class App extends Application {
 	
 	public static GuiController guiController;
 			
