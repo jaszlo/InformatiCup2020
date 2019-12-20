@@ -15,16 +15,16 @@ def playGame(seed):
         return (seed, "win")
     elif("loss" in result):
         loss += 1
-        print("Seed: %d Outcome: Win" % (seed))
+        print("Seed: %d Outcome: Loss" % (seed))
         print("Winrate %f%%" % (wins * 100 / (wins + loss)))
         return (seed, "loss")
 
 # Make the Pool of workers
-pool = ThreadPool(4)
+pool = ThreadPool(10)
 
 # Open the URLs in their own threads
 # and return the results
-results = pool.map(playGame, list(range(1, 12)))
+results = pool.map(playGame, list(range(1, 101)))
 
 print(results)
 
