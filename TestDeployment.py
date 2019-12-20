@@ -5,21 +5,22 @@ wins = 0
 loss = 0
 
 def playGame(seed):
-    print("Started %d" % (seed))
+    global wins
+    global loss
     result = subprocess.run(['./ic20_linux', '-t', '0', '-s', str(seed), '-u', 'https://udi8pt9vo9.execute-api.us-east-1.amazonaws.com/Beta/'], stdout=subprocess.PIPE).stdout.decode('utf-8')
     if("win" in result):
         wins += 1
         print("Seed: %d Outcome: Win" % (seed))
-        print("Winrate %d" % (wins / (wins + loss)))
+        print("Winrate %f%%" % (wins * 100 / (wins + loss)))
         return (seed, "win")
     elif("loss" in result):
         loss += 1
         print("Seed: %d Outcome: Win" % (seed))
-        print("Winrate %d" % (wins / (wins + loss)))
+        print("Winrate %f%%" % (wins * 100 / (wins + loss)))
         return (seed, "loss")
 
 # Make the Pool of workers
-pool = ThreadPool(10)
+pool = ThreadPool(4)
 
 # Open the URLs in their own threads
 # and return the results
