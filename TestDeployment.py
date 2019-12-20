@@ -15,7 +15,7 @@ def playGame(seed):
         return (seed, "win")
     elif("loss" in result):
         loss += 1 
-        print("Game: %d    Seed: %d    Outcome: Win" % ((wins + loss), seed))
+        print("Game: %d    Seed: %d    Outcome: Loss" % ((wins + loss), seed))
         print("Winrate %f%%" % (wins * 100 / (wins + loss)))
         return (seed, "loss")
 
