@@ -12,7 +12,6 @@ import com.sun.net.httpserver.HttpExchange;
 
 import app.App;
 import app.game.Game;
-import app.gui.GuiController;
 
 public class GameExchange {
 	private HttpExchange exchange;
@@ -38,8 +37,7 @@ public class GameExchange {
             OutputStream os = exchange.getResponseBody();
             os.write(response.getBytes("UTF-8"));
             os.close();
-            GuiController.setLastAction(response);
-//           System.out.println(response);
+            App.guiController.setLastAction(response);
             this.exchange = null;
         } catch (IOException e){
         	System.err.println("Error while sending response!");

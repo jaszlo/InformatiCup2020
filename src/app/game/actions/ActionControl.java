@@ -78,7 +78,7 @@ public class ActionControl {
 	}
 
 	private static void addVaccineDevActions(Game game, HashSet<Action> actions) {
-		for (Pathogen pathogen : game.getPathogenes().values()) {
+		for (Pathogen pathogen : game.getPathogens()) {
 			Action a = new Action(ActionType.developVaccine, game, pathogen);
 			// Only add the DevVacc event if it is not already developed or being developed.
 			if (!(game.getVaccAvailableEvents().stream().anyMatch(e -> e.getPathogen() == a.getPathogen())
@@ -90,7 +90,7 @@ public class ActionControl {
 	}
 
 	private static void addMedDevActions(Game game, HashSet<Action> actions) {
-		for (Pathogen pathogen : game.getPathogenes().values()) {
+		for (Pathogen pathogen : game.getPathogens()) {
 			Action a = new Action(ActionType.developMedication, game, pathogen);
 			// Only add the DevMed event if it is not already developed or being developed.
 			if (!(game.getMedAvailableEvents().stream().anyMatch(e -> e.getPathogen() == a.getPathogen())

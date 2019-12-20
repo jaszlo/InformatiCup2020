@@ -1,5 +1,6 @@
 package app.game;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import java.util.HashSet;
@@ -58,7 +59,7 @@ public class Game {
 	 */
 	public Game(String game) {
 		parseGame(game);
-		this.getPathogenes().values().stream().forEach(p -> ignorePathogenThisRound(p));
+		this.getPathogens().stream().forEach(p -> ignorePathogenThisRound(p));
 	}
 
 	/**
@@ -79,8 +80,8 @@ public class Game {
 
 	private Pathogen parsePathogen(JSONObject pathogen) {
 		String name = (String) pathogen.get("name");
-		if (getPathogenes().containsKey(name))
-			return getPathogenes().get(name);
+		if (this.getPathogen(name) != null)
+			return this.getPathogen(name);
 		else {
 			Scale infectivity = Scale.parse((String) pathogen.get("infectivity"));
 			Scale mobility = Scale.parse((String) pathogen.get("mobility"));
@@ -511,12 +512,23 @@ public class Game {
 	}
 
 	/**
+	 * Returns the pathogen with the given name. If the name does not match any pathogen in
+	 * the game, null is returned.
 	 * 
-	 * @return All Map of all Pathogenes. The Key is the name of the Pathogen.
+	 * @param name Name of the pathogen.
+	 * @return Pathogen with the given name.
 	 */
-	@Deprecated
-	public HashMap<String, Pathogen> getPathogenes() {
-		return pathogenes;
+	public Pathogen getPathogen(String name) {
+		return this.pathogenes.get(name);
+	}
+	
+	/**
+	 * Returns all pathogens in the game.
+	 * 
+	 * @return All pathogens.
+	 */
+	public Collection<Pathogen> getPathogens() {
+		return this.pathogenes.values();
 	}
 
 	public boolean ignorePathogenThisRound(Pathogen pathogen) {

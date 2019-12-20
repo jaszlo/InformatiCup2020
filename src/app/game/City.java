@@ -1,7 +1,9 @@
 package app.game;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 import app.game.events.E_AirportClosed;
 import app.game.events.E_AntiVacc;
@@ -17,7 +19,8 @@ import app.game.events.EventType;
 import app.game.Pathogen;
 
 public class City {
-
+	
+	public static final Set<City> EMPTY_CITY_SET = Collections.emptySet();
 	private final String name;
 	
 	private final double x,y;
