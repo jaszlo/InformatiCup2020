@@ -1,5 +1,13 @@
 import subprocess
 from multiprocessing.dummy import Pool as ThreadPool
+import codecs
+
+seeds = []
+with codecs.open('seeds.txt', mode='r', encoding='utf_8') as f:
+    for line in f.read().split("\n"):
+        if(line != ""):
+            seeds.append(int(line))
+
 
 wins = 0
 loss = 0
@@ -24,7 +32,7 @@ pool = ThreadPool(10)
 
 # Open the URLs in their own threads
 # and return the results
-results = pool.map(playGame, list(range(1, 1001)))
+results = pool.map(playGame, seeds)
 
 print(results)
 
