@@ -19,6 +19,9 @@ public class Action extends Item {
 	private final Pathogen pathogen;
 	private final int rounds;
 
+	// Heueristic parameter score
+	private final int score;
+	
 	// Basis constructor
 	public Action(ActionType type, Game game, City city, City toCity, Pathogen pathogen, int rounds) {
 		super(type.getPoints(rounds));
@@ -28,8 +31,9 @@ public class Action extends Item {
 		this.toCity = toCity;
 		this.pathogen = pathogen;
 		this.rounds = rounds;
+		this.score = ActionHeuristic.getValue(this);
 	}
-
+	
 	// endRound constructor
 	public Action(Game game) {
 		this(ActionType.endRound, game, null, null, null, 0);
@@ -108,11 +112,16 @@ public class Action extends Item {
 		}
 		return null;
 	}
+	
 
 	public Game getGame() {
 		return game;
 	}
 
+	public int getScore () {
+		return this.score;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public int getSetValue(HashSet<? extends Item> set) {
 		return ActionHeuristic.getValue((HashSet<Action>) set);

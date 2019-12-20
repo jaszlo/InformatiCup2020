@@ -11,32 +11,25 @@ public class ActionHeuristic {
 	// THRESHOLD: The minimum of points an action need to reach in order to be
 	// executed.
 
-	static final int END_ROUND_FACTOR = 0;
-	static final int END_ROUND_THRESHOLD = 0;
+	private static final int END_ROUND_FACTOR = 1;
 
-	static final int QUARANTINE_FACTOR = 300;
-	static final int QUARANTINE_THRESHOLD = 220;
+	private static final int QUARANTINE_FACTOR = 300;
+	private static final int QUARANTINE_THRESHOLD = 220;
 
-	static final int DEV_VACCINE_FACTOR = 1;
-	static final int DEV_VACCINE_THRESHOLD = 9;
+	private static final int DEV_VACCINE_FACTOR = 1;
+	private static final int DEV_VACCINE_THRESHOLD = 9;
 	// Only develop vaccine if global prevlance is lower than this threshold value.
-	static final double DEV_VACCINE_PREVALANCE_THRESHOLD = 1.0 / 3.0;
-	//
-	static final double DEV_VACCINE_INFECTABLE_THRESHOLD = 1.0 / 5.0;
+	private static final double DEV_VACCINE_PREVALANCE_THRESHOLD = 1.0 / 3.0;
 
 	// Medication over vaccination therefore multiply the factor by 3.
-	static final int DEV_MEDICATION_FACTOR = DEV_VACCINE_FACTOR * 3;
-	static final int DEV_MEDICATION_THRESHOLD = DEV_VACCINE_THRESHOLD;
+	private static final int DEV_MEDICATION_FACTOR = DEV_VACCINE_FACTOR * 3;
+	private static final int DEV_MEDICATION_THRESHOLD = DEV_VACCINE_THRESHOLD;
 	// If a Pathogen usualy does not require medication but this global prevalance
-	// is
-	// reached develop it anyway.
-	static final double DEV_MEDICATION_PREVALANCE_THRESHOLD = DEV_VACCINE_PREVALANCE_THRESHOLD;
+	// is reached develop it anyway.
+	private static final double DEV_MEDICATION_PREVALANCE_THRESHOLD = DEV_VACCINE_PREVALANCE_THRESHOLD;
 
-	static final int DEP_VACCINE_FACTOR = 50;
-	static final int DEP_VACCINE_THRESHOLD = 40;
-
-	static final int DEP_MEDICATION_FACTOR = 50;
-	static final int DEP_MEDICATION_THRESHOLD = DEV_VACCINE_THRESHOLD;
+	private static final int DEP_VACCINE_FACTOR = 50;
+	private static final int DEP_MEDICATION_FACTOR = 50;
 
 	private static boolean doQuarantine(Pathogen pathogen) {
 		int infectivity = pathogen.getInfectivity().getNumericRepresentation();
@@ -119,7 +112,7 @@ public class ActionHeuristic {
 
 		switch (action.getType()) {
 		case endRound:
-			score += 1; // EndRound as default action
+			score += END_ROUND_FACTOR; // EndRound as default action
 			break;
 		case putUnderQuarantine:
 
