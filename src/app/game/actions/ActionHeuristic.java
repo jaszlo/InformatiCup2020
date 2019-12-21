@@ -7,15 +7,9 @@ import java.util.Map;
 import app.game.City;
 import app.game.Game;
 import app.game.Pathogen;
-import app.game.events.E_Outbreak;
 
 public class ActionHeuristic {
-	// FACTOR: The factor by which the score is scaled.
-	// THRESHOLD: The minimum of points an action need to reach in order to be
-	// executed.
-	
 	//setup constants here
-	
 	private static HashMap<String,Double> constants = null;
 	
 	static {

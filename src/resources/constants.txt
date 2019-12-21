@@ -1,3 +1,6 @@
+// FACTOR: The factor by which the score is scaled.
+// THRESHOLD: The minimum of points an action need to reach in order to be
+// executed.
 END_ROUND_FACTOR 1
 QUARANTINE_FACTOR 300
 QUARANTINE_THRESHOLD 220
