@@ -20,7 +20,7 @@ public class FileHandler {
         }
     }
 	
-	public static void writeFile(File file, Collection<String> text) {
+	public static <T> void writeFile(File file, Collection<T> text) {
 		if(file == null || !file.exists()) 
 			return;
 		
@@ -30,8 +30,8 @@ public class FileHandler {
 			writeFile = new FileWriter(file);
 			writer = new BufferedWriter(writeFile);
 
-			for (String s : text) {
-				writer.write(s);
+			for (T s : text) {
+				writer.write(s.toString());
 				writer.newLine();
 			}
 

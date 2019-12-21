@@ -7,18 +7,25 @@ import java.util.Map;
 import app.game.City;
 import app.game.Game;
 import app.game.Pathogen;
-import app.game.Scale;
 
 public class ActionHeuristic {
 	//setup constants here
 	private static HashMap<String,Double> constants = null;
 	
 	static {
-		constants = ConstantsSetup.getConstants();
+		updateConstants();
+	}
+	
+	/**
+	 * Sets the value of the constants the the CURRENT values in constants.txt
+	 */
+	public static void updateConstants() {
+		constants = ConstantsSetup.getConstants("resources/constants.txt");
 		if(constants == null) {
 			System.out.println("Konstanten konnten nicht geladen werden.");
 			System.exit(1);
 		}
+		System.out.println("Currently loaded constants:");
 		for(Map.Entry<String,Double> entry : constants.entrySet())
 			System.out.println(entry.getKey()+" "+entry.getValue());
 	}

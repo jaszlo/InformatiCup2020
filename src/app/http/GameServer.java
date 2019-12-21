@@ -10,14 +10,13 @@ import com.sun.net.httpserver.HttpServer;
 
 import app.App;
 import app.game.actions.ActionHeuristic;
+import app.game.actions.ConstantsSetup;
 import app.knapsack.Solver;
 import app.solver.GameEvaluater;
 import app.solver.Main;
 
 public class GameServer {
 	HttpServer server;
-	public static double games = 0;
-	public static double wins = 0;
 	private static LinkedBlockingDeque<GameEvaluater> repliesToSend = new LinkedBlockingDeque<>();;
 	
 	public GameServer() {
@@ -40,16 +39,16 @@ public class GameServer {
 	    		GameExchange ge = new GameExchange(exchange);
 	    		if (!ge.getGame().getOutcome().equals("pending")) {
 		    		if (ge.getGame().getOutcome().equals("win")) {
-		    			wins++;
-		    		} 
-		    		games++;
-	    			System.out.println("GameNR: " + games + ge.getGame().getOutcome() + " - current winRate = " + ((wins/games)*100) + "%.");
+		    			ConstantsSetup.registerOutcome(true,ge.getGame());
+		    		}else {
+		    			ConstantsSetup.registerOutcome(false,ge.getGame());
+		    		}
 	    		}
 //	    		System.out.println("Population %" + (100 * (ge.getGame().getPopulation() / population)) + "%");
 	    		if(hasReplies())
 	    			ge.sendReply(getReply().evaluate(ge.getGame()));
-	    		else if(App.guiController.ready())
-	    			ge.playGui();
+	    		//else if(App.guiController.ready())
+	    			//ge.playGui();
 	    		else
 	    			ge.sendReply(Main.solve(ge.getGame()));
     		

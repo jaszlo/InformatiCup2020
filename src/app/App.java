@@ -1,5 +1,4 @@
 package app;
-
 import app.gui.GuiController;
 import app.http.GameServer;
 
