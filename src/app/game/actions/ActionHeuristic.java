@@ -16,11 +16,11 @@ public class ActionHeuristic {
 	
 	//setup constants here
 	
-	private static HashMap<String,Float> constants = null;
+	private static HashMap<String,Double> constants = null;
 	
 	static {
 		constants = ConstantsSetup.getConstants();
-		for(Map.Entry<String,Float> entry : constants.entrySet())
+		for(Map.Entry<String,Double> entry : constants.entrySet())
 			System.out.println(entry.getKey()+" "+entry.getValue());
 		if(constants == null) {
 			System.out.println("Konstanten konnten nicht geladen werden.");

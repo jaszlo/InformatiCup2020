@@ -8,12 +8,12 @@ import app.io.FileHandler;
 
 public class ConstantsSetup {
 
-	private static HashMap<String,Float> constants = null;
+	private static HashMap<String,Double> constants = null;
 	
-	public static HashMap<String,Float> getConstants(){
+	public static HashMap<String,Double> getConstants(){
 		if(constants != null)
 			return constants;
-		constants = new HashMap<String,Float>();
+		constants = new HashMap<String,Double>();
 		File constFile = FileHandler.getFileFromResources("resources/constants.txt");
 		ArrayList<String> constantsList = FileHandler.readFile(constFile);
 		if(constantsList == null)
@@ -23,7 +23,7 @@ public class ConstantsSetup {
 			if(constant.isBlank() || constant.startsWith("//"))
 				continue;
 			String[] split = constant.split(" ");
-			constants.put(split[0], Float.parseFloat(split[1]));
+			constants.put(split[0], Double.parseDouble(split[1]));
 		}
 		return constants;
 	}
