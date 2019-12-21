@@ -20,7 +20,7 @@ public class ConstantsSetup {
 			return null;
 		for(String constant : constantsList) {
 			//ignore comments and empty lines
-			if(constant.isBlank() || constant.startsWith("//"))
+			if(constant.equals("") || constant.startsWith("//"))
 				continue;
 			String[] split = constant.split(" ");
 			constants.put(split[0], Double.parseDouble(split[1]));
