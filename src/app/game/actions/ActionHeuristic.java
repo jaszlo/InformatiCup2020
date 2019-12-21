@@ -7,6 +7,7 @@ import java.util.Map;
 import app.game.City;
 import app.game.Game;
 import app.game.Pathogen;
+import app.game.Scale;
 
 public class ActionHeuristic {
 	//setup constants here
@@ -14,12 +15,12 @@ public class ActionHeuristic {
 	
 	static {
 		constants = ConstantsSetup.getConstants();
-		for(Map.Entry<String,Double> entry : constants.entrySet())
-			System.out.println(entry.getKey()+" "+entry.getValue());
 		if(constants == null) {
 			System.out.println("Konstanten konnten nicht geladen werden.");
 			System.exit(1);
 		}
+		for(Map.Entry<String,Double> entry : constants.entrySet())
+			System.out.println(entry.getKey()+" "+entry.getValue());
 	}
 
 	private static boolean doQuarantine(Pathogen pathogen) {
@@ -256,13 +257,25 @@ public class ActionHeuristic {
 
 			break;
 		case exertInfluence:
+			//make sure to always be able to emergency quarantine
+			if(game.getPoints() > 30)
+				score+= constants.get("INFLUENCE_FACTOR") * city.getPopulation() * (5 - city.getEconomy().getNumericRepresentation() );
+			break; 
 		case callElections:
+			if(game.getPoints() > 30)
+				score+= constants.get("ELECTIONS_FACTOR") * city.getPopulation() * (5 - city.getGovernment().getNumericRepresentation() );
+			break;
 		case applyHygienicMeasures:
+			if(game.getPoints() > 30)
+				score+= constants.get("HYGIENE_FACTOR") * city.getPopulation() * (5 - city.getHygiene().getNumericRepresentation() );
+			break;
 		case launchCampaign:
+			if(game.getPoints() > 30)
+				score+=constants.get("CAMPAIGN_FACTOR") * city.getPopulation() * (5- city.getAwareness().getNumericRepresentation() );
+			break;
 		default:
 			break;
 		}
-
 		return score;
 	}
 
