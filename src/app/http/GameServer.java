@@ -47,8 +47,8 @@ public class GameServer {
 //	    		System.out.println("Population %" + (100 * (ge.getGame().getPopulation() / population)) + "%");
 	    		if(hasReplies())
 	    			ge.sendReply(getReply().evaluate(ge.getGame()));
-	    		//else if(App.guiController.ready())
-	    			//ge.playGui();
+	    		else if(App.guiController.ready())
+	    			ge.playGui();
 	    		else
 	    			ge.sendReply(Main.solve(ge.getGame()));
     		
