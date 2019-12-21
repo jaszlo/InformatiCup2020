@@ -1,8 +1,6 @@
 package app.gui;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -13,8 +11,8 @@ import app.game.actions.Action;
 import app.game.actions.ActionType;
 import app.http.GameExchange;
 import app.http.GameServer;
+import app.io.FileHandler;
 import app.solver.Main;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -25,7 +23,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -65,11 +62,8 @@ public class GuiController {
 
 	// Constructor
 	public GuiController() {
-		ClassLoader classLoader = getClass().getClassLoader();
 
-		InputStream jsonStream = classLoader.getResourceAsStream("resources/EmptyGame.json");
-		BufferedReader reader = new BufferedReader(new InputStreamReader(jsonStream));
-		String json = reader.lines().collect(Collectors.joining(System.lineSeparator()));
+		String json = FileHandler.readFile("resources/EmptyGame.json").stream().collect(Collectors.joining(System.lineSeparator()));
 
 		this.currentGame = new Game(json);
 	}
@@ -247,7 +241,7 @@ public class GuiController {
 	 */
 	public void setLastAction(String action) {
 		this.lastActionString = action;
-		this.update();
+		//this.lastAction.setText(this.lastActionString);
 	}
 
 	/**

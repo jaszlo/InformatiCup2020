@@ -1,4 +1,5 @@
 package app.io;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -10,20 +11,20 @@ import java.util.Collection;
 
 public class FileHandler {
 
-    public static File getFileFromResources(String fileName) {
-        ClassLoader classLoader = FileHandler.class.getClassLoader();
-        URL resource = classLoader.getResource(fileName);
-        if (resource == null) {
-            return null;
-        } else {
-            return new File(resource.getFile());
-        }
-    }
-	
+	public static File getFileFromResources(String fileName) {
+		ClassLoader classLoader = FileHandler.class.getClassLoader();
+		URL resource = classLoader.getResource(fileName);
+		if (resource == null) {
+			return null;
+		} else {
+			return new File(resource.getFile());
+		}
+	}
+
 	public static void writeFile(File file, Collection<String> text) {
-		if(file == null || !file.exists()) 
+		if (file == null || !file.exists())
 			return;
-		
+
 		FileWriter writeFile = null;
 		BufferedWriter writer = null;
 		try {
@@ -46,21 +47,21 @@ public class FileHandler {
 			}
 		}
 	}
+	
+	public static ArrayList<String> readFile(String fileName) {
+		return FileHandler.readFile(FileHandler.getFileFromResources(fileName));
+	}
 
-	public static ArrayList<String> readFile(File file){
-		if(file == null || !file.exists()) return null;
-		
-		ArrayList<String> content = new ArrayList<String>();
-		
+	public static ArrayList<String> readFile(File file) {
+		if (file == null || !file.exists())
+			return null;
+
+		ArrayList<String> content = new ArrayList<>();
+
 		BufferedReader reader = null;
 		try {
 			reader = new BufferedReader(new FileReader(file));
-			String line = reader.readLine();
-			while (line != null) { 
-				content.add(line);
-				line = reader.readLine();
-			}
-
+			content = reader.lines().collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -74,6 +75,5 @@ public class FileHandler {
 
 		return content;
 	}
-	
 
 }
