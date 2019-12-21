@@ -20,8 +20,8 @@ public class App extends Application {
 		launch(args);
 	}
 
-	// @Override
-	public void start(Stage primaryStage) throws Exception {
+	@Override
+	public void start(Stage primaryStage) {
 		new GameServer();
 		Platform.setImplicitExit(false);
 
@@ -34,13 +34,11 @@ public class App extends Application {
 			loader.setLocation(getClass().getResource("/resources/gui.fxml"));
 
 			// Create and assign the controllers.
-			guiController = new GuiController();
-			guiController.setGame(null);
+			App.guiController = new GuiController();
 			loader.setController(guiController);
-			Parent root = null;
 
 			// Create the scenes for the gui
-			root = (Parent) loader.load();
+			Parent root = (Parent) loader.load();
 			Scene scene = new Scene(root);
 
 			// Maximaze the stage
@@ -55,6 +53,7 @@ public class App extends Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("An error occoured while starting the GUI.");
+			App.guiController = null;
 		}
 	}
 }

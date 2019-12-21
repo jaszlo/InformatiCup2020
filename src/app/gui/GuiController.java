@@ -65,71 +65,16 @@ public class GuiController {
 
 	// Constructor
 	public GuiController() {
-		/*
-		 * Has no real purpose. Just need to be declared for the FXML-file
-		 */
+		ClassLoader classLoader = getClass().getClassLoader();
+
+		InputStream jsonStream = classLoader.getResourceAsStream("resources/EmptyGame.json");
+		BufferedReader reader = new BufferedReader(new InputStreamReader(jsonStream));
+		String json = reader.lines().collect(Collectors.joining(System.lineSeparator()));
+
+		this.currentGame = new Game(json);
 	}
-
+	
 	public void initialize() {
-		
-		// If game is not set return
-		if (this.currentGame == null) {
-			ClassLoader classLoader = getClass().getClassLoader();
-
-			InputStream jsonStream = classLoader.getResourceAsStream("resources/EmptyGame.json");
-			BufferedReader reader = new BufferedReader(new InputStreamReader(jsonStream));
-			String json = reader.lines().collect(Collectors.joining(System.lineSeparator()));
-
-			this.currentGame = new Game(json);
-		}
-
-		// Set all checkBox booleans as selected but only of this is the first
-		// initialize.
-		// Also initialize the selectedCity and selectedPathogen as null
-
-		// Set ChoiceBoxes to default
-		this.connectionBox.setSelected(true);
-		this.populationBox.setSelected(true);
-		this.infectedBox.setSelected(true);
-		this.cityNamesBox.setSelected(true);
-
-
-		// Setting up a prompt text in the textField. Therefore when selected it will
-		// disappear.
-		this.roundsT.setPromptText("enter duration...");
-		this.amountT.setPromptText("enter the amount ...");
-
-		// Set the Button Tooltips.
-		this.quitB.setTooltip(new Tooltip("Close the server and this window."));
-		this.endRoundB.setTooltip(new Tooltip("End the current round.\namount : number of rounds that just get ended"));
-		this.putUnderQuarantineB.setTooltip(
-				new Tooltip("Put a city under qurantine.\ncity (from): city name\nrounds : number of rounds"));
-		this.closeAirportB
-				.setTooltip(new Tooltip("Close a city's airport.\ncity (from): city name\nrounds : number ofrounds"));
-		this.closeConnectionB.setTooltip(new Tooltip(
-				"Close a connection between two cities.\ncity (from) : first city name\ncity (to) : second city name\nrounds : number of rounds"));
-		this.developVaccineB
-				.setTooltip(new Tooltip("Develop a vaccine against a certain pathogen.\npathogen : pathogen name"));
-		this.deployVaccineB.setTooltip(new Tooltip(
-				"Deploy a vaccine in against a certain pathogen in a certain city.\ncity (from) city name\npathogen : pathogen name\n"));
-		this.developMedicationB
-				.setTooltip(new Tooltip("Develop a medication against a certain pathogen.\npathogen : pathogen name"));
-		this.deployMedicationB.setTooltip(new Tooltip(
-				"Deploy a medication in against a certain pathogen in a certain city.\ncity (from) : city name\npathogen : pathogen name"));
-		this.applyHygienicMeasuresB
-				.setTooltip(new Tooltip("Randomly increase hygine in a certain city\ncity (from) : city name"));
-		this.exertInfluenceB
-				.setTooltip(new Tooltip("Reset the economic strength of a certain city\ncity (from) : city name"));
-		this.callElectionsB
-				.setTooltip(new Tooltip("Reset the political strength of a certain city\ncity (from) : city name"));
-		this.launchCampaignB.setTooltip(new Tooltip(
-				"The attentiveness of a certain city's population will be increased\ncity (from) : city name"));
-		this.autoTurnB.setTooltip(new Tooltip("Let the computer play.\namount : amount of actions"));
-		this.medicateBiggestCitiesB.setTooltip(new Tooltip(
-				"Medicate a certain amount of the biggest cities.\npathogen : pathogen name\namount : amount of cities to medicate"));
-		this.vaccinateBiggestCitiesB.setTooltip(new Tooltip(
-				"Vaccinate a certain amount of the biggest cities.\npathogen : pathogen name\namount : amount of cities to vaccinate"));
-		// Set input Tooltip for inputs TODO
 
 		// Update and draw
 		this.update();
@@ -678,7 +623,7 @@ public class GuiController {
 
 	@FXML // Button implementation
 	public void exportMap() {
-
+		//this.currentMap.snapshot(arg0, arg1, arg2);
 	}
 
 	/**
@@ -721,12 +666,13 @@ public class GuiController {
 
 		Pathogen selectedPathogen = this.getSelectedPathogen();
 
+
 		// Initialize the canvas as a 2D graphics object.
 		GraphicsContext gc = this.currentMap.getGraphicsContext2D();
 
 		// Get all the info from the current city.
 		String cityName = city.getName();
-		int diameter = city.getPopulation() / 120;
+		int diameter = city.getPopulation();
 		int x = (int) city.getX() + 180;
 		int y = (int) -city.getY() + 90;
 
@@ -736,10 +682,12 @@ public class GuiController {
 		double prev = selectedPathogen == null || city.getPathogen() == selectedPathogen ? city.getPrevalance() : 0.0;
 
 		gc.setFill(new Color(prev, 0, 0, prev));
-
-		// adjust x,y so it fits nicely on the canvas.
-		x *= 4;
-		y *= 5;
+		
+		// adjust x, y, diameter so it fits nicely on the canvas.
+		// TODO: Get actual width/height
+		x *= Math.min(this.currentMap.getWidth(), this.currentMap.getHeight() * 2) / 360;
+		y *= Math.min(this.currentMap.getWidth(), this.currentMap.getHeight() * 2) / 360;
+		diameter *= 12 / Math.min(this.currentMap.getWidth(), this.currentMap.getHeight() * 2);
 
 		// Draw Population Circle. If wanted.
 		if (populationBox.isSelected())
