@@ -1,6 +1,9 @@
 package app.game.actions;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+
 import app.game.City;
 import app.game.Game;
 import app.game.Pathogen;
@@ -10,26 +13,20 @@ public class ActionHeuristic {
 	// FACTOR: The factor by which the score is scaled.
 	// THRESHOLD: The minimum of points an action need to reach in order to be
 	// executed.
-
-	private static final int END_ROUND_FACTOR = 1;
-
-	private static final int QUARANTINE_FACTOR = 300;
-	private static final int QUARANTINE_THRESHOLD = 220;
-
-	private static final int DEV_VACCINE_FACTOR = 1;
-	private static final int DEV_VACCINE_THRESHOLD = 9;
-	// Only develop vaccine if global prevlance is lower than this threshold value.
-	private static final double DEV_VACCINE_PREVALANCE_THRESHOLD = 1.0 / 3.0;
-
-	// Medication over vaccination therefore multiply the factor by 3.
-	private static final int DEV_MEDICATION_FACTOR = DEV_VACCINE_FACTOR * 3;
-	private static final int DEV_MEDICATION_THRESHOLD = DEV_VACCINE_THRESHOLD;
-	// If a Pathogen usualy does not require medication but this global prevalance
-	// is reached develop it anyway.
-	private static final double DEV_MEDICATION_PREVALANCE_THRESHOLD = DEV_VACCINE_PREVALANCE_THRESHOLD;
-
-	private static final int DEP_VACCINE_FACTOR = 50;
-	private static final int DEP_MEDICATION_FACTOR = 50;
+	
+	//setup constants here
+	
+	private static HashMap<String,Float> constants = null;
+	
+	static {
+		constants = ConstantsSetup.getConstants();
+		for(Map.Entry<String,Float> entry : constants.entrySet())
+			System.out.println(entry.getKey()+" "+entry.getValue());
+		if(constants == null) {
+			System.out.println("Konstanten konnten nicht geladen werden.");
+			System.exit(1);
+		}
+	}
 
 	private static boolean doQuarantine(Pathogen pathogen) {
 		int infectivity = pathogen.getInfectivity().getNumericRepresentation();
@@ -44,7 +41,7 @@ public class ActionHeuristic {
 		// scale of the duration.
 		int score = infectivity * lethality * mobility * (6 - duration);
 
-		return score >= QUARANTINE_THRESHOLD;
+		return score >= constants.get("QUARANTINE_THRESHOLD");
 	}
 
 	private static boolean doDevVaccine(Pathogen pathogen, Game game) {
@@ -58,7 +55,7 @@ public class ActionHeuristic {
 		}
 
 		// If a pathogen expands fast vaccines should not be developed.
-		return score <= DEV_VACCINE_THRESHOLD;
+		return score <= constants.get("DEV_VACCINE_THRESHOLD");
 	}
 
 	private static boolean doDevMedication(Pathogen pathogen, Game game) {
@@ -77,13 +74,13 @@ public class ActionHeuristic {
 		// If a pathogen is not expanding fast, medication should not be developed.
 		// Unless it already has infected enough (see the
 		// DEV_MEDICATION_PREVALANCE_THRESHOLD)
-		if (score <= DEV_MEDICATION_THRESHOLD) {
+		if (score <= constants.get("DEV_MEDICATION_THRESHOLD")) {
 			double totalPopulation = game.getPopulation();
 			double infectedPopulation = game.getCities().values().stream().filter(c -> c.isInfected(pathogen))
 					.mapToDouble(c -> c.getPrevalance() * c.getPopulation()).sum();
 
 			double globalPrevalance = infectedPopulation / totalPopulation;
-			if (globalPrevalance <= DEV_MEDICATION_PREVALANCE_THRESHOLD) {
+			if (globalPrevalance <= constants.get("DEV_MEDICATION_PREVALENCE_THRESHOLD")) {
 				return false;
 			}
 		}
@@ -112,7 +109,7 @@ public class ActionHeuristic {
 
 		switch (action.getType()) {
 		case endRound:
-			score += END_ROUND_FACTOR; // EndRound as default action
+			score += constants.get("END_ROUND_FACTOR"); // EndRound as default action
 			break;
 		case putUnderQuarantine:
 
@@ -130,7 +127,7 @@ public class ActionHeuristic {
 				// If there are more than 2 qurantinable pathogenes we can not quarantine both.
 				// Therefore we quarantine the biggest city and hope for the best
 				if (strongPathogenAmount > 1) {
-					score += QUARANTINE_FACTOR * action.getRounds() * city.getPopulation();
+					score += constants.get("QUARANTINE_FACTOR") * action.getRounds() * city.getPopulation();
 					break;
 				}
 			}
@@ -157,7 +154,7 @@ public class ActionHeuristic {
 						&& city.getOutbreak().getPathogen() == onlyActivePathogen) {
 
 					
-					score += QUARANTINE_FACTOR * action.getRounds();
+					score += constants.get("QUARANTINE_FACTOR") * action.getRounds();
 					break;
 				}
 			}
@@ -176,7 +173,7 @@ public class ActionHeuristic {
 				break;
 			}
 			// City should be quarantine
-			score += QUARANTINE_FACTOR * action.getCost();
+			score += constants.get("QUARANTINE_FACTOR") * action.getCost();
 			break;
 		case closeAirport:
 			break;
@@ -211,8 +208,8 @@ public class ActionHeuristic {
 			double globalPrevalance = infectedPopulation / totalPopulation;
 
 			// Only if prevalence is low enough add score
-			if (globalPrevalance < DEV_VACCINE_PREVALANCE_THRESHOLD) {
-				score += (DEV_VACCINE_FACTOR * pathogen.getLethality().getNumericRepresentation());
+			if (globalPrevalance < constants.get("DEV_VACCINE_PREVALENCE_THRESHOLD")) {
+				score += (constants.get("DEV_VACCINE_FACTOR") * pathogen.getLethality().getNumericRepresentation());
 			}
 
 			break;
@@ -230,7 +227,7 @@ public class ActionHeuristic {
 
 			// TODO: Adjust formula
 			double healthyPopulation = city.isInfected(pathogen) ? 1 - city.getPrevalance() : 1;
-			score += DEP_VACCINE_FACTOR * healthyPopulation * city.getPopulation()
+			score += constants.get("DEP_VACCINE_FACTOR") * healthyPopulation * city.getPopulation()
 					* pathogen.getLethality().getNumericRepresentation();
 			break;
 		case developMedication:
@@ -247,7 +244,7 @@ public class ActionHeuristic {
 
 			// If pathogen is strong enough develop medication
 			if (doDevMedication(pathogen, game)) {
-				score += (DEV_MEDICATION_FACTOR * pathogen.getLethality().getNumericRepresentation());
+				score += (constants.get("DEV_MEDICATION_FACTOR") * pathogen.getLethality().getNumericRepresentation());
 
 			}
 			break;
@@ -260,7 +257,7 @@ public class ActionHeuristic {
 			}
 
 			// TODO: Adjust formula
-			score += DEP_MEDICATION_FACTOR * city.getPrevalance() * city.getPopulation()
+			score += constants.get("DEP_MEDICATION_FACTOR") * city.getPrevalance() * city.getPopulation()
 					* pathogen.getLethality().getNumericRepresentation();
 
 			break;
