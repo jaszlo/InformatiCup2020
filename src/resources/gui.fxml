@@ -463,7 +463,7 @@
             </Text>
             <Text layoutX="1810.0" layoutY="899.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3P" wrappingWidth="34.00927734375" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <Text layoutX="1810.0" layoutY="801.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3P" wrappingWidth="34.00927734375" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Button fx:id="launchCampaignB" layoutX="1633.0" layoutY="882.0" mnemonicParsing="false" onAction="#launchCampaign" prefHeight="25.0" prefWidth="220.0" text="Launch campain" GridPane.rowIndex="4">
+            <Button fx:id="launchCampaignB" layoutX="1633.0" layoutY="882.0" mnemonicParsing="false" onAction="#launchCampaign" prefHeight="25.0" prefWidth="220.0" text="Launch Campaign" GridPane.rowIndex="4">
                <font>
                   <Font name="Ubuntu Light" size="16.0" />
                </font>
@@ -480,7 +480,7 @@
                </tooltip>
             </Button>
             <Text layoutX="1825.0" layoutY="826.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3P" wrappingWidth="34.00927734375" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Button fx:id="applyHygienicMeasuresB" layoutX="1633.0" layoutY="815.0" mnemonicParsing="false" onAction="#applyHygienicMeasures" prefHeight="25.0" prefWidth="220.0" text="Improve hygiene" GridPane.rowIndex="2">
+            <Button fx:id="applyHygienicMeasuresB" layoutX="1633.0" layoutY="815.0" mnemonicParsing="false" onAction="#applyHygienicMeasures" prefHeight="25.0" prefWidth="220.0" text="Improve Hygiene" GridPane.rowIndex="2">
                <font>
                   <Font name="Ubuntu Light" size="16.0" />
                </font>
@@ -488,7 +488,7 @@
                   <Tooltip text="Randomly increase hygine in a certain city\ncity (from) : city name"/>
                </tooltip>
                </Button>
-            <Button fx:id="callElectionsB" layoutX="1633.0" layoutY="849.0" mnemonicParsing="false" onAction="#callElections" prefHeight="25.0" prefWidth="220.0" text="Call elections" GridPane.rowIndex="3">
+            <Button fx:id="callElectionsB" layoutX="1633.0" layoutY="849.0" mnemonicParsing="false" onAction="#callElections" prefHeight="25.0" prefWidth="220.0" text="Call Elections" GridPane.rowIndex="3">
                <font>
                   <Font name="Ubuntu Light" size="16.0" />
                </font>
@@ -496,7 +496,7 @@
                   <Tooltip text="Reset the political strength of a certain city\ncity (from) : city name"/>
                </tooltip>
             </Button>
-            <Button fx:id="exertInfluenceB" layoutX="1633.0" layoutY="784.0" mnemonicParsing="false" onAction="#exertInfluence" prefHeight="25.0" prefWidth="220.0" text="Change influence" GridPane.rowIndex="1">
+            <Button fx:id="exertInfluenceB" layoutX="1633.0" layoutY="784.0" mnemonicParsing="false" onAction="#exertInfluence" prefHeight="25.0" prefWidth="220.0" text="Change Influence" GridPane.rowIndex="1">
                <font>
                   <Font name="Ubuntu Light" size="16.0" />
                </font>
