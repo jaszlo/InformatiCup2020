@@ -1,19 +1,26 @@
 package app.io;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.imageio.ImageIO;
+
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.WritableImage;
+
 public class FileHandler {
 
-	public static File getFileFromResources(String fileName) {
+	public static File getFileFromResources(String path) {
 		ClassLoader classLoader = FileHandler.class.getClassLoader();
-		URL resource = classLoader.getResource(fileName);
+		URL resource = classLoader.getResource(path);
 		if (resource == null) {
 			return null;
 		} else {
@@ -48,8 +55,27 @@ public class FileHandler {
 		}
 	}
 	
-	public static ArrayList<String> readFile(String fileName) {
-		return FileHandler.readFile(FileHandler.getFileFromResources(fileName));
+	public static void writeFile(String path, WritableImage image) {
+		FileHandler.writeFile(new File(path), image);
+	}
+	
+	public static void writeFile(File file, WritableImage image) {
+		if (file == null)
+			return;
+		
+		try {
+			if (!file.exists())
+				file.createNewFile();
+			System.out.println("Jep");
+	        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+	        ImageIO.write(bufferedImage, "png", file);
+	    } catch (IOException ex) {
+	        ex.printStackTrace();
+	    }
+	}
+	
+	public static ArrayList<String> readFile(String path) {
+		return FileHandler.readFile(FileHandler.getFileFromResources(path));
 	}
 
 	public static ArrayList<String> readFile(File file) {

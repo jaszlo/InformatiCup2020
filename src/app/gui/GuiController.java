@@ -16,6 +16,7 @@ import app.solver.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.SnapshotResult;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -26,6 +27,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 public class GuiController {
 
@@ -617,7 +619,10 @@ public class GuiController {
 
 	@FXML // Button implementation
 	public void exportMap() {
-		//this.currentMap.snapshot(arg0, arg1, arg2);
+		this.currentMap.snapshot((SnapshotResult sr) -> {
+			FileHandler.writeFile("Test.png", sr.getImage());
+			return null;
+		}, null, null);
 	}
 
 	/**
