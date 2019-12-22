@@ -1,6 +1,5 @@
 package app.gui;
 
-
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -61,15 +60,15 @@ public class GuiController {
 	private GameExchange currentGameExchange;
 	private Game currentGame;
 
-
 	// Constructor
 	public GuiController() {
 
-		String json = FileHandler.readFile("resources/EmptyGame.json").stream().collect(Collectors.joining(System.lineSeparator()));
+		String json = FileHandler.readFile("resources/EmptyGame.json").stream()
+				.collect(Collectors.joining(System.lineSeparator()));
 
 		this.currentGame = new Game(json);
 	}
-	
+
 	public void initialize() {
 
 		// Update and draw
@@ -91,7 +90,7 @@ public class GuiController {
 
 		// Update the ChoiceBoxes items.
 		this.updateChoiceBox();
-		
+
 		// Update the Info views
 		this.updateInfo();
 
@@ -99,6 +98,11 @@ public class GuiController {
 		this.drawMap();
 	}
 
+	/**
+	 * Update method for the choiceBoxes. It will completly empty the choicebox.
+	 * Afterwards the choicebox is refilled with valid city and pathogennames
+	 *
+	 */
 	private void updateChoiceBox() {
 
 		// Check if there is a game
@@ -108,10 +112,11 @@ public class GuiController {
 		}
 
 		// Add all pathogens to the pathogens ChoiceBox if they have changed
-		ObservableList<String> allPathogens = this.currentGame.getPathogens().stream().map(p -> p.getName())
-				.sorted().collect(FXCollections::<String>observableArrayList, ObservableList<String>::add,
+		ObservableList<String> allPathogens = this.currentGame.getPathogens().stream().map(p -> p.getName()).sorted()
+				.collect(FXCollections::<String>observableArrayList, ObservableList<String>::add,
 						ObservableList<String>::addAll);
-		// Add no pathogen as choice
+		
+		// Add "no pathogen" as choice
 		allPathogens.add(0, null);
 		if (!this.pathogenesCB.getItems().equals(allPathogens)) {
 			this.pathogenesCB.setItems(allPathogens);
@@ -147,14 +152,14 @@ public class GuiController {
 		if (exchange == null || !this.ready()) {
 			return;
 		}
-		
+
 		this.currentGameExchange = exchange;
 		this.currentGame = this.currentGameExchange.getGame();
 		this.update();
 	}
 
 	/**
-	 * Function to detect whether the GUI is ready for a new round to play. The GUI
+	 * Method to detect whether the GUI is ready for a new round to play. The GUI
 	 * is ready if there is no active round at the time.
 	 * 
 	 * @return True if GUI is ready.
@@ -163,7 +168,11 @@ public class GuiController {
 		return this.currentGameExchange == null;
 	}
 
-	// is called from the quitButton from the GuiController.
+	
+	/**
+	 * On action method for the "Quit" button in the GUI.
+	 * When pressed closes the GUI and ends the programm.
+	 */
 	@FXML
 	public void quit() {
 		// Get the primaryStage from any element of the GUI (It can be any element
@@ -180,8 +189,8 @@ public class GuiController {
 	}
 
 	/**
-	 * Updates the text fields with information about the selected pathogen
-	 * and the selected city.
+	 * Updates the text fields with information about the selected pathogen and the
+	 * selected city.
 	 */
 	private void updateInfo() {
 
@@ -217,7 +226,7 @@ public class GuiController {
 			String mobility = selectedPathogen.getMobility().toString();
 			String duration = selectedPathogen.getDuration().toString();
 			String lethality = selectedPathogen.getLethality().toString();
-			String prevalance = selectedCity != null? selectedCity.getPrevalance() + "": "";
+			String prevalance = selectedCity != null ? selectedCity.getPrevalance() + "" : "";
 
 			// Only get 5 chars of the prevalance
 			if (prevalance.length() > 5) {
@@ -243,12 +252,12 @@ public class GuiController {
 	 */
 	public void setLastAction(String action) {
 		this.lastActionString = action;
-		//this.lastAction.setText(this.lastActionString);
+		// this.lastAction.setText(this.lastActionString);
 	}
 
 	/**
 	 * Returns the amount given by the user in the amount text field. If the number
-	 * is less or equal to zero or no number is given the function returns 1.
+	 * is less or equal to zero or no number is given the method returns 1.
 	 * 
 	 * @return Amount in text field.
 	 */
@@ -268,7 +277,7 @@ public class GuiController {
 
 	/**
 	 * Returns the number of rounds given by the user in the rounds text field. If
-	 * the number is less or equal to zero or no number is given the function
+	 * the number is less or equal to zero or no number is given the method
 	 * returns 1.
 	 * 
 	 * @return Amount in text field.
@@ -314,6 +323,10 @@ public class GuiController {
 		return this.currentGame.getPathogen(this.pathogenesCB.getValue());
 	}
 
+	/**
+	 * On action method for the "End round" button in the GUI.
+	 * When pressed send the end round action
+	 */
 	@FXML
 	private void endRound() {
 
@@ -329,6 +342,10 @@ public class GuiController {
 		this.executeAction();
 	}
 
+	/**
+	 * On action method for the "Auto turn" button in the GUI.
+	 * When pressed the end round action is passed to the GameExchange
+	 */
 	@FXML
 	private void autoTurn() {
 
@@ -344,6 +361,12 @@ public class GuiController {
 		this.executeAction();
 	}
 
+	/**
+	 * On action method for the "Quarantine" button in the GUI.
+	 * The action requires a city and rounds as its input.
+	 * When pressed the quarantine action is passed to the GameExchange.
+	 * If no city or amount of rounds was selected the method does nothing.
+	 */
 	@FXML
 	private void putUnderQuarantine() {
 		// Get the selected city
@@ -358,6 +381,12 @@ public class GuiController {
 		}
 	}
 
+	/**
+	 * On action method for the "Close Airport" button in the GUI.
+	 * The action requires a city and rounds as its input.
+	 * When pressed the quarantine action is passed to the GameExchange.
+	 * If no city or amount of rounds was selected the method does nothing.
+	 */
 	@FXML
 	private void closeAirport() {
 		// Get the selected city
@@ -372,6 +401,12 @@ public class GuiController {
 		}
 	}
 
+	/**
+	 * On action method for the "Close Connection" button in the GUI.
+	 * The action requires two cities and rounds as its input.
+	 * When pressed the quarantine action is passed to the GameExchange.
+	 * If no cities or amount of rounds was selected the method does nothing.
+	 */
 	@FXML
 	private void closeConnection() {
 		// Get the selected city
@@ -389,6 +424,12 @@ public class GuiController {
 		}
 	}
 
+	/**
+	 * On action method for the "Develop Vaccine" button in the GUI.
+	 * The action requires a pathogen as its input.
+	 * When pressed the develop vaccine action is passed to the GameExchange.
+	 * If no pathogen was selected the method does nothing.
+	 */
 	@FXML
 	private void developVaccine() {
 
@@ -401,6 +442,12 @@ public class GuiController {
 		}
 	}
 
+	/**
+	 * On action method for the "Deploy Vaccine" button in the GUI.
+	 * The action requires a pathogen and a city as its input.
+	 * When pressed the deploy vaccine action is passed to the GameExchange.
+	 * If no pathogen or city was selected the method does nothing.
+	 */
 	@FXML
 	private void deployVaccine() {
 
@@ -416,6 +463,12 @@ public class GuiController {
 		}
 	}
 
+	/**
+	 * On action method for the "Develop Medication" button in the GUI.
+	 * The action requires a pathogen as its input.
+	 * When pressed the develop medication action is passed to the GameExchange.
+	 * If no pathogen was selected the method does nothing
+	 */
 	@FXML
 	private void developMedication() {
 
@@ -428,6 +481,12 @@ public class GuiController {
 		}
 	}
 
+	/**
+	 * On action method for the "Deploy Medication" button in the GUI.
+	 * The action requires a pathogen and a city as its input.
+	 * When pressed the deploy medication action is passed to the GameExchange.
+	 * If no pathogen or city was selected the method does nothing.
+	 */
 	@FXML
 	private void deployMedication() {
 
@@ -459,26 +518,58 @@ public class GuiController {
 		}
 	}
 
+	/**
+	 * On action method for the "Apply Hygiene" button in the GUI.
+	 * The action requires a city as its input.
+	 * When pressed the apply hygiene action is passed to the GameExchange.
+	 * If no city was selected the method does nothing.
+	 */
 	@FXML
 	private void applyHygienicMeasures() {
 		this.doRerollAction(ActionType.applyHygienicMeasures);
 	}
 
+	/**
+	 * On action method for the "Exert Influence" button in the GUI.
+	 * The action requires a city as its input.
+	 * When pressed the exert influence action is passed to the GameExchange.
+	 * If no city was selected the method does nothing.
+	 */
 	@FXML
 	private void exertInfluence() {
 		this.doRerollAction(ActionType.exertInfluence);
 	}
 
+	/**
+	 * On action method for the "Call Elections" button in the GUI.
+	 * The action requires a city as its input.
+	 * When pressed the call elections action is passed to the GameExchange.
+	 * If no city was selected the method does nothing.
+	 */
 	@FXML
 	private void callElections() {
 		this.doRerollAction(ActionType.callElections);
 	}
 
+	/**
+	 * On action method for the "Launch Campaign" button in the GUI.
+	 * The action requires a city as its input.
+	 * When pressed the launch campaign action is passed to the GameExchange.
+	 * If no city was selected the method does nothing.
+	 */
 	@FXML
 	private void launchCampaign() {
 		this.doRerollAction(ActionType.launchCampaign);
 	}
 
+	/**
+	 * On action method for the "Vaccinate big Cities" button in the GUI.
+	 * The action requreds a pathogen and can be given a number of cities it should try to vaccinate as its input.
+	 * When pressed the method calculates which cities will be the most affected by vaccination
+	 * and adds the deploy vaccines action for those cities to the repliesToSend Queue in the GameServer
+	 * If no pathogen was selected the method does nothing.
+	 * If no number of cities was given this will vaccinate the single most effected city.
+	 */
 	@FXML
 	private void vaccinateBiggestCities() {
 
@@ -538,7 +629,15 @@ public class GuiController {
 
 	}
 
-	@FXML // Button implementation
+	/**
+	 * On action method for the "Medicate big Cities" button in the GUI.
+	 * The action requreds a pathogen and can be given a number of cities it should try to medicate as its input.
+	 * When pressed the method calculates which cities will be the most affected by medication
+	 * and adds the deploy mediaction action for those cities to the repliesToSend Queue in the GameServer
+	 * If no pathogen was selected the method does nothing.
+	 * If no number of cities was given this will medicate the single most effected city.
+	 */
+	@FXML
 	private void medicateBiggestCities() {
 
 		// Get the selected pathogen
@@ -564,7 +663,7 @@ public class GuiController {
 				// healing
 				City bestCity = g.getCities().values().stream() // Search all cities
 						.filter(c -> c.isInfected(pathogen)) // Filter cities that are not infected by the
-																		// pathogen
+																// pathogen
 						.max((City c1,
 								City c2) -> (int) (c1.getPopulation() * c1.getPrevalance()
 										- c2.getPopulation() * c2.getPrevalance()))
@@ -617,7 +716,11 @@ public class GuiController {
 		}
 	}
 
-	@FXML // Button implementation
+	/**
+	 * On action method for the "Export Map" button in the GUI.
+	 * When pressed this will export the current representation of the game state in the Canvas as a picture.
+	 */
+	@FXML
 	public void exportMap() {
 		this.currentMap.snapshot((SnapshotResult sr) -> {
 			FileHandler.writeFile("Test.png", sr.getImage());
@@ -649,7 +752,8 @@ public class GuiController {
 
 		// Iterate over all cities find the one we want to print and print those
 		cities.stream().filter(c -> !this.showDistinctCityCB.getValue().equals("Healthy") || !c.isInfected())
-				.filter(c -> !this.showDistinctCityCB.getValue().equals("Infected") || c.isInfected(selectedPathogen) && selectedPathogen != null
+				.filter(c -> !this.showDistinctCityCB.getValue().equals("Infected")
+						|| c.isInfected(selectedPathogen) && selectedPathogen != null
 						|| selectedPathogen == null && c.isInfected())
 				.filter(c -> selectedCity == null || selectedCity == c
 						|| (selectedCity.getConnections().contains(c) && connectionBox.isSelected()))
@@ -664,7 +768,6 @@ public class GuiController {
 	private void drawCity(City city) {
 
 		Pathogen selectedPathogen = this.getSelectedPathogen();
-
 
 		// Initialize the canvas as a 2D graphics object.
 		GraphicsContext gc = this.currentMap.getGraphicsContext2D();
@@ -681,7 +784,7 @@ public class GuiController {
 		double prev = selectedPathogen == null || city.getPathogen() == selectedPathogen ? city.getPrevalance() : 0.0;
 
 		gc.setFill(new Color(prev, 0, 0, prev));
-		
+
 		// adjust x, y, diameter so it fits nicely on the canvas.
 		// TODO: Get actual width/height
 		x *= Math.min(this.currentMap.getWidth(), this.currentMap.getHeight() * 2) / 360;
@@ -699,5 +802,4 @@ public class GuiController {
 			gc.strokeText(cityName, x, y);
 
 	}
-	// End of draw map methods.
 }
