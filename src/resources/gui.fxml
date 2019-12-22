@@ -515,7 +515,7 @@
                   <Font name="Ubuntu Light" size="19.0" />
                </font>
             </Text>
-            <Button fx:id="endRoundB" mnemonicParsing="false" onAction="#endRound" prefHeight="20.0" prefWidth="220.0" text="endRound" GridPane.rowIndex="6">
+            <Button fx:id="endRoundB" mnemonicParsing="false" onAction="#endRound" prefHeight="20.0" prefWidth="220.0" text="End round" GridPane.rowIndex="6">
                <font>
                   <Font name="Ubuntu Light" size="16.0" />
                </font>
