@@ -356,7 +356,7 @@
             </GridPane>
             <GridPane layoutX="1213.0" layoutY="751.0" prefHeight="241.0" prefWidth="346.75" GridPane.columnIndex="4">
                <children>
-                  <Button fx:id="vaccinateBiggestCitiesB" layoutX="1428.0" layoutY="872.0" mnemonicParsing="false" onAction="#vaccinateBiggestCities" prefHeight="110.0" prefWidth="180.0" text="Vaccinate big Cities" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <Button fx:id="vaccinateBiggestCitiesB" layoutX="1428.0" layoutY="872.0" mnemonicParsing="false" onAction="#vaccinateBiggestCities" prefHeight="110.0" prefWidth="160.0" text="Vaccinate big Cities" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <font>
                         <Font name="Ubuntu Light" size="16.0" />
                      </font>
@@ -364,7 +364,7 @@
                         <Tooltip text="Vaccinate a certain amount of the biggest cities.\npathogen : pathogen name\namount : amount of cities to vaccinate"/>
                      </tooltip>
                   </Button>
-                  <Button fx:id="medicateBiggestCitiesB" layoutX="1213.0" layoutY="872.0" mnemonicParsing="false" onAction="#medicateBiggestCities" prefHeight="110.0" prefWidth="180.0" text="Medicate big Cities" GridPane.rowIndex="1">
+                  <Button fx:id="medicateBiggestCitiesB" layoutX="1213.0" layoutY="872.0" mnemonicParsing="false" onAction="#medicateBiggestCities" prefHeight="110.0" prefWidth="160.0" text="Medicate big Cities" GridPane.rowIndex="1">
                      <font>
                         <Font name="Ubuntu Light" size="16.0" />
                      </font>
@@ -372,7 +372,7 @@
                         <Tooltip text="Medicate a certain amount of the biggest cities.\npathogen : pathogen name\namount : amount of cities to medicate"/>
                      </tooltip>
                   </Button>
-                  <Button fx:id="autoTurnB" layoutX="1213.0" layoutY="751.0" mnemonicParsing="false" onAction="#autoTurn" prefHeight="110.0" prefWidth="180.0" text="Auto turn">
+                  <Button fx:id="autoTurnB" layoutX="1213.0" layoutY="751.0" mnemonicParsing="false" onAction="#autoTurn" prefHeight="110.0" prefWidth="160.0" text="Auto turn">
                      <font>
                         <Font name="Ubuntu Light" size="16.0" />
                      </font>
@@ -380,7 +380,7 @@
                         <Tooltip text="Let the computer play.\namount : amount of actions"/>
                      </tooltip>
                   </Button>
-                  <Button fx:id="exportMapB" mnemonicParsing="false" onAction="#exportMap" prefHeight="110.0" prefWidth="180.0" text="Export Map" GridPane.columnIndex="1">
+                  <Button fx:id="exportMapB" mnemonicParsing="false" onAction="#exportMap" prefHeight="110.0" prefWidth="160.0" text="Export Map" GridPane.columnIndex="1">
                      <font>
                         <Font name="Ubuntu Light" size="16.0" />
                      </font>
