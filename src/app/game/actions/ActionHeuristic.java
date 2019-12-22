@@ -20,7 +20,7 @@ public class ActionHeuristic {
 	 * Sets the value of the constants the the CURRENT values in constants.txt
 	 */
 	public static void updateConstants() {
-		constants = ConstantsSetup.getConstants("resources/constants.txt");
+		constants = ConstantsSetup.getConstants(ConstantsSetup.CONSTANTS_PATH);
 		if(constants == null) {
 			System.out.println("Konstanten konnten nicht geladen werden.");
 			System.exit(1);
@@ -265,19 +265,19 @@ public class ActionHeuristic {
 			break;
 		case exertInfluence:
 			//make sure to always be able to emergency quarantine
-			if(game.getPoints() > 30)
+			if(game.getPoints() >= 35)
 				score+= constants.get("INFLUENCE_FACTOR") * city.getPopulation() * (5 - city.getEconomy().getNumericRepresentation() );
 			break; 
 		case callElections:
-			if(game.getPoints() > 30)
+			if(game.getPoints() >= 35)
 				score+= constants.get("ELECTIONS_FACTOR") * city.getPopulation() * (5 - city.getGovernment().getNumericRepresentation() );
 			break;
 		case applyHygienicMeasures:
-			if(game.getPoints() > 30)
+			if(game.getPoints() >= 35)
 				score+= constants.get("HYGIENE_FACTOR") * city.getPopulation() * (5 - city.getHygiene().getNumericRepresentation() );
 			break;
 		case launchCampaign:
-			if(game.getPoints() > 30)
+			if(game.getPoints() >= 35)
 				score+=constants.get("CAMPAIGN_FACTOR") * city.getPopulation() * (5- city.getAwareness().getNumericRepresentation() );
 			break;
 		default:

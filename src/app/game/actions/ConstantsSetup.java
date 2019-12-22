@@ -10,9 +10,12 @@ import app.io.FileHandler;
 
 public class ConstantsSetup {
 	
+	public static final String CONSTANTS_PATH = "resources/constants.txt", 
+							   LASTCONSTANTS_PATH = "resources/lastConstants.txt";
+	
 	private static final int GAMES_TO_REROLL_CONSTANTS = 100;
 	
-	private static final double CHANGE_CHANCE = 0.5, MAX_ADDITION = 5, MAX_PERCENTAGE_CHANCE = 1; 
+	private static final double CHANGE_CHANCE = 0.3, MAX_ADDITION = 3, MAX_PERCENTAGE_CHANCE = 0.5; 
 	
 	private static int wins = 0, games = 0;
 	
@@ -37,17 +40,17 @@ public class ConstantsSetup {
 			wins++;
 		games++;
 		double winrate = wins/(double)games;
-		System.out.println("GameNR:" + games + " " + game.getOutcome() + " - current winRate = " + ((wins/(double)games)*100) + "%.");
+		System.out.println("GameNR:" + games + " " + game.getOutcome() + " - current winRate = " + winrate * 100 + "%.");
 		if(games >= GAMES_TO_REROLL_CONSTANTS) {
-			HashMap<String,Double> currentConstants = getConstants("resources/constants.txt");
-			HashMap<String,Double> oldConstants = getConstants("resources/lastConstants.txt");
+			HashMap<String,Double> currentConstants = getConstants(CONSTANTS_PATH);
+			HashMap<String,Double> oldConstants = getConstants(LASTCONSTANTS_PATH);
 			boolean improvement = oldConstants.get("winrate") < winrate;
 			if(improvement) {
 				currentConstants.put("winrate",winrate);
 				ArrayList<String> lines = new ArrayList<String>(currentConstants.size());
 				for(Entry<String,Double> entry : currentConstants.entrySet())
 					lines.add(entry.getKey()+" "+entry.getValue());
-				FileHandler.writeFile(FileHandler.getFileFromResources("resources/lastConstants.txt"),lines);
+				FileHandler.writeFile(FileHandler.getFileFromResources(LASTCONSTANTS_PATH),lines);
 	
 			}
 			HashMap<String,Double> newConstants = adjustConstants(improvement? currentConstants : oldConstants,CHANGE_CHANCE, MAX_PERCENTAGE_CHANCE, MAX_ADDITION);
@@ -55,7 +58,7 @@ public class ConstantsSetup {
 			ArrayList<String> lines = new ArrayList<String>(newConstants.size());
 			for(Entry<String,Double> entry : newConstants.entrySet())
 				lines.add(entry.getKey()+" "+entry.getValue());
-			FileHandler.writeFile(FileHandler.getFileFromResources("resources/constants.txt"),lines);
+			FileHandler.writeFile(FileHandler.getFileFromResources(CONSTANTS_PATH),lines);
 			ActionHeuristic.updateConstants();
 			games = 0;
 			wins = 0;
