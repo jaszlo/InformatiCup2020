@@ -60,7 +60,7 @@
                         <Font name="Ubuntu Light" size="16.0" />
                      </font>
                      <tooltip>
-                        <Tooltip text="Close a city's airport.\ncity (from): city name\nrounds : number of rounds"/>
+                        <Tooltip text="Close a city's airport.&#10;city (from): city name&#10;rounds : number of rounds"/>
                      </tooltip>
                   </Button>
                   <Text layoutX="1788.0" layoutY="523.06689453125" strokeType="OUTSIDE" strokeWidth="0.0" text="20P" wrappingWidth="34.00927734375" GridPane.columnIndex="1" GridPane.rowIndex="6" />
@@ -69,7 +69,7 @@
                         <Font name="Ubuntu Light" size="16.0" />
                      </font>
                      <tooltip>
-                        <Tooltip text="Deploy a vaccine against a certain pathogen in a certain city.\ncity (from) city name\npathogen : pathogen name"/>
+                        <Tooltip text="Deploy a vaccine against a certain pathogen in a certain city.&#10;city (from) city name&#10;pathogen : pathogen name"/>
                      </tooltip>
                   </Button>
                   <Text layoutX="1788.0" layoutY="458.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5R + 15P" wrappingWidth="62.00927734375" GridPane.columnIndex="1" GridPane.rowIndex="4" />
@@ -79,7 +79,7 @@
                         <Font name="Ubuntu Light" size="16.0" />
                      </font>
                      <tooltip>
-                        <Tooltip text="Put a city under quarantine.\ncity (from): city name\nrounds : number of rounds"/>
+                        <Tooltip text="Put a city under quarantine.&#10;city (from): city name&#10;rounds : number of rounds"/>
                      </tooltip>
                   </Button>
                   <Button fx:id="closeConnectionB" alignment="TOP_LEFT" layoutX="1636.0" layoutY="543.0" mnemonicParsing="false" onAction="#closeConnection" prefHeight="25.0" prefWidth="220.0" text="            Close Connection" textAlignment="CENTER" GridPane.rowIndex="7">
@@ -87,7 +87,7 @@
                         <Font name="Ubuntu Light" size="16.0" />
                      </font>
                      <tooltip>
-                        <Tooltip text="Close a connection between two cities.\ncity (from) : first city name\ncity (to) : second city name\nrounds : number of rounds"/>
+                        <Tooltip text="Close a connection between two cities.&#10;city (from) : first city name&#10;city (to) : second city name&#10;rounds : number of rounds"/>
                      </tooltip>
                   </Button>
                   <Text fx:id="points" layoutX="1636.0" layoutY="346.95999908447266" stroke="BLACK" strokeType="OUTSIDE" text="Points:" wrappingWidth="104.248046875" GridPane.rowIndex="1">
@@ -103,7 +103,7 @@
                         <Font name="Ubuntu Light" size="16.0" />
                      </font>
                      <tooltip>
-                        <Tooltip text="Develop a medication against a certain pathogen.\npathogen : pathogen name"/>
+                        <Tooltip text="Develop a medication against a certain pathogen.&#10;pathogen : pathogen name"/>
                      </tooltip>
                   </Button>
                   <Button fx:id="deployVaccineB" layoutX="1636.0" layoutY="580.0" mnemonicParsing="false" onAction="#deployVaccine" prefHeight="25.0" prefWidth="220.0" text="Deploy Vaccine" GridPane.rowIndex="8">
@@ -111,7 +111,7 @@
                         <Font name="Ubuntu Light" size="16.0" />
                      </font>
                      <tooltip>
-                        <Tooltip text="Develop a vaccine against a certain pathogen.\npathogen : pathogen name"/>
+                        <Tooltip text="Develop a vaccine against a certain pathogen.&#10;pathogen : pathogen name"/>
                      </tooltip>
                   </Button>
                   <Text layoutX="1636.0" layoutY="392.95999908447266" stroke="BLACK" strokeType="OUTSIDE" text="Actions" wrappingWidth="147.0" GridPane.rowIndex="2">
@@ -134,7 +134,7 @@
                         <Font name="Ubuntu Light" size="16.0" />
                      </font>
                      <tooltip>
-                        <Tooltip text="Deploy a medication in against a certain pathogen in a certain city.\ncity (from) : city name\npathogen : pathogen name"/>
+                        <Tooltip text="Deploy a medication in against a certain pathogen in a certain city.&#10;city (from) : city name&#10;pathogen : pathogen name"/>
                      </tooltip>
                   </Button>
                   <Text layoutX="1636.0" layoutY="300.95999908447266" stroke="BLACK" strokeType="OUTSIDE" text="Round:" wrappingWidth="160.0">
@@ -361,7 +361,7 @@
                         <Font name="Ubuntu Light" size="16.0" />
                      </font>
                      <tooltip>
-                        <Tooltip text="Vaccinate a certain amount of the biggest cities.\npathogen : pathogen name\namount : amount of cities to vaccinate"/>
+                        <Tooltip text="Vaccinate a certain amount of the biggest cities.&#10;pathogen : pathogen name&#10;amount : amount of cities to vaccinate"/>
                      </tooltip>
                   </Button>
                   <Button fx:id="medicateBiggestCitiesB" layoutX="1213.0" layoutY="872.0" mnemonicParsing="false" onAction="#medicateBiggestCities" prefHeight="110.0" prefWidth="160.0" text="Medicate big Cities" GridPane.rowIndex="1">
@@ -369,7 +369,7 @@
                         <Font name="Ubuntu Light" size="16.0" />
                      </font>
                      <tooltip>
-                        <Tooltip text="Medicate a certain amount of the biggest cities.\npathogen : pathogen name\namount : amount of cities to medicate"/>
+                        <Tooltip text="Medicate a certain amount of the biggest cities.&#10;pathogen : pathogen name&#10;amount : amount of cities to medicate"/>
                      </tooltip>
                   </Button>
                   <Button fx:id="autoTurnB" layoutX="1213.0" layoutY="751.0" mnemonicParsing="false" onAction="#autoTurn" prefHeight="110.0" prefWidth="160.0" text="Auto turn">
@@ -377,7 +377,7 @@
                         <Font name="Ubuntu Light" size="16.0" />
                      </font>
                      <tooltip>
-                        <Tooltip text="Let the computer play.\namount : amount of actions"/>
+                        <Tooltip text="Let the computer play.&#10;amount : amount of actions"/>
                      </tooltip>
                   </Button>
                   <Button fx:id="exportMapB" mnemonicParsing="false" onAction="#exportMap" prefHeight="110.0" prefWidth="160.0" text="Export Map" GridPane.columnIndex="1">
@@ -468,7 +468,7 @@
                   <Font name="Ubuntu Light" size="16.0" />
                </font>
                <tooltip>
-                  <Tooltip text="The attentiveness of a certain city's population will be increased\ncity (from) : city name"/>
+                  <Tooltip text="The attentiveness of a certain city's population will be increased&#10;city (from) : city name"/>
                </tooltip>
             </Button>
             <Button fx:id="quitB" layoutX="1633.0" layoutY="912.0" mnemonicParsing="false" onAction="#quit" prefHeight="20.0" prefWidth="140.0" text="Quit" GridPane.columnIndex="1" GridPane.rowIndex="6">
@@ -485,7 +485,7 @@
                   <Font name="Ubuntu Light" size="16.0" />
                </font>
                <tooltip>
-                  <Tooltip text="Randomly increase hygine in a certain city\ncity (from) : city name"/>
+                  <Tooltip text="Randomly increase hygine in a certain city&#10;city (from) : city name"/>
                </tooltip>
                </Button>
             <Button fx:id="callElectionsB" layoutX="1633.0" layoutY="849.0" mnemonicParsing="false" onAction="#callElections" prefHeight="25.0" prefWidth="220.0" text="Call Elections" GridPane.rowIndex="3">
@@ -493,7 +493,7 @@
                   <Font name="Ubuntu Light" size="16.0" />
                </font>
                <tooltip>
-                  <Tooltip text="Reset the political strength of a certain city\ncity (from) : city name"/>
+                  <Tooltip text="Reset the political strength of a certain city&#10;city (from) : city name"/>
                </tooltip>
             </Button>
             <Button fx:id="exertInfluenceB" layoutX="1633.0" layoutY="784.0" mnemonicParsing="false" onAction="#exertInfluence" prefHeight="25.0" prefWidth="220.0" text="Change Influence" GridPane.rowIndex="1">
@@ -501,7 +501,7 @@
                   <Font name="Ubuntu Light" size="16.0" />
                </font>
                <tooltip>
-                  <Tooltip text="Reset the economic strength of a certain city\ncity (from) : city name"/>
+                  <Tooltip text="Reset the economic strength of a certain city&#10;city (from) : city name"/>
                </tooltip>
             </Button>
             <Text layoutX="1810.0" layoutY="866.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3P" wrappingWidth="34.00927734375" GridPane.columnIndex="1" GridPane.rowIndex="3" />
@@ -520,7 +520,7 @@
                   <Font name="Ubuntu Light" size="16.0" />
                </font>
                <tooltip>
-                   <Tooltip text="End the current round.\namount : number of rounds that just get ended"/>
+                   <Tooltip text="End the current round.&#10;amount : number of rounds that just get ended"/>
                </tooltip>
             </Button>
          </children>
