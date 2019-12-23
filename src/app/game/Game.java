@@ -14,7 +14,11 @@ import org.json.simple.parser.ParseException;
 import app.game.events.E_AirportClosed;
 import app.game.events.E_AntiVacc;
 import app.game.events.E_BioTerror;
+import app.game.events.E_CampaignLaunched;
 import app.game.events.E_ConnectionClosed;
+import app.game.events.E_ElectionsCalled;
+import app.game.events.E_HygienicMeasuresApplied;
+import app.game.events.E_InfluenceExerted;
 import app.game.events.E_MedicationAvailable;
 import app.game.events.E_MedicationDeployed;
 import app.game.events.E_MedicationInDevelopment;
@@ -182,7 +186,32 @@ public class Game {
 			E_VaccineDeployed e = new E_VaccineDeployed(round, pathogen, city);
 			addToGeneralEventMap(e);
 			addEventToCity(e, city);
-		} else {
+		} 
+		else if(type.contentEquals("campaignLaunched")) {
+			int round = Integer.parseInt(event.get("round").toString());
+			E_CampaignLaunched e = new E_CampaignLaunched(city, round);
+			addToGeneralEventMap(e);
+			addEventToCity(e, city);
+		}
+		else if(type.contentEquals("electionsCalled")) {
+			int round = Integer.parseInt(event.get("round").toString());
+			E_ElectionsCalled e = new E_ElectionsCalled(city, round);
+			addToGeneralEventMap(e);
+			addEventToCity(e, city);
+		}
+		else if(type.contentEquals("hygienicMeasuresApplied")) {
+			int round = Integer.parseInt(event.get("round").toString());
+			E_HygienicMeasuresApplied e = new E_HygienicMeasuresApplied(city, round);
+			addToGeneralEventMap(e);
+			addEventToCity(e, city);
+		}
+		else if(type.contentEquals("influenceExerted")) {
+			int round = Integer.parseInt(event.get("round").toString());
+			E_InfluenceExerted e = new E_InfluenceExerted(city, round);
+			addToGeneralEventMap(e);
+			addEventToCity(e, city);
+		}
+		else {
 			System.out.println(event + "  NOT IMPLEMENTED");
 			System.exit(0);
 		}

@@ -15,7 +15,7 @@ public class ConstantsSetup {
 	
 	private static final int GAMES_TO_REROLL_CONSTANTS = 100;
 	
-	private static final double CHANGE_CHANCE = 0.3, MAX_ADDITION = 3, MAX_PERCENTAGE_CHANCE = 0.5; 
+	private static final double CHANGE_CHANCE = 0.25, MAX_ADDITION = 5, MAX_PERCENTAGE_CHANCE = 1; 
 	
 	private static int wins = 0, games = 0;
 	
@@ -69,7 +69,7 @@ public class ConstantsSetup {
 		HashMap<String,Double> adjusted = new HashMap<String,Double>();
 		boolean changeOccoured = false;
 		for(Entry<String,Double> entry : map.entrySet()) {
-			if(Math.random() >= changeChance) {
+			if(Math.random() <= changeChance) {
 				changeOccoured = true;
 				adjusted.put(entry.getKey(), adjustValue(entry.getValue(),maxPercentageChange,maxAddition));
 			}else
@@ -87,6 +87,7 @@ public class ConstantsSetup {
 		double addition = (int) (Math.random()* (maxAddition + 1));
 		value += addition;
 		value *= 1+factor;
+		value = value < 0? 0 : value;
 		return value;
 	}
 	

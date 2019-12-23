@@ -7,7 +7,7 @@ public enum EventType {
 
 	airportClosed, antiVaccinationism, bioTerrorism, connectionClosed, medicationAvailable, medicationDeployed,
 	medicationInDevelopment, outbreak, pathogenEncountered, quarantine, uprising, vaccineAvailable, vaccineDeployed,
-	vaccineInDevelopment;
+	vaccineInDevelopment, campaignLaunched, electionsCalled, hygienicMeasuresApplied, influenceExerted;
 
 	/**
 	 * 
@@ -22,6 +22,10 @@ public enum EventType {
 				this == outbreak			||
 				this == quarantine			||
 				this == uprising			||
+				this == campaignLaunched	||
+				this == electionsCalled		||
+				this == hygienicMeasuresApplied 			||
+				this == influenceExerted		 	||
 				this == vaccineDeployed;
 	}
 	
