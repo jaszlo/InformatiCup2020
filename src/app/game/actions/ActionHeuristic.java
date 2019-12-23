@@ -127,6 +127,8 @@ public class ActionHeuristic {
 		City city = action.getCity();
 		Game game = action.getGame();
 		Pathogen pathogen = action.getPathogen();
+		int currentPoints = game.getPoints();
+		boolean doRandoms = game.getPathEncounterEvents().stream().allMatch(e -> game.ignorePathogenThisRound(e.getPathogen()));
 
 		if (game != null && game.ignorePathogenThisRound(pathogen)) {
 
@@ -287,7 +289,7 @@ public class ActionHeuristic {
 
 			// Create a Point buffer. If in a later round a strong Pathogen breaks out we
 			// can quarantine it.
-			if (game.getPoints() <= constants.get("#STOP_DEPLOYING_MED")) {
+			if (currentPoints <= constants.get("#STOP_DEPLOYING_MED")) {
 				break;
 			}
 
@@ -299,22 +301,22 @@ public class ActionHeuristic {
 
 		case exertInfluence:
 			// make sure to always be able to emergency quarantine
-			if (game.getPoints() >= constants.get("#START_RANDOM_EVENTS"))
+			if (currentPoints >= constants.get("#START_RANDOM_EVENTS") && doRandoms)
 				score += constants.get("INFLUENCE_FACTOR") * city.getPopulation()
 						* (5 - city.getEconomy().getNumericRepresentation());
 			break;
 		case callElections:
-			if (game.getPoints() >= constants.get("#START_RANDOM_EVENTS"))
+			if (currentPoints >= constants.get("#START_RANDOM_EVENTS")  && doRandoms)
 				score += constants.get("ELECTIONS_FACTOR") * city.getPopulation()
 						* (5 - city.getGovernment().getNumericRepresentation());
 			break;
 		case applyHygienicMeasures:
-			if (game.getPoints() >= constants.get("#START_RANDOM_EVENTS"))
+			if (currentPoints >= constants.get("#START_RANDOM_EVENTS")  && doRandoms)
 				score += constants.get("HYGIENE_FACTOR") * city.getPopulation()
 						* (5 - city.getHygiene().getNumericRepresentation());
 			break;
 		case launchCampaign:
-			if (game.getPoints() >= constants.get("#START_RANDOM_EVENTS"))
+			if (currentPoints >= constants.get("#START_RANDOM_EVENTS")  && doRandoms)
 				score += constants.get("CAMPAIGN_FACTOR") * city.getPopulation()
 						* (5 - city.getAwareness().getNumericRepresentation());
 			break;
