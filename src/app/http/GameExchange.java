@@ -58,10 +58,7 @@ public class GameExchange {
 	}
 	
 	public void playGui() {
-		Platform.runLater(() -> {
-			App.guiController.setGame(this);
-		});
-		
+		App.guiController.setGame(this);
 	}
 	
 }

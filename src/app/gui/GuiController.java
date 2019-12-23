@@ -12,6 +12,7 @@ import app.http.GameExchange;
 import app.http.GameServer;
 import app.io.FileHandler;
 import app.solver.Main;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -154,7 +155,7 @@ public class GuiController {
 
 		this.currentGameExchange = exchange;
 		this.currentGame = this.currentGameExchange.getGame();
-		this.update();
+		Platform.runLater(() -> this.update());
 	}
 
 	/**
@@ -257,7 +258,6 @@ public class GuiController {
 	 */
 	public void setLastAction(String action) {
 		this.lastActionString = action;
-		// this.lastAction.setText(this.lastActionString);
 	}
 
 	/**

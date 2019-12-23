@@ -24,10 +24,10 @@ public class GameServer {
 	public static final GameEvaluater LOCK = new GameEvaluater() {
 		@Override
 		public String evaluate(Game currentGame) {
-			
+
 			System.err.println("Blocking deque Lock was executed!");
 			GameServer.addReply(GameServer.LOCK);
-			
+
 			return Main.solve(currentGame);
 		}
 	};
@@ -61,22 +61,29 @@ public class GameServer {
 				}
 			}
 
-			if (hasReplies() && peekReply() == LOCK) {
-				ge.sendReply(Main.solve(ge.getGame()));
-			} else if (hasReplies()) {
-				ge.sendReply(getReply().evaluate(ge.getGame()));
-			} else if (App.guiController != null && App.guiController.ready()) {
-				ge.playGui();
-			} else {
-				// Detected more than one game. CLose GUI and enable auto play
-				addReply(LOCK);
-				
-				Platform.runLater(() -> {
-					App.guiController.executeAction(Main.solve(ge.getGame()));
-					App.guiController.close();
-				});
-				
-				ge.sendReply(Main.solve(ge.getGame()));
+			GameEvaluater eval = null;
+			synchronized (GameServer.class) {
+				if (hasReplies() && peekReply() == LOCK) {
+					eval = (Game g) -> Main.solve(g);
+				} else if (hasReplies()) {
+					eval = getReply();
+				} else if (App.guiController != null && App.guiController.ready()) {
+					ge.playGui();
+				} else {
+					// Detected more than one game. CLose GUI and enable auto play
+					addReply(LOCK);
+
+					Platform.runLater(() -> {
+						App.guiController.executeAction(Main.solve(ge.getGame()));
+						App.guiController.close();
+					});
+
+					eval = (Game g) -> Main.solve(g);
+				}
+			}
+
+			if (eval != null) {
+				ge.sendReply(eval.evaluate(ge.getGame()));
 			}
 		}).start();
 	}
