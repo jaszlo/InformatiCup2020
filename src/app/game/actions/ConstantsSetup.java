@@ -69,15 +69,19 @@ public class ConstantsSetup {
 		HashMap<String,Double> adjusted = new HashMap<String,Double>();
 		boolean changeOccoured = false;
 		for(Entry<String,Double> entry : map.entrySet()) {
-			if(Math.random() <= changeChance) {
+			if(Math.random() <= changeChance && entry.getKey().charAt(0) != '#') {
 				changeOccoured = true;
 				adjusted.put(entry.getKey(), adjustValue(entry.getValue(),maxPercentageChange,maxAddition));
 			}else
 				adjusted.put(entry.getKey(),entry.getValue());
 		}
 		if(!changeOccoured) {
-			String key = adjusted.keySet().iterator().next();
-			adjusted.put(key,adjustValue(adjusted.get(key),maxPercentageChange,maxAddition));
+			for(String key : adjusted.keySet()) {
+				if(key.charAt(0) != '#') {
+					adjusted.put(key,adjustValue(adjusted.get(key),maxPercentageChange,maxAddition));
+					break;
+				}
+			}
 		}
 		return adjusted;
 	}

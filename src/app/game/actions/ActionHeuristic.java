@@ -9,9 +9,9 @@ import app.game.Game;
 import app.game.Pathogen;
 
 public class ActionHeuristic {
-	private static final int START_RANDOM_EVENTS = 43;
-	private static final int STOP_DEPLOYING_MED = 30;
-	private static final int STOP_DEPLOYING_VAC = 25;
+//	private static final int START_RANDOM_EVENTS = 43;
+//	private static final int STOP_DEPLOYING_MED = 30;
+//	private static final int STOP_DEPLOYING_VAC = 25;
 	// setup constants here
 	private static HashMap<String, Double> constants = null;
 
@@ -250,7 +250,7 @@ public class ActionHeuristic {
 		case deployVaccine:
 			// Create a Point buffer. If in a later round a strong Pathogen breaks out we
 			// can quarantine it.
-			if (game.getPoints() <= STOP_DEPLOYING_VAC) {
+			if (game.getPoints() <= constants.get("#STOP_DEPLOYING_VAC")) {
 				break;
 			}
 
@@ -287,7 +287,7 @@ public class ActionHeuristic {
 
 			// Create a Point buffer. If in a later round a strong Pathogen breaks out we
 			// can quarantine it.
-			if (game.getPoints() <= STOP_DEPLOYING_MED) {
+			if (game.getPoints() <= constants.get("#STOP_DEPLOYING_MED")) {
 				break;
 			}
 
@@ -299,22 +299,22 @@ public class ActionHeuristic {
 
 		case exertInfluence:
 			// make sure to always be able to emergency quarantine
-			if (game.getPoints() >= START_RANDOM_EVENTS)
+			if (game.getPoints() >= constants.get("#START_RANDOM_EVENTS"))
 				score += constants.get("INFLUENCE_FACTOR") * city.getPopulation()
 						* (5 - city.getEconomy().getNumericRepresentation());
 			break;
 		case callElections:
-			if (game.getPoints() >= START_RANDOM_EVENTS)
+			if (game.getPoints() >= constants.get("#START_RANDOM_EVENTS"))
 				score += constants.get("ELECTIONS_FACTOR") * city.getPopulation()
 						* (5 - city.getGovernment().getNumericRepresentation());
 			break;
 		case applyHygienicMeasures:
-			if (game.getPoints() >= START_RANDOM_EVENTS)
+			if (game.getPoints() >= constants.get("#START_RANDOM_EVENTS"))
 				score += constants.get("HYGIENE_FACTOR") * city.getPopulation()
 						* (5 - city.getHygiene().getNumericRepresentation());
 			break;
 		case launchCampaign:
-			if (game.getPoints() >= START_RANDOM_EVENTS)
+			if (game.getPoints() >= constants.get("#START_RANDOM_EVENTS"))
 				score += constants.get("CAMPAIGN_FACTOR") * city.getPopulation()
 						* (5 - city.getAwareness().getNumericRepresentation());
 			break;
