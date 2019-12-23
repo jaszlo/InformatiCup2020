@@ -22,7 +22,7 @@ public class App extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		new GameServer();
-		Platform.setImplicitExit(false);
+		Platform.setImplicitExit(true);
 
 		try {
 

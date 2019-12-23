@@ -12,12 +12,14 @@ import com.sun.net.httpserver.HttpExchange;
 
 import app.App;
 import app.game.Game;
+import javafx.application.Platform;
 
 public class GameExchange {
 	private HttpExchange exchange;
 	private Game game;
 	
 	public GameExchange(HttpExchange exchange) {
+		
 		this.exchange = exchange;
 		
 		String body = "";
@@ -32,6 +34,7 @@ public class GameExchange {
 	
 	
 	public void sendReply(String response) {
+		
 		try {
             exchange.sendResponseHeaders(200, response.getBytes("UTF-8").length);
             OutputStream os = exchange.getResponseBody();
@@ -55,7 +58,10 @@ public class GameExchange {
 	}
 	
 	public void playGui() {
-		App.guiController.setGame(this);
+		Platform.runLater(() -> {
+			App.guiController.setGame(this);
+		});
+		
 	}
 	
 }

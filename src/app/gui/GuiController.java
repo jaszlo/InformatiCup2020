@@ -26,7 +26,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 public class GuiController {
 
@@ -167,14 +166,11 @@ public class GuiController {
 	public boolean ready() {
 		return this.currentGameExchange == null;
 	}
-
 	
 	/**
-	 * On action method for the "Quit" button in the GUI.
-	 * When pressed closes the GUI and ends the programm.
+	 * Closes the GUI
 	 */
-	@FXML
-	public void quit() {
+	public void close() {
 		// Get the primaryStage from any element of the GUI (It can be any element
 		// because they all have the same root)
 		Stage primaryStage = (Stage) this.autoTurnB.getScene().getWindow();
@@ -185,6 +181,15 @@ public class GuiController {
 
 		// Close the primaryStage and close the Server (terminate the Programm)
 		primaryStage.close();
+	}
+	
+	/**
+	 * On action method for the "Quit" button in the GUI.
+	 * When pressed closes the GUI and ends the programm.
+	 */
+	@FXML
+	public void quit() {
+		// Exit and close
 		System.exit(0);
 	}
 
@@ -692,7 +697,7 @@ public class GuiController {
 	 * 
 	 * @param action Action to execute.
 	 */
-	private void executeAction(String action) {
+	public void executeAction(String action) {
 		// Check if there is an active GameExchange
 		if (this.currentGameExchange == null || !this.currentGameExchange.isAlive()) {
 			this.currentGameExchange = null;
@@ -702,15 +707,20 @@ public class GuiController {
 		this.currentGameExchange.sendReply(action);
 		this.currentGameExchange = null;
 	}
-
-	private void executeAction(Action action) {
+	
+	/**
+	 * Executes the given action.
+	 * 
+	 * @param action Action to execute.
+	 */
+	public void executeAction(Action action) {
 		this.executeAction(action.toString());
 	}
 
 	/**
 	 * Executes the first action out of the action queue.
 	 */
-	private void executeAction() {
+	public void executeAction() {
 		if (GameServer.hasReplies()) {
 			this.executeAction(GameServer.getReply().evaluate(this.currentGame));
 		}
