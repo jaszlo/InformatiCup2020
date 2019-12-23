@@ -9,7 +9,7 @@ import app.game.Game;
 import app.game.Pathogen;
 
 public class ActionHeuristic {
-	private static final int STOP_RANDOM_EVENTS = 43;
+	private static final int START_RANDOM_EVENTS = 43;
 	private static final int STOP_DEPLOYING_MED = 30;
 	private static final int STOP_DEPLOYING_VAC = 25;
 	// setup constants here
@@ -155,7 +155,6 @@ public class ActionHeuristic {
 				// Therefore we quarantine the biggest city and hope for the best
 				if (strongPathogenAmount > 1) {
 					score += constants.get("QUARANTINE_FACTOR") * action.getRounds() * city.getPopulation();
-					System.out.println("REACHED SAFE SEED 4 QUARANTINE");
 					break;
 				}
 			}
@@ -300,22 +299,22 @@ public class ActionHeuristic {
 
 		case exertInfluence:
 			// make sure to always be able to emergency quarantine
-			if (game.getPoints() >= STOP_RANDOM_EVENTS)
+			if (game.getPoints() >= START_RANDOM_EVENTS)
 				score += constants.get("INFLUENCE_FACTOR") * city.getPopulation()
 						* (5 - city.getEconomy().getNumericRepresentation());
 			break;
 		case callElections:
-			if (game.getPoints() >= STOP_RANDOM_EVENTS)
+			if (game.getPoints() >= START_RANDOM_EVENTS)
 				score += constants.get("ELECTIONS_FACTOR") * city.getPopulation()
 						* (5 - city.getGovernment().getNumericRepresentation());
 			break;
 		case applyHygienicMeasures:
-			if (game.getPoints() >= STOP_RANDOM_EVENTS)
+			if (game.getPoints() >= START_RANDOM_EVENTS)
 				score += constants.get("HYGIENE_FACTOR") * city.getPopulation()
 						* (5 - city.getHygiene().getNumericRepresentation());
 			break;
 		case launchCampaign:
-			if (game.getPoints() >= STOP_RANDOM_EVENTS)
+			if (game.getPoints() >= START_RANDOM_EVENTS)
 				score += constants.get("CAMPAIGN_FACTOR") * city.getPopulation()
 						* (5 - city.getAwareness().getNumericRepresentation());
 			break;
