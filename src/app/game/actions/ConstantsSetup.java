@@ -26,7 +26,7 @@ public class ConstantsSetup {
 		if(constantsList == null)
 			return null;
 		for(String constant : constantsList) {
-			//ignore comments and empty lines
+			//ignore comments and empty lines 
 			if(constant.equals("") || constant.startsWith("//"))
 				continue;
 			String[] split = constant.split(" ");
