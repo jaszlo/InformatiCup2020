@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.collections.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
@@ -15,8 +16,8 @@
          <children>
             <GridPane layoutX="1640.0" layoutY="19.0" prefHeight="0.0" prefWidth="393.0">
                <children>
-                  <TextField fx:id="roundsT" promptText="enter duration..." layoutX="1740.0" layoutY="147.0" prefHeight="25.0" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Text layoutX="1636.0" layoutY="51.0" stroke="BLACK" strokeType="OUTSIDE" text="    Aditional " wrappingWidth="160.0">
+                  <TextField fx:id="roundsT" layoutX="1740.0" layoutY="147.0" prefHeight="25.0" prefWidth="220.0" promptText="enter duration..." GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Text layoutX="1636.0" layoutY="51.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="    Aditional " wrappingWidth="160.0">
                      <font>
                         <Font name="Ubuntu Light" size="30.0" />
                      </font>
@@ -26,13 +27,13 @@
                         <Font name="Ubuntu Light" size="22.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="amountT" promptText="enter amount..." layoutX="1740.0" layoutY="187.0" prefHeight="25.0" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="amountT" layoutX="1740.0" layoutY="187.0" prefHeight="25.0" prefWidth="220.0" promptText="enter amount..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Text layoutX="1636.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rounds" wrappingWidth="80.248046875" GridPane.rowIndex="1">
                      <font>
                         <Font name="Ubuntu Light" size="22.0" />
                      </font>
                   </Text>
-                  <Text stroke="BLACK" strokeType="OUTSIDE" text="parameters" wrappingWidth="160.0" GridPane.columnIndex="1">
+                  <Text stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="parameters" wrappingWidth="160.0" GridPane.columnIndex="1">
                      <font>
                         <Font name="Ubuntu Light" size="30.0" />
                      </font>
@@ -50,7 +51,7 @@
             </GridPane>
             <GridPane layoutX="1635.0" layoutY="243.0" prefHeight="245.0" prefWidth="393.0" GridPane.rowIndex="1">
                <children>
-                  <Text layoutX="1788.0" layoutY="392.95999908447266" stroke="BLACK" strokeType="OUTSIDE" text="Costs" wrappingWidth="147.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <Text layoutX="1788.0" layoutY="392.95999908447266" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="Costs" wrappingWidth="147.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <font>
                         <Font name="Ubuntu Light" size="30.0" />
                      </font>
@@ -60,7 +61,7 @@
                         <Font name="Ubuntu Light" size="16.0" />
                      </font>
                      <tooltip>
-                        <Tooltip text="Close a city's airport.&#10;city (from): city name&#10;rounds : number of rounds"/>
+                        <Tooltip text="Close a city's airport.&#10;city (from): city name&#10;rounds : number of rounds" />
                      </tooltip>
                   </Button>
                   <Text layoutX="1788.0" layoutY="523.06689453125" strokeType="OUTSIDE" strokeWidth="0.0" text="20P" wrappingWidth="34.00927734375" GridPane.columnIndex="1" GridPane.rowIndex="6" />
@@ -69,7 +70,7 @@
                         <Font name="Ubuntu Light" size="16.0" />
                      </font>
                      <tooltip>
-                        <Tooltip text="Deploy a vaccine against a certain pathogen in a certain city.&#10;city (from) city name&#10;pathogen : pathogen name"/>
+                        <Tooltip text="Deploy a vaccine against a certain pathogen in a certain city.&#10;city (from) city name&#10;pathogen : pathogen name" />
                      </tooltip>
                   </Button>
                   <Text layoutX="1788.0" layoutY="458.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5R + 15P" wrappingWidth="62.00927734375" GridPane.columnIndex="1" GridPane.rowIndex="4" />
@@ -79,7 +80,7 @@
                         <Font name="Ubuntu Light" size="16.0" />
                      </font>
                      <tooltip>
-                        <Tooltip text="Put a city under quarantine.&#10;city (from): city name&#10;rounds : number of rounds"/>
+                        <Tooltip text="Put a city under quarantine.&#10;city (from): city name&#10;rounds : number of rounds" />
                      </tooltip>
                   </Button>
                   <Button fx:id="closeConnectionB" alignment="TOP_LEFT" layoutX="1636.0" layoutY="543.0" mnemonicParsing="false" onAction="#closeConnection" prefHeight="25.0" prefWidth="220.0" text="            Close Connection" textAlignment="CENTER" GridPane.rowIndex="7">
@@ -87,10 +88,10 @@
                         <Font name="Ubuntu Light" size="16.0" />
                      </font>
                      <tooltip>
-                        <Tooltip text="Close a connection between two cities.&#10;city (from) : first city name&#10;city (to) : second city name&#10;rounds : number of rounds"/>
+                        <Tooltip text="Close a connection between two cities.&#10;city (from) : first city name&#10;city (to) : second city name&#10;rounds : number of rounds" />
                      </tooltip>
                   </Button>
-                  <Text fx:id="points" layoutX="1636.0" layoutY="346.95999908447266" stroke="BLACK" strokeType="OUTSIDE" text="Points:" wrappingWidth="104.248046875" GridPane.rowIndex="1">
+                  <Text fx:id="points" layoutX="1636.0" layoutY="346.95999908447266" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="Points:" wrappingWidth="104.248046875" GridPane.rowIndex="1">
                      <font>
                         <Font name="Ubuntu Light" size="30.0" />
                      </font>
@@ -103,7 +104,7 @@
                         <Font name="Ubuntu Light" size="16.0" />
                      </font>
                      <tooltip>
-                        <Tooltip text="Develop a medication against a certain pathogen.&#10;pathogen : pathogen name"/>
+                        <Tooltip text="Develop a medication against a certain pathogen.&#10;pathogen : pathogen name" />
                      </tooltip>
                   </Button>
                   <Button fx:id="deployVaccineB" layoutX="1636.0" layoutY="580.0" mnemonicParsing="false" onAction="#deployVaccine" prefHeight="25.0" prefWidth="220.0" text="Deploy Vaccine" GridPane.rowIndex="8">
@@ -111,10 +112,10 @@
                         <Font name="Ubuntu Light" size="16.0" />
                      </font>
                      <tooltip>
-                        <Tooltip text="Develop a vaccine against a certain pathogen.&#10;pathogen : pathogen name"/>
+                        <Tooltip text="Develop a vaccine against a certain pathogen.&#10;pathogen : pathogen name" />
                      </tooltip>
                   </Button>
-                  <Text layoutX="1636.0" layoutY="392.95999908447266" stroke="BLACK" strokeType="OUTSIDE" text="Actions" wrappingWidth="147.0" GridPane.rowIndex="2">
+                  <Text layoutX="1636.0" layoutY="392.95999908447266" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="Actions" wrappingWidth="147.0" GridPane.rowIndex="2">
                      <font>
                         <Font name="Ubuntu Light" size="30.0" />
                      </font>
@@ -134,10 +135,10 @@
                         <Font name="Ubuntu Light" size="16.0" />
                      </font>
                      <tooltip>
-                        <Tooltip text="Deploy a medication in against a certain pathogen in a certain city.&#10;city (from) : city name&#10;pathogen : pathogen name"/>
+                        <Tooltip text="Deploy a medication in against a certain pathogen in a certain city.&#10;city (from) : city name&#10;pathogen : pathogen name" />
                      </tooltip>
                   </Button>
-                  <Text layoutX="1636.0" layoutY="300.95999908447266" stroke="BLACK" strokeType="OUTSIDE" text="Round:" wrappingWidth="160.0">
+                  <Text layoutX="1636.0" layoutY="300.95999908447266" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="Round:" wrappingWidth="160.0">
                      <font>
                         <Font name="Ubuntu Light" size="30.0" />
                      </font>
@@ -174,32 +175,32 @@
          <children>
             <GridPane layoutX="28.0" layoutY="748.0" prefHeight="288.0" prefWidth="345.75">
                <children>
-                  <Text layoutX="28.0" layoutY="769.0" stroke="BLACK" strokeType="OUTSIDE" text="Show ">
+                  <Text layoutX="28.0" layoutY="769.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="Show ">
                      <font>
-                        <Font name="Ubuntu Light" size="23.0" />
+                        <Font name="Ubuntu Light" size="30.0" />
                      </font>
                   </Text>
-                  <CheckBox fx:id="populationBox" layoutX="28.0" layoutY="836.0" onAction="#update" selected="true" mnemonicParsing="false" text="Population" GridPane.rowIndex="4">
+                  <CheckBox fx:id="populationBox" layoutX="28.0" layoutY="836.0" mnemonicParsing="false" onAction="#update" selected="true" text="Population" GridPane.rowIndex="4">
                      <font>
                         <Font name="Ubuntu Light" size="22.0" />
                      </font>
                   </CheckBox>
-                  <CheckBox fx:id="connectionBox" layoutX="28.0" layoutY="790.0" onAction="#update" selected="true" mnemonicParsing="false" text="Connections" GridPane.rowIndex="5">
+                  <CheckBox fx:id="connectionBox" layoutX="28.0" layoutY="790.0" mnemonicParsing="false" onAction="#update" selected="true" text="Connections" GridPane.rowIndex="5">
                      <font>
                         <Font name="Ubuntu Light" size="22.0" />
                      </font>
                   </CheckBox>
-                  <CheckBox fx:id="cityNamesBox" layoutX="28.0" layoutY="934.0" onAction="#update" selected="true" mnemonicParsing="false" text="City names" GridPane.rowIndex="2">
+                  <CheckBox fx:id="cityNamesBox" layoutX="28.0" layoutY="934.0" mnemonicParsing="false" onAction="#update" selected="true" text="City names" GridPane.rowIndex="2">
                      <font>
                         <Font name="Ubuntu Light" size="22.0" />
                      </font>
                   </CheckBox>
-                  <CheckBox fx:id="infectedBox" layoutX="29.0" layoutY="883.0" onAction="#update" selected="true" mnemonicParsing="false" text="Infected" GridPane.rowIndex="3">
+                  <CheckBox fx:id="infectedBox" layoutX="29.0" layoutY="883.0" mnemonicParsing="false" onAction="#update" selected="true" text="Infected" GridPane.rowIndex="3">
                      <font>
                         <Font name="Ubuntu Light" size="22.0" />
                      </font>
                   </CheckBox>
-                  <ChoiceBox fx:id="showDistinctCityCB" value="All" onAction="#update" prefHeight="28.0" prefWidth="220.0" GridPane.rowIndex="1">
+                  <ChoiceBox fx:id="showDistinctCityCB" onAction="#update" prefHeight="28.0" prefWidth="220.0" value="All" GridPane.rowIndex="1">
                      <items>
                         <FXCollections fx:factory="observableArrayList">
                            <String fx:value="All" />
@@ -227,9 +228,9 @@
                      <font>
                         <Font size="16.0" />
                      </font></Text>
-                  <Text layoutX="774.0" layoutY="774.0" stroke="BLACK" strokeType="OUTSIDE" text="Pathogen info">
+                  <Text layoutX="774.0" layoutY="774.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="Pathogen info">
                      <font>
-                        <Font name="Ubuntu Light" size="23.0" />
+                        <Font name="Ubuntu Light" size="30.0" />
                      </font>
                   </Text>
                   <Text fx:id="lethality" layoutX="907.0" layoutY="885.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+" GridPane.columnIndex="1" GridPane.rowIndex="4">
@@ -326,9 +327,9 @@
                      <font>
                         <Font size="16.0" />
                      </font></Text>
-                  <Text layoutX="1033.0" layoutY="776.0" stroke="BLACK" strokeType="OUTSIDE" text="City info">
+                  <Text layoutX="1033.0" layoutY="776.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="City info">
                      <font>
-                        <Font name="Ubuntu Light" size="23.0" />
+                        <Font name="Ubuntu Light" size="30.0" />
                      </font>
                   </Text>
                   <Text layoutX="1035.0" layoutY="837.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Economy:" GridPane.rowIndex="2">
@@ -361,7 +362,7 @@
                         <Font name="Ubuntu Light" size="16.0" />
                      </font>
                      <tooltip>
-                        <Tooltip text="Vaccinate a certain amount of the biggest cities.&#10;pathogen : pathogen name&#10;amount : amount of cities to vaccinate"/>
+                        <Tooltip text="Vaccinate a certain amount of the biggest cities.&#10;pathogen : pathogen name&#10;amount : amount of cities to vaccinate" />
                      </tooltip>
                   </Button>
                   <Button fx:id="medicateBiggestCitiesB" layoutX="1213.0" layoutY="872.0" mnemonicParsing="false" onAction="#medicateBiggestCities" prefHeight="110.0" prefWidth="160.0" text="Medicate big Cities" GridPane.rowIndex="1">
@@ -369,7 +370,7 @@
                         <Font name="Ubuntu Light" size="16.0" />
                      </font>
                      <tooltip>
-                        <Tooltip text="Medicate a certain amount of the biggest cities.&#10;pathogen : pathogen name&#10;amount : amount of cities to medicate"/>
+                        <Tooltip text="Medicate a certain amount of the biggest cities.&#10;pathogen : pathogen name&#10;amount : amount of cities to medicate" />
                      </tooltip>
                   </Button>
                   <Button fx:id="autoTurnB" layoutX="1213.0" layoutY="751.0" mnemonicParsing="false" onAction="#autoTurn" prefHeight="110.0" prefWidth="160.0" text="Auto turn">
@@ -377,7 +378,7 @@
                         <Font name="Ubuntu Light" size="16.0" />
                      </font>
                      <tooltip>
-                        <Tooltip text="Let the computer play.&#10;amount : amount of actions"/>
+                        <Tooltip text="Let the computer play.&#10;amount : amount of actions" />
                      </tooltip>
                   </Button>
                   <Button fx:id="exportMapB" mnemonicParsing="false" onAction="#exportMap" prefHeight="110.0" prefWidth="160.0" text="Export Map" GridPane.columnIndex="1">
@@ -385,7 +386,7 @@
                         <Font name="Ubuntu Light" size="16.0" />
                      </font>
                      <tooltip>
-                        <Tooltip text="Export the map as an image."/>
+                        <Tooltip text="Export the map as an image." />
                      </tooltip>
                   </Button>
                </children>
@@ -400,21 +401,21 @@
             </GridPane>
             <GridPane layoutX="196.0" layoutY="748.0" prefHeight="288.0" prefWidth="345.75" GridPane.columnIndex="1">
                <children>
-                  <Text layoutX="200.0" layoutY="769.0" stroke="BLACK" strokeType="OUTSIDE" text="Select pathogen">
+                  <Text layoutX="200.0" layoutY="769.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="Select pathogen">
                      <font>
-                        <Font name="Ubuntu Light" size="23.0" />
+                        <Font name="Ubuntu Light" size="30.0" />
                      </font>
                   </Text>
                   <ChoiceBox fx:id="pathogenesCB" layoutX="200.0" layoutY="786.0" onAction="#update" prefHeight="28.0" prefWidth="220.0" GridPane.rowIndex="1" />
                   <ComboBox fx:id="citiesCB" onAction="#update" prefHeight="28.0" prefWidth="220.0" GridPane.rowIndex="3" />
-                  <Text stroke="BLACK" strokeType="OUTSIDE" text="Select city" GridPane.rowIndex="2">
+                  <Text stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="Select city" GridPane.rowIndex="2">
                      <font>
-                        <Font name="Ubuntu Light" size="23.0" />
+                        <Font name="Ubuntu Light" size="30.0" />
                      </font>
                   </Text>
-                  <Text stroke="BLACK" strokeType="OUTSIDE" text="Select city connection" GridPane.rowIndex="4">
+                  <Text stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="Select city connection" GridPane.rowIndex="4">
                      <font>
-                        <Font name="Ubuntu Light" size="23.0" />
+                        <Font name="Ubuntu Light" size="30.0" />
                      </font>
                   </Text>
                   <ChoiceBox fx:id="citiesToCB" onAction="#update" prefHeight="28.0" prefWidth="220.0" GridPane.rowIndex="5" />
@@ -456,7 +457,7 @@
       </GridPane>
       <GridPane layoutX="1621.0" layoutY="653.0" prefHeight="290.0" prefWidth="393.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <Text layoutX="1633.0" layoutY="777.9599990844727" stroke="#3c3636" strokeType="OUTSIDE" text="Random Actions" wrappingWidth="240.0">
+            <Text layoutX="1633.0" layoutY="777.9599990844727" stroke="#3c3636" strokeType="OUTSIDE" strokeWidth="0.0" text="Random Actions" wrappingWidth="240.0">
                <font>
                   <Font name="Ubuntu Light" size="30.0" />
                </font>
@@ -468,7 +469,7 @@
                   <Font name="Ubuntu Light" size="16.0" />
                </font>
                <tooltip>
-                  <Tooltip text="The attentiveness of a certain city's population will be increased&#10;city (from) : city name"/>
+                  <Tooltip text="The attentiveness of a certain city's population will be increased&#10;city (from) : city name" />
                </tooltip>
             </Button>
             <Button fx:id="quitB" layoutX="1633.0" layoutY="912.0" mnemonicParsing="false" onAction="#quit" prefHeight="20.0" prefWidth="140.0" text="Quit" GridPane.columnIndex="1" GridPane.rowIndex="6">
@@ -476,7 +477,7 @@
                   <Font name="Ubuntu Light" size="16.0" />
                </font>
                <tooltip>
-                   <Tooltip text="Close the server and this window."/>
+                   <Tooltip text="Close the server and this window." />
                </tooltip>
             </Button>
             <Text layoutX="1825.0" layoutY="826.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3P" wrappingWidth="34.00927734375" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -485,7 +486,7 @@
                   <Font name="Ubuntu Light" size="16.0" />
                </font>
                <tooltip>
-                  <Tooltip text="Randomly increase hygine in a certain city&#10;city (from) : city name"/>
+                  <Tooltip text="Randomly increase hygine in a certain city&#10;city (from) : city name" />
                </tooltip>
                </Button>
             <Button fx:id="callElectionsB" layoutX="1633.0" layoutY="849.0" mnemonicParsing="false" onAction="#callElections" prefHeight="25.0" prefWidth="220.0" text="Call Elections" GridPane.rowIndex="3">
@@ -493,7 +494,7 @@
                   <Font name="Ubuntu Light" size="16.0" />
                </font>
                <tooltip>
-                  <Tooltip text="Reset the political strength of a certain city&#10;city (from) : city name"/>
+                  <Tooltip text="Reset the political strength of a certain city&#10;city (from) : city name" />
                </tooltip>
             </Button>
             <Button fx:id="exertInfluenceB" layoutX="1633.0" layoutY="784.0" mnemonicParsing="false" onAction="#exertInfluence" prefHeight="25.0" prefWidth="220.0" text="Change Influence" GridPane.rowIndex="1">
@@ -501,7 +502,7 @@
                   <Font name="Ubuntu Light" size="16.0" />
                </font>
                <tooltip>
-                  <Tooltip text="Reset the economic strength of a certain city&#10;city (from) : city name"/>
+                  <Tooltip text="Reset the economic strength of a certain city&#10;city (from) : city name" />
                </tooltip>
             </Button>
             <Text layoutX="1810.0" layoutY="866.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3P" wrappingWidth="34.00927734375" GridPane.columnIndex="1" GridPane.rowIndex="3" />
@@ -520,7 +521,7 @@
                   <Font name="Ubuntu Light" size="16.0" />
                </font>
                <tooltip>
-                   <Tooltip text="End the current round.&#10;amount : number of rounds that just get ended"/>
+                   <Tooltip text="End the current round.&#10;amount : number of rounds that just get ended" />
                </tooltip>
             </Button>
          </children>
