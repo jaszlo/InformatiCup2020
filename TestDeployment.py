@@ -67,7 +67,7 @@ def updateConstants():
     global MAX_ADDITION
     global MAX_PERCENTAGE_CHANCE
 
-    with codecs.open('constants.txt', mode='r', encoding='utf_8') as f:
+    with codecs.open('src/resources/constants.txt', mode='r', encoding='utf_8') as f:
         newConstants = ""
         for line in f.read().split("\n"):
             line = line.strip()
@@ -88,7 +88,7 @@ def updateConstants():
 
             newConstants += key + " " + str(value) + "\n"
 
-    with codecs.open('constants.txt', mode='w', encoding='utf_8') as f:
+    with codecs.open('src/resources/constants.txt', mode='w', encoding='utf_8') as f:
         f.write(newConstants)
     
 
@@ -143,7 +143,7 @@ wins = 0
 if(args.train):
     oldWinrate = calculateWinrate(results)
     while(1):
-        shutil.copy('constants.txt', 'oldConstants.txt')
+        shutil.copy('src/resources/constants.txt', 'src/resources/oldConstants.txt')
         updateConstants()
         results = pool.map(playGame, SEEDS)
         print(results)
@@ -152,10 +152,12 @@ if(args.train):
         wins = 0
         if(calculateWinrate(results) > oldWinrate):
             # Save new best winrate
+            print("Saving constants")
             oldWinrate = calculateWinrate(results)
         else:
             # Restore better constants
-            shutil.copy('oldConstants.txt', 'constants.txt')
+            print("Restoring old constants")
+            shutil.copy('src/resources/oldConstants.txt', 'src/resources/constants.txt')
 
 
 # Close the pool and wait for the work to finish
