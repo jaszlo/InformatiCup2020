@@ -24,6 +24,7 @@ PATH = './ic20_linux'
 parser = argparse.ArgumentParser(description = 'Test the winrate of a server.')
 parser.add_argument('-aws', action = 'store_true', help = 'If the flag is set AWS is tested, else localhost.')
 parser.add_argument('-train', action = 'store_true', help = 'If the flag is set the constants file is updated after each iteration.')
+parser.add_argument('-consistency', action = 'store_true', help = 'If the flag is set the given seeds are played multiple times to check for consitency.')
 parser.add_argument('-file', action = 'store_true', help = 'If the flag is set the seeds.txt file is used. Overrides range.')
 parser.add_argument('--threads', default = 4, type = int, help = 'Sets the amout of threads.')
 parser.add_argument('--range', default = [1, 100], nargs = 2, type = int, help = 'Sets the range of seeds to play.')
@@ -119,13 +120,11 @@ def playGame(seed):
     result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     if("win" in result):
         wins += 1   
-        #print("Game: %d    Seed: %d    Outcome: Win" % ((wins + loss), seed))
-        #print("Winrate %f%%" % (wins * 100 / (wins + loss)))
+        print("Game: %d    Seed: %d    Outcome: Win \t Winrate %f%%" % ((wins + loss), seed, wins * 100 / (wins + loss)), end = "\r")
         return (seed, "win")
     elif("loss" in result):
         loss += 1 
-        #print("Game: %d    Seed: %d    Outcome: Loss" % ((wins + loss), seed))
-        #print("Winrate %f%%" % (wins * 100 / (wins + loss)))
+        print("Game: %d    Seed: %d    Outcome: Loss \t Winrate %f%%" % ((wins + loss), seed, wins * 100 / (wins + loss)), end = "\r")
         return (seed, "loss")
 
 
@@ -140,24 +139,32 @@ print(calculateWinrate(results))
 loss = 0
 wins = 0
 
-if(args.train):
+if(args.train or args.consistency):
     oldWinrate = calculateWinrate(results)
+    oldResults = results
     while(1):
-        shutil.copy('src/resources/constants.txt', 'src/resources/oldConstants.txt')
-        updateConstants()
+        if args.train:
+            shutil.copy('src/resources/constants.txt', 'src/resources/oldConstants.txt')
+            updateConstants()
         results = pool.map(playGame, SEEDS)
         print(results)
         print(calculateWinrate(results))
+        differentSeed = []
+        for i in range(len(results)):
+            if(oldResults[i] and results[i] and oldResults[i] != results[i] and oldResults[i][0] == results[i][0]):
+                differentSeed.append(results[i][0])
+        print(differentSeed)
         loss = 0
         wins = 0
-        if(calculateWinrate(results) > oldWinrate):
-            # Save new best winrate
-            print("Saving constants")
-            oldWinrate = calculateWinrate(results)
-        else:
-            # Restore better constants
-            print("Restoring old constants")
-            shutil.copy('src/resources/oldConstants.txt', 'src/resources/constants.txt')
+        if args.train:
+            if(calculateWinrate(results) > oldWinrate):
+                # Save new best winrate
+                print("Saving constants")
+                oldWinrate = calculateWinrate(results)
+            else:
+                # Restore better constants
+                print("Restoring old constants")
+                shutil.copy('src/resources/oldConstants.txt', 'src/resources/constants.txt')
 
 
 # Close the pool and wait for the work to finish
