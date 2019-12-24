@@ -2,20 +2,19 @@ package app.game.actions;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 
 import app.game.City;
 import app.game.Game;
 import app.game.Pathogen;
 
 public class ActionHeuristic {
-//	private static final int START_RANDOM_EVENTS = 43;
-//	private static final int STOP_DEPLOYING_MED = 30;
-//	private static final int STOP_DEPLOYING_VAC = 25;
-	// setup constants here
+	
+	
 	private static HashMap<String, Double> constants = null;
 
 	static {
+		ActionHeuristic.constants = new HashMap<>();
+		
 		updateConstants();
 	}
 
@@ -23,14 +22,14 @@ public class ActionHeuristic {
 	 * Sets the value of the constants the the CURRENT values in constants.txt
 	 */
 	public static void updateConstants() {
-		constants = ConstantsSetup.getConstants(ConstantsSetup.CONSTANTS_PATH);
-		if (constants == null) {
+		HashMap<String, Double> constantsOfFile = ConstantsSetup.getConstants(ConstantsSetup.CONSTANTS_PATH);
+		
+		if (constantsOfFile == null) {
 			System.out.println("Konstanten konnten nicht geladen werden.");
 			System.exit(1);
 		}
-		System.out.println("Currently loaded constants:");
-		for (Map.Entry<String, Double> entry : constants.entrySet())
-			System.out.println(entry.getKey() + " " + entry.getValue());
+		
+		constantsOfFile.forEach((key, value) -> ActionHeuristic.constants.put(key, value));
 	}
 
 	/**

@@ -10,9 +10,6 @@ import com.sun.net.httpserver.HttpServer;
 
 import app.App;
 import app.game.Game;
-import app.game.actions.ActionHeuristic;
-import app.game.actions.ConstantsSetup;
-import app.knapsack.Solver;
 import app.solver.GameEvaluater;
 import app.solver.Main;
 import javafx.application.Platform;
@@ -51,15 +48,6 @@ public class GameServer {
 
 		new Thread(() -> {
 			GameExchange ge = new GameExchange(exchange);
-
-			// TODO: Remove in final deployment
-			if (!ge.getGame().getOutcome().equals("pending")) {
-				if (ge.getGame().getOutcome().equals("win")) {
-					ConstantsSetup.registerOutcome(true, ge.getGame());
-				} else {
-					ConstantsSetup.registerOutcome(false, ge.getGame());
-				}
-			}
 
 			GameEvaluater eval = null;
 			synchronized (GameServer.class) {
