@@ -16,6 +16,9 @@ import javafx.application.Platform;
 
 public class GameServer {
 
+	static double games = 0;
+	static double wins = 0;
+	
 	private HttpServer server;
 	private static LinkedBlockingDeque<GameEvaluater> repliesToSend = new LinkedBlockingDeque<>();
 	public static final GameEvaluater LOCK = new GameEvaluater() {
@@ -48,10 +51,18 @@ public class GameServer {
 
 		new Thread(() -> {
 			GameExchange ge = new GameExchange(exchange);
-
+			String outcome = ge.getGame().getOutcome();
+			if (!outcome.equals("pending")) {
+				if (outcome.equals("win")) {
+					wins++;
+				}
+				games++;
+				System.out.println("Game Nr. " + games + " was a " + outcome + " | current winrate = " + (100 * wins / games)  + "%");
+			}
+			
 			GameEvaluater eval = null;
 			synchronized (GameServer.class) {
-				if (hasReplies() && peekReply() == LOCK) {
+				if (hasReplies() && peekReply() == LOCK) {	
 					eval = (Game g) -> Main.solve(g);
 				} else if (hasReplies()) {
 					eval = getReply();
