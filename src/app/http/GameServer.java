@@ -57,7 +57,7 @@ public class GameServer {
 					wins++;
 				}
 				games++;
-				System.out.println("Game Nr. " + games + " was a " + outcome + " | current winrate = " + (100 * wins / games)  + "%");
+				System.out.println("Game Nr. " + games + " was a " + outcome + " | Current winrate = " + (100 * wins / games)  + "%");
 			}
 			
 			GameEvaluater eval = null;
