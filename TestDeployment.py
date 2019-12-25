@@ -141,19 +141,16 @@ wins = 0
 
 if(args.train or args.consistency):
     oldWinrate = calculateWinrate(results)
-    oldResults = results
     while(1):
+        oldResults = results
         if args.train:
             shutil.copy('src/resources/constants.txt', 'src/resources/oldConstants.txt')
             updateConstants()
         results = pool.map(playGame, SEEDS)
         print(results)
-        print(calculateWinrate(results))
-        differentSeed = []
-        for i in range(len(results)):
-            if(oldResults[i] and results[i] and oldResults[i] != results[i] and oldResults[i][0] == results[i][0]):
-                differentSeed.append(results[i][0])
-        print(differentSeed)
+        print("%f%% winrate" % calculateWinrate(results))
+        differentSeed = set(results).symmetric_difference(set(oldResults))
+        print("Seeds that changed: " + str(differentSeed))
         loss = 0
         wins = 0
         if args.train:
@@ -170,6 +167,3 @@ if(args.train or args.consistency):
 # Close the pool and wait for the work to finish
 pool.close()
 pool.join()
-
-
-updateConstants()
