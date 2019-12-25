@@ -66,7 +66,6 @@ public class FileHandler {
 		try {
 			if (!file.exists())
 				file.createNewFile();
-			System.out.println("Jep");
 	        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
 	        ImageIO.write(bufferedImage, "png", file);
 	    } catch (IOException ex) {

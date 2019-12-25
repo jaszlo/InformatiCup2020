@@ -12,7 +12,6 @@ import com.sun.net.httpserver.HttpExchange;
 
 import app.App;
 import app.game.Game;
-import javafx.application.Platform;
 
 public class GameExchange {
 	private HttpExchange exchange;
