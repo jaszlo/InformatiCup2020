@@ -3,6 +3,9 @@ package app.gui;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+import com.sun.javafx.tk.FontMetrics;
+import com.sun.javafx.tk.Toolkit;
+
 import app.game.City;
 import app.game.Game;
 import app.game.Pathogen;
@@ -808,8 +811,15 @@ public class GuiController {
 		if (infectedBox.isSelected())
 			gc.fillOval(x - diameter / 2, y - diameter / 2, diameter, diameter);
 		// Draw City Name. If wanted.
-		if (cityNamesBox.isSelected())
-			gc.strokeText(cityName, x, y);
-
+		if (cityNamesBox.isSelected()) {
+			FontMetrics fm = Toolkit.getToolkit().getFontLoader().getFontMetrics(gc.getFont());
+			double height = fm.getLineHeight();
+			double width = 0;
+			for(char c: cityName.toCharArray()) {
+				width += fm.getCharWidth(c);
+			}
+			
+			gc.strokeText(cityName, x - height / 2, y - width / 2);
+		}
 	}
 }
