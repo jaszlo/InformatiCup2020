@@ -37,8 +37,6 @@ public class Game {
 	// General
 	private final HashMap<String, City> cities = new HashMap<String, City>();
 	private final HashMap<String, Pathogen> pathogenes = new HashMap<String, Pathogen>();
-	// private final HashMap<City,HashSet<Event>> eventsByCity = new
-	// HashMap<City,HashSet<Event>>();
 	private final HashMap<EventType, HashSet<? extends Event>> events = new HashMap<>(); // Eventtypen nach Namen
 
 	// A map with all pathogenes we want to ignore in out heueristic
@@ -62,6 +60,7 @@ public class Game {
 	 * @param game The String representing the game in UTF-8 format.
 	 */
 	public Game(String game) {
+		this.initGeneralEventMap();
 		parseGame(game);
 		this.getPathogens().stream().forEach(p -> ignorePathogenThisRound(p));
 	}
@@ -216,12 +215,22 @@ public class Game {
 			System.exit(0);
 		}
 	}
+	
+	// helper method to init the events map
+		private void initGeneralEventMap() {
+			for(EventType type: EventType.values()) {
+				if (!events.containsKey(type)) {
+					HashSet<Event> eventType = new HashSet<Event>();
+					events.put(type, eventType);
+				}
+			}
+		}
+			
 
 	// helper method to put an Event into the events map
 	@SuppressWarnings("unchecked")
 	private void addToGeneralEventMap(Event event) {
-		String name = event.getName();
-		EventType type = Enum.valueOf(EventType.class, name);
+		EventType type = event.getType();
 		if (events.containsKey(type)) {
 			((HashSet<Event>) events.get(type)).add(event);
 		} else {
@@ -343,10 +352,7 @@ public class Game {
 	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_AntiVacc> getAntiVaccEvents() {
-		if (events.containsKey(EventType.antiVaccinationism))
-			return (HashSet<E_AntiVacc>) events.get(EventType.antiVaccinationism);
-		else
-			return new HashSet<E_AntiVacc>();
+		return (HashSet<E_AntiVacc>) events.get(EventType.antiVaccinationism);
 	}
 
 	/**
@@ -355,10 +361,7 @@ public class Game {
 	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_BioTerror> getBioTerrorEvents() {
-		if (events.containsKey(EventType.bioTerrorism))
-			return (HashSet<E_BioTerror>) events.get(EventType.bioTerrorism);
-		else
-			return new HashSet<E_BioTerror>();
+		return (HashSet<E_BioTerror>) events.get(EventType.bioTerrorism);
 	}
 
 	/**
@@ -367,10 +370,8 @@ public class Game {
 	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_Outbreak> getOutbreakEvents() {
-		if (events.containsKey(EventType.outbreak))
-			return (HashSet<E_Outbreak>) events.get(EventType.outbreak);
-		else
-			return new HashSet<E_Outbreak>();
+		return (HashSet<E_Outbreak>) events.get(EventType.outbreak);
+
 	}
 
 	/**
@@ -379,10 +380,7 @@ public class Game {
 	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_Uprising> getUprisingEvents() {
-		if (events.containsKey(EventType.uprising))
-			return (HashSet<E_Uprising>) events.get(EventType.uprising);
-		else
-			return new HashSet<E_Uprising>();
+		return (HashSet<E_Uprising>) events.get(EventType.uprising);
 	}
 
 	/**
@@ -391,10 +389,7 @@ public class Game {
 	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_PathogenEncounter> getPathEncounterEvents() {
-		if (events.containsKey(EventType.pathogenEncountered))
-			return (HashSet<E_PathogenEncounter>) events.get(EventType.pathogenEncountered);
-		else
-			return new HashSet<E_PathogenEncounter>();
+		return (HashSet<E_PathogenEncounter>) events.get(EventType.pathogenEncountered);
 	}
 
 	/**
@@ -403,10 +398,7 @@ public class Game {
 	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_Quarantine> getQuarantineEvents() {
-		if (events.containsKey(EventType.quarantine))
-			return (HashSet<E_Quarantine>) events.get(EventType.quarantine);
-		else
-			return new HashSet<E_Quarantine>();
+		return (HashSet<E_Quarantine>) events.get(EventType.quarantine);
 	}
 
 	/**
@@ -415,10 +407,7 @@ public class Game {
 	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_VaccineInDevelopment> getVaccDevEvents() {
-		if (events.containsKey(EventType.vaccineInDevelopment))
-			return (HashSet<E_VaccineInDevelopment>) events.get(EventType.vaccineInDevelopment);
-		else
-			return new HashSet<E_VaccineInDevelopment>();
+		return (HashSet<E_VaccineInDevelopment>) events.get(EventType.vaccineInDevelopment);
 	}
 
 	/**
@@ -427,10 +416,7 @@ public class Game {
 	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_VaccineAvailable> getVaccAvailableEvents() {
-		if (events.containsKey(EventType.vaccineAvailable))
-			return (HashSet<E_VaccineAvailable>) events.get(EventType.vaccineAvailable);
-		else
-			return new HashSet<E_VaccineAvailable>();
+		return (HashSet<E_VaccineAvailable>) events.get(EventType.vaccineAvailable);
 	}
 
 	/**
@@ -439,10 +425,7 @@ public class Game {
 	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_MedicationInDevelopment> getMedDevEvents() {
-		if (events.containsKey(EventType.medicationInDevelopment))
-			return (HashSet<E_MedicationInDevelopment>) events.get(EventType.medicationInDevelopment);
-		else
-			return new HashSet<E_MedicationInDevelopment>();
+		return (HashSet<E_MedicationInDevelopment>) events.get(EventType.medicationInDevelopment);
 	}
 
 	/**
@@ -451,10 +434,7 @@ public class Game {
 	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_MedicationAvailable> getMedAvailableEvents() {
-		if (events.containsKey(EventType.medicationAvailable))
-			return (HashSet<E_MedicationAvailable>) events.get(EventType.medicationAvailable);
-		else
-			return new HashSet<E_MedicationAvailable>();
+		return (HashSet<E_MedicationAvailable>) events.get(EventType.medicationAvailable);
 	}
 
 	/**
@@ -463,10 +443,8 @@ public class Game {
 	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_ConnectionClosed> getConnClosedEvents() {
-		if (events.containsKey(EventType.connectionClosed))
-			return (HashSet<E_ConnectionClosed>) events.get(EventType.connectionClosed);
-		else
-			return new HashSet<E_ConnectionClosed>();
+		return (HashSet<E_ConnectionClosed>) events.get(EventType.connectionClosed);
+		
 	}
 
 	/**
@@ -475,10 +453,8 @@ public class Game {
 	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_AirportClosed> getAirportClosedEvents() {
-		if (events.containsKey(EventType.airportClosed))
-			return (HashSet<E_AirportClosed>) events.get(EventType.airportClosed);
-		else
-			return new HashSet<E_AirportClosed>();
+		return (HashSet<E_AirportClosed>) events.get(EventType.airportClosed);
+		
 	}
 
 	/**
@@ -487,10 +463,7 @@ public class Game {
 	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_MedicationDeployed> getMedDeployedEvents() {
-		if (events.containsKey(EventType.medicationDeployed))
-			return (HashSet<E_MedicationDeployed>) events.get(EventType.medicationDeployed);
-		else
-			return new HashSet<E_MedicationDeployed>();
+		return (HashSet<E_MedicationDeployed>) events.get(EventType.medicationDeployed);
 	}
 
 	/**
@@ -499,10 +472,7 @@ public class Game {
 	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_VaccineDeployed> getVaccDeployedEvents() {
-		if (events.containsKey(EventType.vaccineDeployed))
-			return (HashSet<E_VaccineDeployed>) events.get(EventType.vaccineDeployed);
-		else
-			return new HashSet<E_VaccineDeployed>();
+		return (HashSet<E_VaccineDeployed>) events.get(EventType.vaccineDeployed);
 	}
 
 	/**

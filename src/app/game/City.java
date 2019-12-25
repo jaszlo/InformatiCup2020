@@ -58,6 +58,7 @@ public class City {
 		this.setAwareness(awareness);
 		this.singleEvents = new HashMap<>();
 		this.multipleEvents = new HashMap<>();
+		this.initMultipleEvents();
 	}
 
 	/**
@@ -178,13 +179,18 @@ public class City {
 	 */
 	@SuppressWarnings("unchecked")
 	public void addEvent(Event  event) {
-		if(!event.getType().isMultipleEventType())
+		if(!event.getType().isMultipleEventType()) {
 			this.singleEvents.put(event.getType(), event);
-		else {
-			if(this.multipleEvents.get(event.getType()) == null) {
-				this.multipleEvents.put(event.getType(), new HashSet<>());
-			}
+		} else {
 			((HashSet<Event>) this.multipleEvents.get(event.getType())).add(event);
+		}
+	}
+	
+	public void initMultipleEvents() {
+		for(EventType type: EventType.values()) {
+			if(!this.multipleEvents.containsKey(type) && type.isMultipleEventType()) {
+				this.multipleEvents.put(type, new HashSet<>());
+			}
 		}
 	}
 	
@@ -228,9 +234,6 @@ public class City {
 	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_ConnectionClosed> getConnectionClosed () {
-		if(!this.multipleEvents.containsKey(EventType.connectionClosed)) {
-			return new HashSet<>();
-		}
 				
 		return (HashSet<E_ConnectionClosed>) this.multipleEvents.get(EventType.connectionClosed);
 	} 
@@ -241,9 +244,6 @@ public class City {
 	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_MedicationDeployed> getMedicationDeployed () {
-		if(!this.multipleEvents.containsKey(EventType.medicationDeployed)) {
-			return new HashSet<>();
-		}
 		
 		return (HashSet<E_MedicationDeployed>) this.multipleEvents.get(EventType.medicationDeployed);
 	}
@@ -278,9 +278,7 @@ public class City {
 	 */
 	@SuppressWarnings("unchecked")
 	public HashSet<E_VaccineDeployed> getVaccineDeployed () {
-		if(!this.multipleEvents.containsKey(EventType.vaccineDeployed)) {
-			return new HashSet<>();
-		}
+		
 		
 		return (HashSet<E_VaccineDeployed>) this.multipleEvents.get(EventType.vaccineDeployed);
 	}
