@@ -185,47 +185,41 @@ public class Game {
 			E_VaccineDeployed e = new E_VaccineDeployed(round, pathogen, city);
 			addToGeneralEventMap(e);
 			addEventToCity(e, city);
-		} 
-		else if(type.contentEquals("campaignLaunched")) {
+		} else if (type.contentEquals("campaignLaunched")) {
 			int round = Integer.parseInt(event.get("round").toString());
 			E_CampaignLaunched e = new E_CampaignLaunched(city, round);
 			addToGeneralEventMap(e);
 			addEventToCity(e, city);
-		}
-		else if(type.contentEquals("electionsCalled")) {
+		} else if (type.contentEquals("electionsCalled")) {
 			int round = Integer.parseInt(event.get("round").toString());
 			E_ElectionsCalled e = new E_ElectionsCalled(city, round);
 			addToGeneralEventMap(e);
 			addEventToCity(e, city);
-		}
-		else if(type.contentEquals("hygienicMeasuresApplied")) {
+		} else if (type.contentEquals("hygienicMeasuresApplied")) {
 			int round = Integer.parseInt(event.get("round").toString());
 			E_HygienicMeasuresApplied e = new E_HygienicMeasuresApplied(city, round);
 			addToGeneralEventMap(e);
 			addEventToCity(e, city);
-		}
-		else if(type.contentEquals("influenceExerted")) {
+		} else if (type.contentEquals("influenceExerted")) {
 			int round = Integer.parseInt(event.get("round").toString());
 			E_InfluenceExerted e = new E_InfluenceExerted(city, round);
 			addToGeneralEventMap(e);
 			addEventToCity(e, city);
-		}
-		else {
+		} else {
 			System.out.println(event + "  NOT IMPLEMENTED");
 			System.exit(0);
 		}
 	}
-	
+
 	// helper method to init the events map
-		private void initGeneralEventMap() {
-			for(EventType type: EventType.values()) {
-				if (!events.containsKey(type)) {
-					HashSet<Event> eventType = new HashSet<Event>();
-					events.put(type, eventType);
-				}
+	private void initGeneralEventMap() {
+		for (EventType type : EventType.values()) {
+			if (!events.containsKey(type)) {
+				HashSet<Event> eventType = new HashSet<Event>();
+				events.put(type, eventType);
 			}
 		}
-			
+	}
 
 	// helper method to put an Event into the events map
 	@SuppressWarnings("unchecked")
@@ -309,10 +303,10 @@ public class Game {
 	 * @param cityName
 	 * @return the City with the given name.
 	 */
-	public City getCity (String cityName) {
+	public City getCity(String cityName) {
 		return this.cities.get(cityName);
 	}
-	
+
 	/**
 	 * 
 	 * @return A Map of Cities in the game. The Key is the unique name of the City.
@@ -444,7 +438,7 @@ public class Game {
 	@SuppressWarnings("unchecked")
 	public HashSet<E_ConnectionClosed> getConnClosedEvents() {
 		return (HashSet<E_ConnectionClosed>) events.get(EventType.connectionClosed);
-		
+
 	}
 
 	/**
@@ -454,7 +448,7 @@ public class Game {
 	@SuppressWarnings("unchecked")
 	public HashSet<E_AirportClosed> getAirportClosedEvents() {
 		return (HashSet<E_AirportClosed>) events.get(EventType.airportClosed);
-		
+
 	}
 
 	/**
@@ -511,8 +505,8 @@ public class Game {
 	}
 
 	/**
-	 * Returns the pathogen with the given name. If the name does not match any pathogen in
-	 * the game, null is returned.
+	 * Returns the pathogen with the given name. If the name does not match any
+	 * pathogen in the game, null is returned.
 	 * 
 	 * @param name Name of the pathogen.
 	 * @return Pathogen with the given name.
@@ -520,7 +514,7 @@ public class Game {
 	public Pathogen getPathogen(String name) {
 		return this.pathogenes.get(name);
 	}
-	
+
 	/**
 	 * Returns all pathogens in the game.
 	 * 
@@ -551,15 +545,20 @@ public class Game {
 
 		// Check if a pathogen is no longer active by checking if it has been there for
 		// over 10 rounds and has not infected more than 10% of all citie's population
-		// on average or has not infected more than 5 cities.
+		// on average or has not infected more than 5 cities. Or no city is infected by
+		// the pathogen at all.
 		// This is to guess stateless that a pathogen is old and no longer a threat.
-		boolean result = (this.getRound() - encounter.get().getRound() >= 10) && (this.getOutbreakEvents().stream()
-				.filter(e -> e.getPathogen() == pathogen).mapToDouble(e -> e.getPrevalence()).average()
-				.orElseGet(() -> 0) <= 0.10
-				|| this.getOutbreakEvents().stream().filter(e -> e.getPathogen() == pathogen).count() <= 5);
+		boolean isOld = this.getRound() - encounter.get().getRound() >= 10;
+		boolean hasLessAverage = this.getOutbreakEvents().stream().filter(e -> e.getPathogen() == pathogen)
+				.mapToDouble(e -> e.getPrevalence()).average().orElseGet(() -> 0) <= 0.10;
+		long numberOfCities = this.getOutbreakEvents().stream().filter(e -> e.getPathogen() == pathogen).count();
+		boolean hasLessCities = numberOfCities <= 5;
+		boolean hasNoCity = numberOfCities <= 0;
 		
+		boolean result = (isOld && (hasLessAverage || hasLessCities)) || hasNoCity;
+
 		this.ignoredPathogenes.put(pathogen, result);
-				
+
 		return result;
 	}
 }

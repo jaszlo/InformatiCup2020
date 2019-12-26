@@ -129,8 +129,7 @@ public class ActionHeuristic {
 		int currentPoints = game.getPoints();
 		boolean doRandoms = game.getPathEncounterEvents().stream().allMatch(e -> game.ignorePathogenThisRound(e.getPathogen()));
 
-		if (game != null && game.ignorePathogenThisRound(pathogen)) {
-
+		if (game.ignorePathogenThisRound(pathogen)) {
 			return score;
 		}
 
@@ -220,11 +219,6 @@ public class ActionHeuristic {
 				break;
 			}
 
-			// Check if the Virus is still active.
-			if (game.getOutbreakEvents().stream().allMatch(e -> e.getPathogen() != pathogen)) {
-				break;
-			}
-
 			// If 10 % of the world's population is already infected do not develop vaccines
 			// as it
 			// takes 7 rounds to develop and would be to late at that point.
@@ -269,11 +263,6 @@ public class ActionHeuristic {
 			// Check if there is a pathogen that was put under quarantine. If so do not do
 			// anything else but repeat that process
 			if (!game.getQuarantineEvents().isEmpty()) {
-				break;
-			}
-
-			// Check if the Virus is even still active
-			if (game.getOutbreakEvents().stream().allMatch(e -> e.getPathogen() != pathogen)) {
 				break;
 			}
 
