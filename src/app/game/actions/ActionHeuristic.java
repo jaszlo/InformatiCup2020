@@ -6,6 +6,7 @@ import java.util.HashSet;
 import app.game.City;
 import app.game.Game;
 import app.game.Pathogen;
+import app.game.Scale;
 
 public class ActionHeuristic {
 	
@@ -67,7 +68,11 @@ public class ActionHeuristic {
 		int mobility = pathogen.getMobility().getNumericRepresentation();
 
 		int score = mobility * infectivity;
-
+		
+		if(pathogen.getDuration() == Scale.DM) {
+			return false;
+		}
+		
 		if (doQuarantine(pathogen)) {
 			return false;
 		}
@@ -88,6 +93,10 @@ public class ActionHeuristic {
 		int mobility = pathogen.getMobility().getNumericRepresentation();
 
 		int score = mobility * infectivity;
+		
+		if(pathogen.getDuration() == Scale.DM) {
+			return false;
+		}
 
 		// Because quarantine only contains a pathogen within one city it is not worth
 		// the
