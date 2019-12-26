@@ -205,7 +205,7 @@ public class ActionHeuristic {
 				break;
 			}
 			// City should be quarantine
-			score += constants.get("QUARANTINE_FACTOR") * action.getCost();
+			score += constants.get("QUARANTINE_FACTOR") * action.getType().getPoints(action.getRounds());
 			break;
 
 		case closeAirport: // Useless action

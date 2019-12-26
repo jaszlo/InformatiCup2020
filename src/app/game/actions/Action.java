@@ -1,13 +1,10 @@
 package app.game.actions;
 
-import java.util.HashSet;
-
 import app.game.City;
 import app.game.Game;
 import app.game.Pathogen;
-import app.knapsack.Item;
 
-public class Action extends Item {
+public class Action{
 
 	private final ActionType type;
 
@@ -24,7 +21,6 @@ public class Action extends Item {
 	
 	// Basis constructor
 	public Action(ActionType type, Game game, City city, City toCity, Pathogen pathogen, int rounds) {
-		super(type.getPoints(rounds));
 		this.type = type;
 		this.game = game;
 		this.city = city;
@@ -120,11 +116,6 @@ public class Action extends Item {
 
 	public int getScore () {
 		return this.score;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public int getSetValue(HashSet<? extends Item> set) {
-		return ActionHeuristic.getValue((HashSet<Action>) set);
 	}
 
 	public ActionType getType() {
