@@ -812,12 +812,9 @@ public class GuiController {
 			gc.fillOval(x - diameter / 2, y - diameter / 2, diameter, diameter);
 		// Draw City Name. If wanted.
 		if (cityNamesBox.isSelected()) {
-			FontMetrics fm = Toolkit.getToolkit().getFontLoader().getFontMetrics(gc.getFont());
-			double height = fm.getLineHeight();
+			// TODO: Find height and width of text
+			double height = 0;
 			double width = 0;
-			for(char c: cityName.toCharArray()) {
-				width += fm.getCharWidth(c);
-			}
 			
 			gc.strokeText(cityName, x - height / 2, y - width / 2);
 		}

@@ -35,6 +35,7 @@ public class GameServer {
 	public GameServer() {
 		try {
 			this.server = HttpServer.create(new InetSocketAddress(50123), 0);
+			server.setExecutor(java.util.concurrent.Executors.newCachedThreadPool());
 			HttpContext context = server.createContext("/");
 			context.setHandler(GameServer::handleRequest);
 			server.start();
@@ -48,44 +49,43 @@ public class GameServer {
 		if (!exchange.getRequestMethod().equals("POST")) {
 			System.err.println("Invalid request!");
 		}
-
-		new Thread(() -> {
-			GameExchange ge = new GameExchange(exchange);
-			String outcome = ge.getGame().getOutcome();
-			if (!outcome.equals("pending")) {
-				if (outcome.equals("win")) {
-					wins++;
-				}
-				games++;
-				outcome = outcome.equals("loss")? outcome: outcome + " ";
-				System.out.println("Game Nr. " + games + " was a " + outcome + " | Current winrate = " + (100 * wins / games)  + "%");
+		
+		
+		GameExchange ge = new GameExchange(exchange);
+		String outcome = ge.getGame().getOutcome();
+		if (!outcome.equals("pending")) {
+			if (outcome.equals("win")) {
+				wins++;
 			}
-			
-			GameEvaluater eval = null;
-			synchronized (GameServer.class) {
-				if (hasReplies() && peekReply() == LOCK) {	
-					eval = (Game g) -> Main.solve(g);
-				} else if (hasReplies()) {
-					eval = getReply();
-				} else if (App.guiController != null && App.guiController.ready()) {
-					ge.playGui();
-				} else {
-					// Detected more than one game. CLose GUI and enable auto play
-					addReply(LOCK);
+			games++;
+			outcome = outcome.equals("loss")? outcome: outcome + " ";
+			System.out.println("Game Nr. " + games + " was a " + outcome + " | Current winrate = " + (100 * wins / games)  + "%");
+		}
+		
+		GameEvaluater eval = null;
+		synchronized (GameServer.class) {
+			if (hasReplies() && peekReply() == LOCK) {	
+				eval = (Game g) -> Main.solve(g);
+			} else if (hasReplies()) {
+				eval = getReply();
+			} else if (App.guiController != null && App.guiController.ready()) {
+				ge.playGui();
+			} else {
+				// Detected more than one game. CLose GUI and enable auto play
+				addReply(LOCK);
 
-					Platform.runLater(() -> {
-						App.guiController.executeAction(Main.solve(ge.getGame()));
-						App.guiController.close();
-					});
+				Platform.runLater(() -> {
+					App.guiController.executeAction(Main.solve(ge.getGame()));
+					App.guiController.close();
+				});
 
-					eval = (Game g) -> Main.solve(g);
-				}
+				eval = (Game g) -> Main.solve(g);
 			}
+		}
 
-			if (eval != null) {
-				ge.sendReply(eval.evaluate(ge.getGame()));
-			}
-		}).start();
+		if (eval != null) {
+			ge.sendReply(eval.evaluate(ge.getGame()));
+		}
 	}
 
 	public static void addReply(GameEvaluater reply) {
