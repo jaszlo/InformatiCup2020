@@ -18,6 +18,11 @@ import javafx.scene.image.WritableImage;
 
 public class FileHandler {
 
+	/**
+	 * Returns a File from the resource folder.
+	 * @param path The path of the file relative to the resource folder.
+	 * @return A file object if a file with the name path exists in the resource folder, otherwise null is returned.
+	 */
 	public static File getFileFromResources(String path) {
 		ClassLoader classLoader = FileHandler.class.getClassLoader();
 		URL resource = classLoader.getResource(path);
@@ -28,7 +33,14 @@ public class FileHandler {
 		}
 	}
 
+	/**
+	 * Writes text into a file.
+	 * @param file The file to write the text into. If this file does not exist, nothing happens.
+	 * @param text The text to be written into the file as a Collection. Each entry corresponds
+	 * to one line in the file. The order of the lines is determined by the iterator of the collection.
+	 */
 	public static void writeFile(File file, Collection<String> text) {
+		//check if file exists
 		if (file == null || !file.exists())
 			return;
 
@@ -38,6 +50,7 @@ public class FileHandler {
 			writeFile = new FileWriter(file);
 			writer = new BufferedWriter(writeFile);
 
+			//write text line by line into file
 			for (String s : text) {
 				writer.write(s);
 				writer.newLine();
@@ -77,7 +90,14 @@ public class FileHandler {
 		return FileHandler.readFile(FileHandler.getFileFromResources(path));
 	}
 
+	/**
+	 * Returns the contents of a file as a List of Strings.
+	 * @param file The file to read the content from. If file is null or does not exist, null is also returned
+	 * @return The contents of the file as a list of Strings. Each line corresponds to one entry in the resulting
+	 * List. The first line is at position 0 in the list, etc.
+	 */
 	public static ArrayList<String> readFile(File file) {
+		//check if file exists
 		if (file == null || !file.exists())
 			return null;
 
@@ -86,6 +106,7 @@ public class FileHandler {
 		BufferedReader reader = null;
 		try {
 			reader = new BufferedReader(new FileReader(file));
+			//read lines and store them into content
 			content = reader.lines().collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
 		} catch (Exception e) {
 			e.printStackTrace();
