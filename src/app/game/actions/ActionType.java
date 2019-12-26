@@ -5,7 +5,7 @@ public enum ActionType {
 	endRound, putUnderQuarantine, closeAirport, closeConnection, developVaccine, deployVaccine, developMedication,
 	deployMedication, exertInfluence, callElections, applyHygienicMeasures, launchCampaign;
 
-	public int getPoints(int rounds) {
+	public int getCosts(int rounds) {
 		switch (this) {
 		case endRound:
 			return 0;
