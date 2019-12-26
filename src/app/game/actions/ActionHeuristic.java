@@ -148,11 +148,6 @@ public class ActionHeuristic {
 			break;
 		case putUnderQuarantine:
 
-			// Check if city is allready under quarantine.
-			if (city.getQuarantine() != null) {
-				break;
-			}
-
 			// If a very strong pathogen (e.g. Admiral Trips) breaks out in 2 Cities protect
 			// the biggest city.
 			// This for instance happens in seed 4.

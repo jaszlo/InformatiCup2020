@@ -47,8 +47,10 @@ public class ActionControl {
 		int maxRounds = (game.getPoints() - 20) / 10;
 		for (City city : game.getCities().values()) {
 			for (int i = 1; i <= maxRounds; i++) {
-				Action a = new Action(ActionType.putUnderQuarantine, game, city, i);
-				actions.add(a);
+				if(city.getQuarantine() != null) {
+					Action a = new Action(ActionType.putUnderQuarantine, game, city, i);
+					actions.add(a);
+				}
 			}
 		}
 	}
