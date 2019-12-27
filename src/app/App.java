@@ -1,4 +1,5 @@
 package app;
+
 import app.gui.GuiController;
 import app.http.GameServer;
 
@@ -11,24 +12,26 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class App extends Application {
-	
+
 	public static GuiController guiController;
-			
+
 	public static void main(String[] args) {
-		// ALl the code from the main was moved to the start-methode.
+		
+		// All the code from the main was moved to the start-method.
 		launch(args);
 	}
 
 	@Override
 	public void start(Stage primaryStage) {
+		
 		new GameServer();
 		Platform.setImplicitExit(true);
 
 		try {
-
-			// Create the stages for the gui.
+			// Create the stages for the GUI.
 			Stage GUI = new Stage();
-			// Create the loader for the gui.
+
+			// Create the loader for the GUI.
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/resources/gui.fxml"));
 
@@ -36,15 +39,15 @@ public class App extends Application {
 			App.guiController = new GuiController();
 			loader.setController(guiController);
 
-			// Create the scenes for the gui
+			// Create the scenes for the GUI.
 			Parent root = (Parent) loader.load();
 			Scene scene = new Scene(root);
 
-			// Maximaze the stage
+			// Maximize the stage.
 			GUI.setMaximized(true);
 
-			// Attaches the newly created scene to the stage. Shows the Stage in a resizable
-			// window. Also set Title to Pandemie.
+			// Attaches the newly created scene to the stage. Shows the stage in a resizable
+			// window. Also set title to "Pandemie".
 			GUI.setScene(scene);
 			GUI.setTitle("Pandemie");
 			GUI.show();

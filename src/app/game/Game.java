@@ -105,6 +105,7 @@ public class Game {
 			E_Outbreak e = new E_Outbreak(city, sinceRound, pathogen, prevalence);
 			addToGeneralEventMap(e);
 			addEventToCity(e, city);
+
 		} else if (type.equals("bioTerrorism")) { // stadt
 			int sinceRound = Integer.parseInt(event.get("round").toString());
 			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
@@ -544,22 +545,25 @@ public class Game {
 		}
 
 		// Check if a pathogen is no longer active by checking if it has been there for
-		// over 10 rounds and has not infected more than 10% of all the infected cities population on average. 
-		// This is to guess stateless that a pathogen is old and no longer a threat in order to safe points
+		// over 10 rounds and has not infected more than 10% of all the infected cities
+		// population on average.
+		// This is to guess stateless that a pathogen is old and no longer a threat in
+		// order to safe points
 		boolean isOld = this.getRound() - encounter.get().getRound() >= 10;
 		boolean hasLessAverage = this.getOutbreakEvents().stream().filter(e -> e.getPathogen() == pathogen)
 				.mapToDouble(e -> e.getPrevalence()).average().orElseGet(() -> 0) <= 0.10;
 		long numberOfCities = this.getOutbreakEvents().stream().filter(e -> e.getPathogen() == pathogen).count();
 		boolean hasLessCities = numberOfCities <= 10;
 		boolean hasNoCity = numberOfCities <= 0;
-		
-		// if both of these are true do not ignore the pathogen, as we have enough points 
+
+		// if both of these are true do not ignore the pathogen, as we have enough
+		// points
 		boolean enoughPoints = this.points <= 200;
 		boolean hasVeryFewCities = this.getOutbreakEvents().stream().count() <= 5;
 		if (enoughPoints && hasVeryFewCities) {
 			return false;
 		}
-		
+
 		boolean result = (isOld && (hasLessAverage || hasLessCities)) || hasNoCity;
 
 		this.ignoredPathogenes.put(pathogen, result);

@@ -1,10 +1,7 @@
 package app.game;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
-
 import app.game.events.E_AirportClosed;
 import app.game.events.E_AntiVacc;
 import app.game.events.E_BioTerror;
@@ -18,35 +15,42 @@ import app.game.events.Event;
 import app.game.events.EventType;
 import app.game.Pathogen;
 
+/**
+ * Class to represent the city of the game and stores all necessary information.
+ */
 public class City {
-	
-	public static final Set<City> EMPTY_CITY_SET = Collections.emptySet();
+
+	public static final HashSet<City> EMPTY_CITY_SET = new HashSet<>();
 	private final String name;
-	
-	private final double x,y;
-	
+
+	private final double x, y;
+
 	private final HashSet<City> connections;
 	private final HashMap<EventType, Event> singleEvents;
 	private final HashMap<EventType, HashSet<? extends Event>> multipleEvents;
-	
+
 	private int population;
-	
+
 	private Scale economy, government, hygiene, awareness;
-	
+
 	/**
 	 * Creates City object with specified parameters.
-	 * @param name Name of the city
-	 * @param x The x-coordinate of city in cartesian. equivalent to longitude
-	 * @param y The y-coordinate of city in cartesian. equivalent to latitude
-	 * @param connections Set of all Cities this city is connected to
-	 * @param population Num of citizens in 10^3
-	 * @param economy The strength of the economy
-	 * @param government The stability of government
-	 * @param hygiene Hygiene standards of city
-	 * @param awareness The awareness towards pathogenes of the citizens
+	 * 
+	 * @param name        Name of the city
+	 * @param x           The x-coordinate of city in cartesian. Equivalent to
+	 *                    longitude.
+	 * @param y           The y-coordinate of city in cartesian. Equivalent to
+	 *                    latitude.
+	 * @param connections Set of all Cities this city is connected to.
+	 * @param population  The number of citizens in 1000.
+	 * @param economy     The strength of the economy.
+	 * @param government  The stability of government.
+	 * @param hygiene     Hygiene standards of city.
+	 * @param awareness   The awareness towards pathogens of the citizens.
 	 */
-	public City(String name, double x, double y, HashSet<City> connections, int population,
-			Scale economy, Scale government, Scale hygiene, Scale awareness) {
+	public City(String name, double x, double y, HashSet<City> connections, int population, Scale economy,
+			Scale government, Scale hygiene, Scale awareness) {
+
 		this.name = name;
 		this.x = x;
 		this.y = y;
@@ -62,31 +66,27 @@ public class City {
 	}
 
 	/**
-	 * 
-	 * @return Name of the city
+	 * @return Name of the city.
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * 
-	 * @return The y-coordinate of city in cartesian. equivalent to latitude
+	 * @return The y-coordinate of city in cartesian. Equivalent to latitude.
 	 */
 	public double getY() {
 		return y;
 	}
 
 	/**
-	 * 
-	 * @return The x-coordinate of city in cartesian. equivalent to longitude
+	 * @return The x-coordinate of city in cartesian. Equivalent to longitude.
 	 */
 	public double getX() {
 		return x;
 	}
 
 	/**
-	 * 
 	 * @return Set of all cities this one is connected to.
 	 */
 	public HashSet<City> getConnections() {
@@ -94,219 +94,206 @@ public class City {
 	}
 
 	/**
-	 * 
-	 * @return Num of citizens in 10^3
+	 * @return The number of citizens in 1000.
 	 */
 	public int getPopulation() {
 		return population;
 	}
 
 	/**
-	 * 
-	 * @param population Num of citizens in 10^3
+	 * @param population The number of citizens in 1000.
 	 */
 	public void setPopulation(int population) {
 		this.population = population;
 	}
 
 	/**
-	 * 
-	 * @return The awareness towards pathogenes of the citizens
+	 * @return The awareness towards pathogens of the citizens.
 	 */
 	public Scale getAwareness() {
 		return awareness;
 	}
 
 	/**
-	 * 
-	 * @param awareness The awareness towards pathogenes of the citizens
+	 * @param awareness The awareness towards pathogens of the citizens.
 	 */
 	public void setAwareness(Scale awareness) {
 		this.awareness = awareness;
 	}
 
 	/**
-	 * 
-	 * @return The stability of government
+	 * @return The stability of government.
 	 */
 	public Scale getGovernment() {
 		return government;
 	}
 
 	/**
-	 * 
-	 * @param government The stability of government
+	 * @param government The stability of government.
 	 */
 	public void setGovernment(Scale government) {
 		this.government = government;
 	}
 
 	/**
-	 * 
-	 * @return The strength of the economy
+	 * @return The strength of the economy.
 	 */
 	public Scale getEconomy() {
 		return economy;
 	}
 
 	/**
-	 * 
-	 * @param economy The strength of the economy
+	 * @param economy The strength of the economy.
 	 */
 	public void setEconomy(Scale economy) {
 		this.economy = economy;
 	}
 
 	/**
-	 * 
-	 * @return Hygiene standards of city
+	 * @return Hygiene standards of city.
 	 */
 	public Scale getHygiene() {
 		return hygiene;
 	}
 
 	/**
-	 * 
-	 * @param hygiene Hygiene standards of city
+	 * @param hygiene Hygiene standards of city.
 	 */
 	public void setHygiene(Scale hygiene) {
 		this.hygiene = hygiene;
 	}
-	
+
 	/**
-	 * Adds an event to City that should take place in this city.
-	 * @param event Event that takes places in city and should be added.
+	 * Adds an event to the city that takes place in this city.
+	 * 
+	 * @param event Event that takes places in the city and should be added.
 	 */
 	@SuppressWarnings("unchecked")
-	public void addEvent(Event  event) {
-		if(!event.getType().isMultipleEventType()) {
+	public void addEvent(Event event) {
+
+		if (!event.getType().isMultipleEventType()) {
 			this.singleEvents.put(event.getType(), event);
+
 		} else {
 			((HashSet<Event>) this.multipleEvents.get(event.getType())).add(event);
 		}
 	}
-	
+
+	/**
+	 * Initializes the event-map.
+	 */
 	public void initMultipleEvents() {
-		for(EventType type: EventType.values()) {
-			if(!this.multipleEvents.containsKey(type) && type.isMultipleEventType()) {
+
+		for (EventType type : EventType.values()) {
+			if (!this.multipleEvents.containsKey(type) && type.isMultipleEventType()) {
 				this.multipleEvents.put(type, new HashSet<>());
 			}
 		}
 	}
-	
+
 	/**
-	 * 
-	 * @return The prevalence of pathogen in city. If no pathogen exists in City, 0 is returned.
+	 * @return The prevalence of the outbreak in the city. If no outbreak exists in
+	 *         the city, 0 is returned.
 	 */
-	public double getPrevalance () {
+	public double getPrevalance() {
+
 		E_Outbreak outbreak = this.getOutbreak();
-		return outbreak == null? 0: outbreak.getPrevalence();
+		return outbreak == null ? 0 : outbreak.getPrevalence();
 	}
-	
-	//	Getters for Events in the City.
+
+	/// Getters for events in the city.
+
 	/**
-	 * 
-	 * @return Null if City airport is not closed, AirportClosed Object otherwise
+	 * @return Airport closed event. If the airport is not closed, null is returned.
 	 */
-	public E_AirportClosed getAirportClosed () {
+	public E_AirportClosed getAirportClosed() {
 		return (E_AirportClosed) this.singleEvents.get(EventType.airportClosed);
 	}
-	
+
 	/**
-	 * 
-	 * @return Null if City has no antivaccionationism, AntiVacc Object otherwise
+	 * @return Anti-vaccionationism event. If no anti-vaccinationism does not take
+	 *         place in the city, null is returned.
 	 */
-	public E_AntiVacc getAntiVacc () {
+	public E_AntiVacc getAntiVacc() {
 		return (E_AntiVacc) this.singleEvents.get(EventType.antiVaccinationism);
 	}
-	
+
 	/**
-	 * 
-	 * @return Null if there's no Bio Terrorism in City, BioTerror Object otherwise
+	 * @return Bio terrorism event. If no bio terrorism takes place in the city,
+	 *         null is returned.
 	 */
-	public E_BioTerror getBioTerror () {
+	public E_BioTerror getBioTerror() {
 		return (E_BioTerror) this.singleEvents.get(EventType.bioTerrorism);
 	}
-	
+
 	/**
-	 * 
-	 * @return Set of all Connections that are closed as ConnectionClosed Events.
+	 * @return Set of all connections that are closed as connection closed events.
 	 */
 	@SuppressWarnings("unchecked")
-	public HashSet<E_ConnectionClosed> getConnectionClosed () {
-				
+	public HashSet<E_ConnectionClosed> getConnectionClosed() {
 		return (HashSet<E_ConnectionClosed>) this.multipleEvents.get(EventType.connectionClosed);
-	} 
-	
+	}
+
 	/**
-	 * 
-	 * @return Set of all medication that is deployed in City
+	 * @return Set of all medication that is deployed in the city.
 	 */
 	@SuppressWarnings("unchecked")
-	public HashSet<E_MedicationDeployed> getMedicationDeployed () {
-		
+	public HashSet<E_MedicationDeployed> getMedicationDeployed() {
 		return (HashSet<E_MedicationDeployed>) this.multipleEvents.get(EventType.medicationDeployed);
 	}
-	
+
 	/**
-	 * 
-	 * @return Null if there is no outbreak in City. OutbreakEvent Object otherwise.
+	 * @return Outbreak event. If no outbreak is present in the city, null is returned.
 	 */
-	public E_Outbreak getOutbreak () {
+	public E_Outbreak getOutbreak() {
 		return (E_Outbreak) this.singleEvents.get(EventType.outbreak);
 	}
-	
+
 	/**
-	 * 
-	 * @return Null if City is not under quarantine, QuarantineEvent Object otherwise
+	 * @return Quarantine event. If city is not under quarantine, null is returned.
 	 */
-	public E_Quarantine getQuarantine () {
+	public E_Quarantine getQuarantine() {
 		return (E_Quarantine) this.singleEvents.get(EventType.quarantine);
 	}
-	
+
 	/**
-	 * 
-	 * @return Null if City has no uprising, UprisingEvent Object otherwise
+	 * @return Uprising event. If no uprising takes place in the city, null is returned.
 	 */
-	public E_Uprising getUprising () {
+	public E_Uprising getUprising() {
 		return (E_Uprising) this.singleEvents.get(EventType.uprising);
 	}
-	
+
 	/**
-	 * 
-	 * @return Set of all vaccines being deployed in city.
+	 * @return Set of all vaccines that were deployed in the city.
 	 */
 	@SuppressWarnings("unchecked")
-	public HashSet<E_VaccineDeployed> getVaccineDeployed () {
-		
-		
+	public HashSet<E_VaccineDeployed> getVaccineDeployed() {
 		return (HashSet<E_VaccineDeployed>) this.multipleEvents.get(EventType.vaccineDeployed);
 	}
-	
+
 	/**
-	 * 
-	 * @return Get the pathogen in this city. If the city is not infected return null.
+	 * @return Get the pathogen in this city. If the city is not infected null is returned.
 	 */
-	public Pathogen getPathogen () {
+	public Pathogen getPathogen() {
 		return this.getOutbreak() != null ? this.getOutbreak().getPathogen() : null;
 	}
-	
+
 	/**
-	 * 
-	 * @return Returns true if a city is infected by any pathogen and false if it is not infected at all.
+	 * @return Returns true if the city is infected by any pathogen and false if it is
+	 *         not infected at all.
 	 */
 	public boolean isInfected() {
 		return this.getOutbreak() != null;
 	}
-	
+
 	/**
-	 * Returns true if the city is infected by the given Pathogen. If the pathogen is null
-	 * true is returned if the city is uninfected
+	 * Returns true if the city is infected by the given pathogen. If the pathogen
+	 * is null true is returned if the city is uninfected. 
 	 * 
-	 * @param pathogen Pathogen to check against
-	 * @return True if city is infected by pathogen
+	 * @param pathogen Pathogen to check against.
+	 * @return True if city is infected by pathogen.
 	 */
 	public boolean isInfected(Pathogen pathogen) {
-		return this.getPathogen() == pathogen;
+		return this.getPathogen() != null && this.getPathogen() == pathogen;
 	}
- }
+}
