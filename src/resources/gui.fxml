@@ -17,7 +17,7 @@
             <GridPane layoutX="1640.0" layoutY="19.0" prefHeight="0.0" prefWidth="393.0">
                <children>
                   <TextField fx:id="roundsT" layoutX="1740.0" layoutY="147.0" prefHeight="25.0" prefWidth="220.0" promptText="enter duration..." GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Text layoutX="1636.0" layoutY="51.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="    Aditional " wrappingWidth="160.0">
+                  <Text layoutX="1636.0" layoutY="51.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="  Additional " wrappingWidth="160.0">
                      <font>
                         <Font name="Ubuntu Light" size="30.0" />
                      </font>
