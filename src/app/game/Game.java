@@ -555,6 +555,12 @@ public class Game {
 		boolean hasLessCities = numberOfCities <= 10;
 		boolean hasNoCity = numberOfCities <= 0;
 		
+		// if both of these are true do not ignore the pathogen, as we have enough points 
+		boolean enoughPoints = this.points <= 200;
+		boolean hasVeryFewCities = this.getOutbreakEvents().stream().count() <= 5;
+		if (enoughPoints && hasVeryFewCities) {
+			return false;
+		}
 		
 		boolean result = (isOld && (hasLessAverage || hasLessCities)) || hasNoCity;
 

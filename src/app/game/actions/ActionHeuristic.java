@@ -227,9 +227,11 @@ public class ActionHeuristic {
 			// as it
 			// takes 7 rounds to develop and would be to late at that point.
 			if (!doDevVaccine(pathogen, game) && game.getCities().values().stream().filter(c -> !c.isInfected())
-					.mapToDouble(c -> c.getPopulation()).sum() <= 0.1 * game.getPopulation()) {
+					.mapToDouble(c -> c.getPopulation()).sum() >= 0.1 * game.getPopulation()) {
 				break;
 			}
+			
+			
 
 			// Calculate the global prevalance. If everyone is already
 			// infected vaccines are useless
