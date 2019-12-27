@@ -208,7 +208,7 @@ public class ActionHeuristic {
 				break;
 			}
 			// City should be quarantine
-			score += constants.get("QUARANTINE_FACTOR") * action.getType().getPoints(action.getRounds());
+			score += constants.get("QUARANTINE_FACTOR") * action.getType().getCosts(action.getRounds());
 			break;
 
 		case closeAirport: // Useless action
@@ -254,10 +254,6 @@ public class ActionHeuristic {
 			if (game.getPoints() <= constants.get("#STOP_DEPLOYING_VAC")) {
 				break;
 			}
-
-			// Cities only need to be vaccinated once
-			if (city.getVaccineDeployed().stream().anyMatch(e -> e.getPathogen() == pathogen))
-				break;
 
 			// TODO: Adjust formula
 			double healthyPopulation = city.isInfected(pathogen) ? 1 - city.getPrevalance() : 1;
