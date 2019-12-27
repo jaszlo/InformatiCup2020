@@ -16,7 +16,7 @@ import app.game.events.EventType;
 import app.game.Pathogen;
 
 /**
- * Class to represent the city of the game and stores all necessary information.
+ * Class to represent a city and to store all necessary information.
  */
 public class City {
 

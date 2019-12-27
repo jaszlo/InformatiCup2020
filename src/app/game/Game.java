@@ -1,6 +1,7 @@
 package app.game;
 
 import java.util.Collection;
+
 import java.util.HashMap;
 
 import java.util.HashSet;
@@ -32,15 +33,18 @@ import app.game.events.E_VaccineInDevelopment;
 import app.game.events.Event;
 import app.game.events.EventType;
 
+/**
+ * Class to represent the state of the game and stores all necessary information.
+ */
 public class Game {
 
-	// General
+	/// General
 	private final HashMap<String, City> cities = new HashMap<String, City>();
 	private final HashMap<String, Pathogen> pathogenes = new HashMap<String, Pathogen>();
 	private final HashMap<EventType, HashSet<? extends Event>> events = new HashMap<>(); // Eventtypen nach Namen
 
-	// A map with all pathogenes we want to ignore in out heueristic
-	private HashMap<Pathogen, Boolean> ignoredPathogenes = new HashMap<>();
+	/// A map with all pathogens we want to ignore in our heuristic
+	private HashMap<Pathogen, Boolean> ignoredPathogens = new HashMap<>();
 
 	private int ecoCrisisStart = -1, panicStart = -1;
 
@@ -55,37 +59,33 @@ public class Game {
 	private String outcome;
 
 	/**
-	 * Creates a game object
+	 * Creates a game object.
 	 * 
-	 * @param game The String representing the game in UTF-8 format.
+	 * @param game The String representing of the game in UTF-8 format.
 	 */
 	public Game(String game) {
+
 		this.initGeneralEventMap();
 		parseGame(game);
+
+		// Initialize the ignored pathogens map.
 		this.getPathogens().stream().forEach(p -> ignorePathogenThisRound(p));
 	}
 
 	/**
+	 * Parses a given JSONObject to a pathogen. If a pathogen with the same name was
+	 * already parsed, the reference to that pathogen is returned.
 	 * 
-	 * @return String An overview of the game's current state as a String.
+	 * @param pathogen Pathogen to be parsed.
+	 * @return Parsed pathogen.
 	 */
-	public String gameInformation() {
-		String game = "";
-		for (HashSet<? extends Event> eventType : events.values()) {
-			for (Event event : eventType)
-				game += event + "\n";
-		}
-		game += "Points: " + getPoints() + "\nOutcome: " + getOutcome() + "\nRound:" + getRound()
-				+ "\ninitial Population:" + getInitialPopulation() + "\nPopulation:" + getPopulation() + "\n"
-				+ "Economic crisis since: " + ecoCrisisStart + "\nLarge Scale Panic since: " + panicStart + "\n";
-		return game;
-	}
-
 	private Pathogen parsePathogen(JSONObject pathogen) {
+
 		String name = (String) pathogen.get("name");
-		if (this.getPathogen(name) != null)
+		if (this.getPathogen(name) != null) {
 			return this.getPathogen(name);
-		else {
+
+		} else {
 			Scale infectivity = Scale.parse((String) pathogen.get("infectivity"));
 			Scale mobility = Scale.parse((String) pathogen.get("mobility"));
 			Scale duration = Scale.parse((String) pathogen.get("duration"));
@@ -96,124 +96,153 @@ public class Game {
 		}
 	}
 
+	/**
+	 * Parses a given JSONObject to an event. The event is added to the general
+	 * event map and to the city map.
+	 * 
+	 * @param event The JSONObject to be parsed.
+	 * @param city  The city in which the event takes place. If the event is not
+	 *              related to a city, null is the input.
+	 */
 	private void parseEvent(JSONObject event, City city) {
+
 		String type = (String) event.get("type");
-		if (type.equals("outbreak")) { // stadt
+		if (type.equals("outbreak")) {
 			int sinceRound = Integer.parseInt(event.get("sinceRound").toString());
 			double prevalence = Double.parseDouble(event.get("prevalence").toString());
 			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
 			E_Outbreak e = new E_Outbreak(city, sinceRound, pathogen, prevalence);
 			addToGeneralEventMap(e);
-			addEventToCity(e, city);
+			city.addEvent(e);
 
-		} else if (type.equals("bioTerrorism")) { // stadt
+		} else if (type.equals("bioTerrorism")) {
 			int sinceRound = Integer.parseInt(event.get("round").toString());
 			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
 			E_BioTerror e = new E_BioTerror(city, sinceRound, pathogen);
 			addToGeneralEventMap(e);
-			addEventToCity(e, city);
-		} else if (type.equals("antiVaccinationism")) { // stadt
+			city.addEvent(e);
+
+		} else if (type.equals("antiVaccinationism")) {
 			int sinceRound = Integer.parseInt(event.get("sinceRound").toString());
 			E_AntiVacc e = new E_AntiVacc(city, sinceRound);
 			addToGeneralEventMap(e);
-			addEventToCity(e, city);
-		} else if (type.equals("pathogenEncountered")) { // global
+			city.addEvent(e);
+
+		} else if (type.equals("pathogenEncountered")) {
 			int round = Integer.parseInt(event.get("round").toString());
 			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
 			E_PathogenEncounter e = new E_PathogenEncounter(round, pathogen);
 			addToGeneralEventMap(e);
-		} else if (type.equals("largeScalePanic")) { // global
+
+		} else if (type.equals("largeScalePanic")) {
 			panicStart = Integer.parseInt(event.get("sinceRound").toString());
-		} else if (type.equals("economicCrisis")) { // global
+
+		} else if (type.equals("economicCrisis")) {
 			ecoCrisisStart = Integer.parseInt(event.get("sinceRound").toString());
-		} else if (type.equals("uprising")) { // stadt
+
+		} else if (type.equals("uprising")) {
 			int round = Integer.parseInt(event.get("sinceRound").toString());
 			int participants = Integer.parseInt(event.get("participants").toString());
 			E_Uprising e = new E_Uprising(city, round, participants);
 			addToGeneralEventMap(e);
-			addEventToCity(e, city);
+			city.addEvent(e);
+
 		} else if (type.equals("quarantine")) {
 			int until = Integer.parseInt(event.get("untilRound").toString());
 			int since = Integer.parseInt(event.get("sinceRound").toString());
 			E_Quarantine e = new E_Quarantine(until, since, city);
 			addToGeneralEventMap(e);
-			addEventToCity(e, city);
+			city.addEvent(e);
+
 		} else if (type.equals("vaccineInDevelopment")) {
 			int until = Integer.parseInt(event.get("untilRound").toString());
 			int since = Integer.parseInt(event.get("sinceRound").toString());
 			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
 			E_VaccineInDevelopment e = new E_VaccineInDevelopment(since, until, pathogen);
 			addToGeneralEventMap(e);
+
 		} else if (type.equals("vaccineAvailable")) {
 			int since = Integer.parseInt(event.get("sinceRound").toString());
 			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
 			E_VaccineAvailable e = new E_VaccineAvailable(since, pathogen);
 			addToGeneralEventMap(e);
+
 		} else if (type.equals("medicationInDevelopment")) {
 			int until = Integer.parseInt(event.get("untilRound").toString());
 			int since = Integer.parseInt(event.get("sinceRound").toString());
 			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
 			E_MedicationInDevelopment e = new E_MedicationInDevelopment(since, until, pathogen);
 			addToGeneralEventMap(e);
+
 		} else if (type.equals("medicationAvailable")) {
 			int since = Integer.parseInt(event.get("sinceRound").toString());
 			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
 			E_MedicationAvailable e = new E_MedicationAvailable(since, pathogen);
 			addToGeneralEventMap(e);
-			;
+
 		} else if (type.equals("connectionClosed")) {
 			int until = Integer.parseInt(event.get("untilRound").toString());
 			int since = Integer.parseInt(event.get("sinceRound").toString());
 			City to = getCities().get((String) event.get("city"));
 			E_ConnectionClosed e = new E_ConnectionClosed(since, until, city, to);
 			addToGeneralEventMap(e);
-			addEventToCity(e, city);
+			city.addEvent(e);
+
 		} else if (type.equals("airportClosed")) {
 			int until = Integer.parseInt(event.get("untilRound").toString());
 			int since = Integer.parseInt(event.get("sinceRound").toString());
 			E_AirportClosed e = new E_AirportClosed(since, until, city);
 			addToGeneralEventMap(e);
-			addEventToCity(e, city);
+			city.addEvent(e);
+
 		} else if (type.equals("medicationDeployed")) {
 			int round = Integer.parseInt(event.get("round").toString());
 			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
 			E_MedicationDeployed e = new E_MedicationDeployed(round, pathogen, city);
 			addToGeneralEventMap(e);
-			addEventToCity(e, city);
+			city.addEvent(e);
+
 		} else if (type.equals("vaccineDeployed")) {
 			int round = Integer.parseInt(event.get("round").toString());
 			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
 			E_VaccineDeployed e = new E_VaccineDeployed(round, pathogen, city);
 			addToGeneralEventMap(e);
-			addEventToCity(e, city);
+			city.addEvent(e);
+
 		} else if (type.contentEquals("campaignLaunched")) {
 			int round = Integer.parseInt(event.get("round").toString());
 			E_CampaignLaunched e = new E_CampaignLaunched(city, round);
 			addToGeneralEventMap(e);
-			addEventToCity(e, city);
+			city.addEvent(e);
+
 		} else if (type.contentEquals("electionsCalled")) {
 			int round = Integer.parseInt(event.get("round").toString());
 			E_ElectionsCalled e = new E_ElectionsCalled(city, round);
 			addToGeneralEventMap(e);
-			addEventToCity(e, city);
+			city.addEvent(e);
+
 		} else if (type.contentEquals("hygienicMeasuresApplied")) {
 			int round = Integer.parseInt(event.get("round").toString());
 			E_HygienicMeasuresApplied e = new E_HygienicMeasuresApplied(city, round);
 			addToGeneralEventMap(e);
-			addEventToCity(e, city);
+			city.addEvent(e);
+
 		} else if (type.contentEquals("influenceExerted")) {
 			int round = Integer.parseInt(event.get("round").toString());
 			E_InfluenceExerted e = new E_InfluenceExerted(city, round);
 			addToGeneralEventMap(e);
-			addEventToCity(e, city);
+			city.addEvent(e);
+
 		} else {
-			System.out.println(event + "  NOT IMPLEMENTED");
-			System.exit(0);
+			System.err.println(event + " IS NOT IMPLEMENTED");
 		}
 	}
 
-	// helper method to init the events map
+	/**
+	 * Helper method to initialize the events map.
+	 */
 	private void initGeneralEventMap() {
+
 		for (EventType type : EventType.values()) {
 			if (!events.containsKey(type)) {
 				HashSet<Event> eventType = new HashSet<Event>();
@@ -222,12 +251,16 @@ public class Game {
 		}
 	}
 
-	// helper method to put an Event into the events map
+	/**
+	 * Helper method to put an event into the event map.
+	 */
 	@SuppressWarnings("unchecked")
 	private void addToGeneralEventMap(Event event) {
+
 		EventType type = event.getType();
 		if (events.containsKey(type)) {
 			((HashSet<Event>) events.get(type)).add(event);
+
 		} else {
 			HashSet<Event> eventType = new HashSet<Event>();
 			eventType.add(event);
@@ -235,22 +268,23 @@ public class Game {
 		}
 	}
 
-	// helper method to add an event to a city
-	private void addEventToCity(Event event, City city) {
-		city.addEvent(event);
-	}
-
+	/**
+	 * Parses a string into a game object.
+	 * 
+	 * @param game The string representing a game.
+	 */
 	private void parseGame(String game) {
+
 		try {
 			JSONObject obj = (JSONObject) new JSONParser().parse(game);
-			// parse general information
+			// Parse general information
 			round = Integer.parseInt(obj.get("round").toString());
 			outcome = (String) obj.get("outcome");
 			points = Integer.parseInt(obj.get("points").toString());
 
+			// Parse cities
 			JSONObject cities = (JSONObject) obj.get("cities");
 			int totalPop = 0;
-			// parse Cities
 			for (Object o : cities.values()) {
 				JSONObject city = (JSONObject) o;
 				Scale government = Scale.parse((String) city.get("government"));
@@ -266,15 +300,18 @@ public class Game {
 				City c = new City(name, x, y, new HashSet<City>(), pop, economy, government, hygiene, awareness);
 				this.cities.put(name, c);
 			}
-			// parse City connections
+
+			// Parse city connections
 			for (Object o : cities.values()) {
 				JSONObject city = (JSONObject) o;
 				City source = getCities().get(city.get("name"));
 				JSONArray arr = (JSONArray) city.get("connections");
+
 				for (Object connection : arr) {
 					City sink = getCities().get(connection);
 					source.getConnections().add(sink);
 				}
+
 				JSONArray cityEvents = (JSONArray) city.get("events");
 				if (cityEvents != null) {
 					for (Object event : cityEvents) {
@@ -282,24 +319,25 @@ public class Game {
 					}
 				}
 			}
+
 			// Set, if possible, the initial population. Only possible at round 1.
 			population = totalPop;
-			if (getRound() == 1)
-				initialPopulation = getPopulation();
-			else
-				initialPopulation = -1;
+			initialPopulation = getRound() == 1 ? getPopulation() : -1;
+
 			// Parse non city-specific Events
 			JSONArray globalEvents = (JSONArray) obj.get("events"); // parse global events
 			if (globalEvents != null) {
 				for (Object event : globalEvents)
 					parseEvent((JSONObject) event, null);
 			}
+
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
+	 * //TODO java doc getters
 	 * 
 	 * @param cityName
 	 * @return the City with the given name.
@@ -525,49 +563,55 @@ public class Game {
 		return this.pathogenes.values();
 	}
 
+	/**
+	 * Returns whether a pathogen should be ignored in the current round.
+	 * 
+	 * @param pathogen The pathogen to check.
+	 * @return Whether the pathogen should be ignored or not. If pathogen is null,
+	 *         false is returned.
+	 */
 	public boolean ignorePathogenThisRound(Pathogen pathogen) {
 
 		if (pathogen == null) {
 			return false;
 		}
 
-		if (this.ignoredPathogenes.containsKey(pathogen)) {
-			return this.ignoredPathogenes.get(pathogen);
+		if (this.ignoredPathogens.containsKey(pathogen)) {
+			return this.ignoredPathogens.get(pathogen);
 		}
 
 		Optional<E_PathogenEncounter> encounter = this.getPathEncounterEvents().stream()
 				.filter(e -> e.getPathogen() == pathogen).findAny();
 
-		// Ignore useless bio terror.
+		// Ignore bio terror.
 		if (!encounter.isPresent()) {
-			this.ignoredPathogenes.put(pathogen, true);
+			this.ignoredPathogens.put(pathogen, true);
 			return true;
 		}
 
-		// Check if a pathogen is no longer active by checking if it has been there for
-		// over 10 rounds and has not infected more than 10% of all the infected cities
-		// population on average.
-		// This is to guess stateless that a pathogen is old and no longer a threat in
-		// order to safe points
+		/*
+		 * Check if a pathogen is no longer active by checking if it has been there for
+		 * over 10 rounds and has not infected more than 10% of all the infected cities
+		 * population on average. This is to guess stateless that a pathogen is old and
+		 * no longer a threat in order to safe points.
+		 */
 		boolean isOld = this.getRound() - encounter.get().getRound() >= 10;
 		boolean hasLessAverage = this.getOutbreakEvents().stream().filter(e -> e.getPathogen() == pathogen)
 				.mapToDouble(e -> e.getPrevalence()).average().orElseGet(() -> 0) <= 0.10;
 		long numberOfCities = this.getOutbreakEvents().stream().filter(e -> e.getPathogen() == pathogen).count();
-		boolean hasLessCities = numberOfCities <= 10;
+		boolean hasFewCities = numberOfCities <= 10;
 		boolean hasNoCity = numberOfCities <= 0;
 
-		// if both of these are true do not ignore the pathogen, as we have enough
-		// points
+		// If both of these are true do not ignore the pathogen, as we have enough
+		// points.
 		boolean enoughPoints = this.points <= 200;
 		boolean hasVeryFewCities = this.getOutbreakEvents().stream().count() <= 5;
 		if (enoughPoints && hasVeryFewCities) {
 			return false;
 		}
 
-		boolean result = (isOld && (hasLessAverage || hasLessCities)) || hasNoCity;
-
-		this.ignoredPathogenes.put(pathogen, result);
-
+		boolean result = (isOld && (hasLessAverage || hasFewCities)) || hasNoCity;
+		this.ignoredPathogens.put(pathogen, result);
 		return result;
 	}
 }

@@ -69,7 +69,7 @@ public class ActionHeuristic {
 
 		int score = mobility * infectivity;
 		
-		if(pathogen.getDuration() == Scale.DM) {
+		if(pathogen.getDuration() == Scale.MM) {
 			return false;
 		}
 		
@@ -94,7 +94,7 @@ public class ActionHeuristic {
 
 		int score = mobility * infectivity;
 		
-		if(pathogen.getDuration() == Scale.DM) {
+		if(pathogen.getDuration() == Scale.MM) {
 			return false;
 		}
 

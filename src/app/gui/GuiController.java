@@ -3,9 +3,6 @@ package app.gui;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import com.sun.javafx.tk.FontMetrics;
-import com.sun.javafx.tk.Toolkit;
-
 import app.game.City;
 import app.game.Game;
 import app.game.Pathogen;

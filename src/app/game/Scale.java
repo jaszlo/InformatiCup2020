@@ -1,13 +1,11 @@
 package app.game;
 
 /**
- * 
- * Representation of the values --,-,o,+,++
- *
+ * Representation of the values --, -, o, +, ++
  */
 public enum Scale {
 
-	DM,M,N,P,DP;
+	MM,M,N,P,PP;
 
 	/**
 	 * 
@@ -16,7 +14,7 @@ public enum Scale {
 	 */
 	public static Scale parse(String scale) {
 		if(scale.equals("--"))
-			return DM;
+			return MM;
 		if(scale.equals("-"))
 			return M;
 		if(scale.equals("o"))
@@ -24,7 +22,7 @@ public enum Scale {
 		if(scale.equals("+"))
 			return P;
 		if(scale.equals("++"))
-			return DP;
+			return PP;
 		return null;
 	}
 	
@@ -34,7 +32,7 @@ public enum Scale {
 	 */
 	public int getNumericRepresentation() {
 		switch(this) {
-			case DM:
+			case MM:
 				return 1;
 			case M:
 				return 2;
@@ -42,7 +40,7 @@ public enum Scale {
 				return 3;
 			case P:
 				return 4;
-			case DP:
+			case PP:
 				return 5;
 		}
 		return 0;
@@ -54,7 +52,7 @@ public enum Scale {
 	@Override
 	public String toString() {
 		switch(this) {
-			case DM:
+			case MM:
 				return "--";
 			case M:
 				return "-";
@@ -62,7 +60,7 @@ public enum Scale {
 				return "o";
 			case P:
 				return "+";
-			case DP:
+			case PP:
 				return "++";
 		}
 		return null;

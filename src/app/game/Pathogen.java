@@ -1,18 +1,20 @@
 package app.game;
 
+/**
+ * Class to represent a pathogen and to store all necessary information.
+ */
 public class Pathogen {
 
 	private final String name;
-	
+
 	private final Scale infectivity, mobility, duration, lethality;
-	
+
 	/**
-	 * 
-	 * @param name The name of the pathogen
-	 * @param infectivity The infectivity of pathogen 
-	 * @param mobility The mobility of pathogen
-	 * @param duration The duration of pathogen
-	 * @param lethality The deadliness of pathogen
+	 * @param name        The name of this pathogen.
+	 * @param infectivity The infectivity of this pathogen.
+	 * @param mobility    The mobility of this pathogen.
+	 * @param duration    The duration of this pathogen.
+	 * @param lethality   The deadliness of this pathogen.
 	 */
 	public Pathogen(String name, Scale infectivity, Scale mobility, Scale duration, Scale lethality) {
 		this.name = name;
@@ -23,55 +25,52 @@ public class Pathogen {
 	}
 
 	/**
-	 * 
-	 * @return Name of pathogen
+	 * @return The Name of this pathogen.
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
 	 * 
-	 * @return the infectivity of pathogen
+	 * @return The infectivity of this pathogen.
 	 */
 	public Scale getInfectivity() {
-		return infectivity;
+		return this.infectivity;
 	}
 
 	/**
 	 * 
-	 * @return the mobility of pathogen.
+	 * @return The mobility of this pathogen.
 	 */
 	public Scale getMobility() {
-		return mobility;
+		return this.mobility;
 	}
 
 	/**
 	 * 
-	 * @return the duration of pathogen.
+	 * @return The duration of this pathogen.
 	 */
 	public Scale getDuration() {
-		return duration;
+		return this.duration;
 	}
 
 	/**
-	 * 
-	 * @return the lethality of pathogen.
+	 * @return The lethality of this pathogen.
 	 */
 	public Scale getLethality() {
-		return lethality;
+		return this.lethality;
 	}
-	
+
 	/**
-	 * @return the basic information of pathogen as String, in the following format
-	 * [%name,%infectivity,%mobility,%duration,%lethality]
+	 * @return The basic information of pathogen as string, in the following format
+	 *         [%name,%infectivity,%mobility,%duration,%lethality].
 	 */
 	@Override
 	public String toString() {
-		return "["+getName()+",Infectivity:"+getInfectivity().toString()+","
-				+ "Mobility:"+getMobility().toString()+","
-				+ "Duration:"+getDuration().toString()+","
-				+ "Lethality:"+getLethality().toString()+"]";
+		return "[" + getName() + ",Infectivity:" + getInfectivity().toString() + "," + "Mobility:"
+				+ getMobility().toString() + "," + "Duration:" + getDuration().toString() + "," + "Lethality:"
+				+ getLethality().toString() + "]";
 	}
-	
+
 }
