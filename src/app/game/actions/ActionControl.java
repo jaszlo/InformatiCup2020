@@ -19,6 +19,7 @@ public class ActionControl {
 	 * @return All actions.
 	 */
 	public static Set<Action> generatePossibleActions(Game game) {
+		
 		Set<Action> allActions = new HashSet<Action>();
 		allActions.add(new Action(game));
 		addQuarantineActions(game, allActions);
@@ -69,6 +70,7 @@ public class ActionControl {
 	 * @param actions Actions set to add to.
 	 */
 	private static void addQuarantineActions(Game game, Set<Action> actions) {
+		
 		for (City city : game.getCities().values()) {
 			if (city.getQuarantine() == null) {
 				for (int rounds = 1; game.getPoints() >= ActionType.putUnderQuarantine.getCosts(rounds); rounds++) {
@@ -86,6 +88,7 @@ public class ActionControl {
 	 * @param actions Actions set to add to.
 	 */
 	private static void addDeployVaccActions(Game game, Set<Action> actions) {
+		
 		for (E_VaccineAvailable e : game.getVaccAvailableEvents()) {
 			for (City city : game.getCities().values()) {
 				// Filter out cities that have been vaccinated already
@@ -104,6 +107,7 @@ public class ActionControl {
 	 * @param actions Actions set to add to.
 	 */
 	private static void addDeployMedActions(Game game, Set<Action> actions) {
+		
 		Set<Pathogen> medAvailable = new HashSet<>();
 
 		for (E_MedicationAvailable e : game.getMedAvailableEvents()) {
@@ -125,8 +129,10 @@ public class ActionControl {
 	 * @param actions Actions set to add to.
 	 */
 	private static void addVaccineDevActions(Game game, Set<Action> actions) {
+		
 		for (Pathogen pathogen : game.getPathogens()) {
 			Action a = new Action(ActionType.developVaccine, game, pathogen);
+			
 			// Only add the DevVacc event if it is not already developed or being developed.
 			if (game.getVaccAvailableEvents().stream().allMatch(e -> e.getPathogen() != a.getPathogen())
 					&& game.getVaccDevEvents().stream().allMatch(e -> e.getPathogen() != a.getPathogen())) {
@@ -143,11 +149,14 @@ public class ActionControl {
 	 * @param actions Actions set to add to.
 	 */
 	private static void addMedDevActions(Game game, Set<Action> actions) {
+		
 		for (Pathogen pathogen : game.getPathogens()) {
 			Action a = new Action(ActionType.developMedication, game, pathogen);
+			
 			// Only add the DevMed event if it is not already developed or being developed.
 			if (game.getMedAvailableEvents().stream().allMatch(e -> e.getPathogen() != a.getPathogen())
 					&& game.getMedDevEvents().stream().allMatch(e -> e.getPathogen() != a.getPathogen())) {
+			
 				actions.add(a);
 			}
 		}
@@ -160,6 +169,7 @@ public class ActionControl {
 	 * @param actions Actions set to add to.
 	 */
 	private static void addCloseAirportActions(Game game, Set<Action> actions) {
+		
 		for (City city : game.getCities().values()) {
 			if (city.getAirportClosed() == null) {
 				for (int rounds = 1; game.getPoints() >= ActionType.closeAirport.getCosts(rounds); rounds++) {
@@ -177,6 +187,7 @@ public class ActionControl {
 	 * @param actions Actions set to add to.
 	 */
 	private static void addCloseConnectionsActions(Game game, Set<Action> actions) {
+		
 		for (City city : game.getCities().values()) {
 			for (City to : city.getConnections()) {
 				if (city.getConnectionClosed().stream().allMatch(e -> e.getTo() != city)) {
