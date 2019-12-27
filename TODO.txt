@@ -1,0 +1,9 @@
+GUI TODOS:
+
+- GUI tooltips
+- GUI output (error und was macht es)
+- Canvas class für GUI (resizeable)?
+
+=============================================================
+
+Doku :)
