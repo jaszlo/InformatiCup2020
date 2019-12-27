@@ -10,13 +10,12 @@ import app.game.Scale;
 import app.game.actions.Action;
 
 public class ActionHeuristic {
-	
-	
+
 	private static HashMap<String, Double> constants = null;
 
 	static {
 		ActionHeuristic.constants = new HashMap<>();
-		
+
 		updateConstants();
 	}
 
@@ -24,13 +23,14 @@ public class ActionHeuristic {
 	 * Sets the value of the constants the the CURRENT values in constants.txt
 	 */
 	public static void updateConstants() {
+
 		HashMap<String, Double> constantsOfFile = ConstantsSetup.getConstants(ConstantsSetup.CONSTANTS_PATH);
-		
+
 		if (constantsOfFile == null) {
 			System.out.println("Konstanten konnten nicht geladen werden.");
 			System.exit(1);
 		}
-		
+
 		constantsOfFile.forEach((key, value) -> ActionHeuristic.constants.put(key, value));
 	}
 
@@ -42,6 +42,7 @@ public class ActionHeuristic {
 	 * @return true or false depending on the pathogen's statistics.
 	 */
 	private static boolean doQuarantine(Pathogen pathogen) {
+
 		int infectivity = pathogen.getInfectivity().getNumericRepresentation();
 		int lethality = pathogen.getLethality().getNumericRepresentation();
 		int mobility = pathogen.getMobility().getNumericRepresentation();
@@ -65,15 +66,16 @@ public class ActionHeuristic {
 	 * @return true or false depending on the pathogen's statistics.
 	 */
 	private static boolean doDevVaccine(Pathogen pathogen, Game game) {
+
 		int infectivity = pathogen.getInfectivity().getNumericRepresentation();
 		int mobility = pathogen.getMobility().getNumericRepresentation();
 
 		int score = mobility * infectivity;
-		
-		if(pathogen.getDuration() == Scale.MM) {
+
+		if (pathogen.getDuration() == Scale.MM) {
 			return false;
 		}
-		
+
 		if (doQuarantine(pathogen)) {
 			return false;
 		}
@@ -90,12 +92,13 @@ public class ActionHeuristic {
 	 * @return true or false depending on the pathogen's statistics.
 	 */
 	private static boolean doDevMedication(Pathogen pathogen, Game game) {
+
 		int infectivity = pathogen.getInfectivity().getNumericRepresentation();
 		int mobility = pathogen.getMobility().getNumericRepresentation();
 
 		int score = mobility * infectivity;
-		
-		if(pathogen.getDuration() == Scale.MM) {
+
+		if (pathogen.getDuration() == Scale.MM) {
 			return false;
 		}
 
@@ -125,6 +128,7 @@ public class ActionHeuristic {
 	}
 
 	public static int getValue(HashSet<Action> actions) {
+
 		int sum = 0;
 		for (Action a : actions)
 			sum += getValue(a);
@@ -132,12 +136,17 @@ public class ActionHeuristic {
 	}
 
 	public static int getValue(Action action) {
+
+		// Get all values that will be required multiple times during the evaluation
 		int score = 0;
 		City city = action.getCity();
 		Game game = action.getGame();
 		Pathogen pathogen = action.getPathogen();
 		int currentPoints = game.getPoints();
-		boolean doRandoms = game.getPathEncounterEvents().stream().allMatch(e -> game.ignorePathogenThisRound(e.getPathogen()));
+
+		// A condition that must be met in order to do reroll events.
+		boolean doRerolls = game.getPathEncounterEvents().stream()
+				.allMatch(e -> game.ignorePathogenThisRound(e.getPathogen()));
 
 		if (game.ignorePathogenThisRound(pathogen)) {
 			return score;
@@ -145,37 +154,38 @@ public class ActionHeuristic {
 
 		switch (action.getType()) {
 		case endRound:
-			score += constants.get("END_ROUND_FACTOR"); // EndRound as default action
+
+			// EndRound as default action
+			score += constants.get("END_ROUND_FACTOR");
 			break;
+
 		case putUnderQuarantine:
-
-			// If a very strong pathogen (e.g. Admiral Trips) breaks out in 2 Cities protect
-			// the biggest city.
-			// This for instance happens in seed 4.
+			/*
+			 * If a very strong pathogen for instance Admiral Trips breaks out in two or
+			 * more cities protect the biggest city.
+			 */
 			if (!city.isInfected()) {
-				int strongPathogenAmount = (int) game.getOutbreakEvents().stream()
-						.filter(e -> doQuarantine(e.getPathogen())).count();
 
-				// If there are more than 2 qurantinable pathogenes we can not quarantine both.
-				// Therefore we quarantine the biggest city and hope for the best
-				if (strongPathogenAmount > 1) {
+				// Count outbreaks that would normaly require quarantine.
+				long strongPathogenAmount = game.getOutbreakEvents().stream().filter(e -> doQuarantine(e.getPathogen()))
+						.count();
+
+				// If the counter is two or greater put the biggest city under quarantine
+				if (strongPathogenAmount >= 2) {
 					score += constants.get("QUARANTINE_FACTOR") * action.getRounds() * city.getPopulation();
 					break;
 				}
 			}
 
-			// First check if there is only one active pathogen. This is done by the
-			// checking if we ignore all but one pathogen.
-			// Secondly if this one active pathogen has only contaminated one city so far.
-			// If so put it under quarantine as that way it can do the least amount of
-			// damage and will die out in this city.
+			/*
+			 * Check if there is only one active one pathogen and if there is only one
+			 * outbreak event for this pathogen put it under quarantine enclose a pathogen
+			 * inside a city.
+			 */
 			if (game.getPathEncounterEvents().stream().filter(e -> !game.ignorePathogenThisRound(e.getPathogen()))
 					.count() == 1) {
 
-				// In this case we want to enclose a pathogen inside a city. But if the city of
-				// this action is
-				// not infected we can break at this point
-				if (city.getOutbreak() == null) {
+				if (!city.isInfected()) {
 					break;
 				}
 
@@ -183,37 +193,40 @@ public class ActionHeuristic {
 				Pathogen onlyActivePathogen = game.getPathEncounterEvents().stream()
 						.filter(e -> !game.ignorePathogenThisRound(e.getPathogen())).findAny().get().getPathogen();
 
-				// Check that there is only one outbreak event for the onlyActivePathogen and
+				// Check that there is only one outbreak event for the only active pathogen and
 				// that it is in the city for the current action.
-				// If that is the case we want to execute this action.
 				if ((game.getOutbreakEvents().stream().filter(e -> e.getPathogen() == onlyActivePathogen).count() == 1)
-						&& city.getOutbreak().getPathogen() == onlyActivePathogen) {
+						&& city.isInfected(onlyActivePathogen)) {
 
 					score += constants.get("QUARANTINE_FACTOR") * action.getRounds();
 					break;
 				}
 			}
 
-			// In a regular situation with no outbreak event a city does not need to be
-			// quarantined
-			if (!city.isInfected())
+			// In a regular situation with no outbreak event a city does not require
+			// quarantine
+			if (!city.isInfected()) {
 				break;
+			}
 
-			// Check if the pathogen in the city of the action is needs to be quarantined
-			if (!doQuarantine(city.getPathogen()))
+			// Check if the pathogen in the city of the action needs to be quarantined
+			if (!doQuarantine(city.getPathogen())) {
 				break;
+			}
 
-			// Check wheather every city is infected and the quarantined pathogen can not
+			// Check whether every city is infected and the quarantined pathogen can not
 			// spread any further. In this case there is no quarantine required.
 			if (game.getCities().values().stream().allMatch((City c) -> c.isInfected())) {
 				break;
 			}
+
 			// City should be quarantine
 			score += constants.get("QUARANTINE_FACTOR") * action.getType().getCosts(action.getRounds());
 			break;
 
 		case closeAirport: // Useless action
 			break;
+
 		case closeConnection: // Useless action
 			break;
 
@@ -224,25 +237,28 @@ public class ActionHeuristic {
 				break;
 			}
 
-			// If 10 % of the world's population is already infected do not develop vaccines
-			// as it
-			// takes 7 rounds to develop and would be to late at that point.
+			/*
+			 * If a pathogen does not qualify for vaccination because it spreads to fast
+			 * there is a condition that allows for vaccines to still be usefull against it.
+			 * The condition is met when less than 10% of the total population are living in
+			 * an uninfected city. In this case we still want to develop vaccines. Here the
+			 * opposite of that condition is checked and if not met no vaccines will be
+			 * developed.
+			 */
 			if (!doDevVaccine(pathogen, game) && game.getCities().values().stream().filter(c -> !c.isInfected())
 					.mapToDouble(c -> c.getPopulation()).sum() >= 0.1 * game.getPopulation()) {
 				break;
 			}
-			
-			
 
 			// Calculate the global prevalance. If everyone is already
-			// infected vaccines are useless
+			// infected vaccines are not required.
 			double totalPopulation = game.getPopulation();
 			double infectedPopulation = game.getCities().values().stream().filter(c -> c.isInfected(pathogen))
 					.mapToDouble(c -> c.getPrevalance() * c.getPopulation()).sum();
 
 			double globalPrevalance = infectedPopulation / totalPopulation;
 
-			// Only if prevalence is low enough add score
+			// Only if prevalence is low enough develop vaccines.
 			if (globalPrevalance < constants.get("DEV_VACCINE_PREVALENCE_THRESHOLD")) {
 				score += (constants.get("DEV_VACCINE_FACTOR") * pathogen.getLethality().getNumericRepresentation());
 			}
@@ -250,13 +266,13 @@ public class ActionHeuristic {
 			break;
 
 		case deployVaccine:
-			// Create a Point buffer. If in a later round a strong Pathogen breaks out we
-			// can quarantine it.
+			// Create a point buffer. If in a later round a strong pathogen is encountered
+			// it can be quarantined.
 			if (game.getPoints() <= constants.get("#STOP_DEPLOYING_VAC")) {
 				break;
 			}
 
-			// TODO: Adjust formula
+			// Calculate the healthy population of the city.
 			double healthyPopulation = city.isInfected(pathogen) ? 1 - city.getPrevalance() : 1;
 			score += constants.get("DEP_VACCINE_FACTOR") * healthyPopulation * city.getPopulation()
 					* pathogen.getLethality().getNumericRepresentation();
@@ -269,48 +285,61 @@ public class ActionHeuristic {
 				break;
 			}
 
-			// If pathogen is strong enough develop medication
+			// Check if the pathogen qualifies for medication. If it does develop
+			// medication.
 			if (doDevMedication(pathogen, game)) {
 				score += (constants.get("DEV_MEDICATION_FACTOR") * pathogen.getLethality().getNumericRepresentation());
-
 			}
 			break;
 
 		case deployMedication:
-
-			// Create a Point buffer. If in a later round a strong Pathogen breaks out we
-			// can quarantine it.
+			// Create a point buffer. If in a later round a strong pathogen breaks it can be
+			// quarantined.
 			if (currentPoints <= constants.get("#STOP_DEPLOYING_MED")) {
 				break;
 			}
 
-			// TODO: Adjust formula
 			score += constants.get("DEP_MEDICATION_FACTOR") * city.getPrevalance() * city.getPopulation()
 					* pathogen.getLethality().getNumericRepresentation();
 
 			break;
 
 		case exertInfluence:
-			// make sure to always be able to emergency quarantine
-			if (currentPoints >= constants.get("#START_RANDOM_EVENTS") && doRandoms)
+			// Make sure the current state qualifies for reroll events in general and if a
+			// pointer buffer is available.
+			if (currentPoints >= constants.get("#START_RANDOM_EVENTS") && doRerolls) {
 				score += constants.get("INFLUENCE_FACTOR") * city.getPopulation()
 						* (5 - city.getEconomy().getNumericRepresentation());
+			}
 			break;
+
 		case callElections:
-			if (currentPoints >= constants.get("#START_RANDOM_EVENTS")  && doRandoms)
+			// Make sure the current state qualifies for reroll events in general and if a
+			// pointer buffer is available.
+			if (currentPoints >= constants.get("#START_RANDOM_EVENTS") && doRerolls) {
 				score += constants.get("ELECTIONS_FACTOR") * city.getPopulation()
 						* (5 - city.getGovernment().getNumericRepresentation());
+			}
 			break;
+
 		case applyHygienicMeasures:
-			if (currentPoints >= constants.get("#START_RANDOM_EVENTS")  && doRandoms)
+			// Make sure the current state qualifies for reroll events in general and if a
+			// pointer buffer is available.
+			if (currentPoints >= constants.get("#START_RANDOM_EVENTS") && doRerolls) {
 				score += constants.get("HYGIENE_FACTOR") * city.getPopulation()
 						* (5 - city.getHygiene().getNumericRepresentation());
+			}
 			break;
+
 		case launchCampaign:
-			if (currentPoints >= constants.get("#START_RANDOM_EVENTS")  && doRandoms)
+			// Make sure the current state qualifies for reroll events in general and if a
+			// pointer buffer is available.
+			if (currentPoints >= constants.get("#START_RANDOM_EVENTS") && doRerolls) {
 				score += constants.get("CAMPAIGN_FACTOR") * city.getPopulation()
 						* (5 - city.getAwareness().getNumericRepresentation());
+			}
 			break;
+
 		default:
 			break;
 		}
