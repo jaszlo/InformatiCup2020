@@ -3,6 +3,7 @@ package app.game.actions;
 import app.game.City;
 import app.game.Game;
 import app.game.Pathogen;
+import app.solver.ActionHeuristic;
 
 public class Action {
 
@@ -25,7 +26,8 @@ public class Action {
 	 * @param type     The type of this action.
 	 * @param game     The game for which the action will be used.
 	 * @param city     The city in which the action will be used.
-	 * @param cityTo   Only necessary for close connection events.
+	 * @param cityTo   The second city to which the connection will be closed from
+	 *                 the first city.
 	 * @param pathogen The pathogen for which will be used.
 	 * @param rounds   The amount of rounds this action will be active.
 	 */
@@ -113,7 +115,7 @@ public class Action {
 	 *         the format of the GI client.
 	 */
 	public String toString() {
-		
+
 		switch (this.getType()) {
 		case endRound:
 			return "{\"type\": \"endRound\"}";
@@ -159,19 +161,20 @@ public class Action {
 			return String.format("{\"type\": \"callElections\", \"city\": \"%s\"}", this.getCity().getName());
 
 		}
-		
+
 		return null;
 	}
 
-	/** 
-	 * @return  The game for which the action will be used.
+	/**
+	 * @return The game for which the action will be used.
 	 */
 	public Game getGame() {
 		return game;
 	}
 
 	/**
-	 * @return The score for this action in the action's game calculated by the heuristic.
+	 * @return The score for this action in the action's game calculated by the
+	 *         heuristic.
 	 */
 	public int getScore() {
 		return this.score;

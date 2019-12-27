@@ -2,15 +2,6 @@ package app.game;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import app.game.events.E_AirportClosed;
-import app.game.events.E_AntiVacc;
-import app.game.events.E_BioTerror;
-import app.game.events.E_ConnectionClosed;
-import app.game.events.E_MedicationDeployed;
-import app.game.events.E_Outbreak;
-import app.game.events.E_Quarantine;
-import app.game.events.E_Uprising;
-import app.game.events.E_VaccineDeployed;
 import app.game.events.Event;
 import app.game.events.EventType;
 import app.game.Pathogen;
@@ -197,7 +188,7 @@ public class City {
 	 */
 	public double getPrevalance() {
 
-		E_Outbreak outbreak = this.getOutbreak();
+		Event outbreak = this.getOutbreak();
 		return outbreak == null ? 0 : outbreak.getPrevalence();
 	}
 
@@ -206,69 +197,69 @@ public class City {
 	/**
 	 * @return Airport closed event. If the airport is not closed, null is returned.
 	 */
-	public E_AirportClosed getAirportClosed() {
-		return (E_AirportClosed) this.singleEvents.get(EventType.airportClosed);
+	public Event getAirportClosed() {
+		return (Event) this.singleEvents.get(EventType.airportClosed);
 	}
 
 	/**
 	 * @return Anti-vaccionationism event. If no anti-vaccinationism does not take
 	 *         place in the city, null is returned.
 	 */
-	public E_AntiVacc getAntiVacc() {
-		return (E_AntiVacc) this.singleEvents.get(EventType.antiVaccinationism);
+	public Event getAntiVacc() {
+		return (Event) this.singleEvents.get(EventType.antiVaccinationism);
 	}
 
 	/**
 	 * @return Bio terrorism event. If no bio terrorism takes place in the city,
 	 *         null is returned.
 	 */
-	public E_BioTerror getBioTerror() {
-		return (E_BioTerror) this.singleEvents.get(EventType.bioTerrorism);
+	public Event getBioTerror() {
+		return (Event) this.singleEvents.get(EventType.bioTerrorism);
 	}
 
 	/**
 	 * @return Set of all connections that are closed as connection closed events.
 	 */
 	@SuppressWarnings("unchecked")
-	public HashSet<E_ConnectionClosed> getConnectionClosed() {
-		return (HashSet<E_ConnectionClosed>) this.multipleEvents.get(EventType.connectionClosed);
+	public HashSet<Event>  getConnectionClosed() {
+		return (HashSet<Event> ) this.multipleEvents.get(EventType.connectionClosed);
 	}
 
 	/**
 	 * @return Set of all medication that is deployed in the city.
 	 */
 	@SuppressWarnings("unchecked")
-	public HashSet<E_MedicationDeployed> getMedicationDeployed() {
-		return (HashSet<E_MedicationDeployed>) this.multipleEvents.get(EventType.medicationDeployed);
+	public HashSet<Event>  getMedicationDeployed() {
+		return (HashSet<Event> ) this.multipleEvents.get(EventType.medicationDeployed);
 	}
 
 	/**
 	 * @return Outbreak event. If no outbreak is present in the city, null is returned.
 	 */
-	public E_Outbreak getOutbreak() {
-		return (E_Outbreak) this.singleEvents.get(EventType.outbreak);
+	public Event getOutbreak() {
+		return (Event) this.singleEvents.get(EventType.outbreak);
 	}
 
 	/**
 	 * @return Quarantine event. If city is not under quarantine, null is returned.
 	 */
-	public E_Quarantine getQuarantine() {
-		return (E_Quarantine) this.singleEvents.get(EventType.quarantine);
+	public Event getQuarantine() {
+		return (Event) this.singleEvents.get(EventType.quarantine);
 	}
 
 	/**
 	 * @return Uprising event. If no uprising takes place in the city, null is returned.
 	 */
-	public E_Uprising getUprising() {
-		return (E_Uprising) this.singleEvents.get(EventType.uprising);
+	public Event getUprising() {
+		return (Event) this.singleEvents.get(EventType.uprising);
 	}
 
 	/**
 	 * @return Set of all vaccines that were deployed in the city.
 	 */
 	@SuppressWarnings("unchecked")
-	public HashSet<E_VaccineDeployed> getVaccineDeployed() {
-		return (HashSet<E_VaccineDeployed>) this.multipleEvents.get(EventType.vaccineDeployed);
+	public HashSet<Event>  getVaccineDeployed() {
+		return (HashSet<Event> ) this.multipleEvents.get(EventType.vaccineDeployed);
 	}
 
 	/**

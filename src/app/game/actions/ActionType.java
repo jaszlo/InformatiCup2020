@@ -1,11 +1,21 @@
 package app.game.actions;
 
+/**
+ * Enumeration to represent the type of the different actions that can be taken.
+ */
 public enum ActionType {
 
 	endRound, putUnderQuarantine, closeAirport, closeConnection, developVaccine, deployVaccine, developMedication,
 	deployMedication, exertInfluence, callElections, applyHygienicMeasures, launchCampaign;
 
+	/**
+	 * Calculates the cost that the action would take, dependent on the number of rounds.
+	 * 
+	 * @param rounds The number of rounds the action will be executed in.
+	 * @return The cost of the action.
+	 */
 	public int getCosts(int rounds) {
+		
 		switch (this) {
 		case endRound:
 			return 0;

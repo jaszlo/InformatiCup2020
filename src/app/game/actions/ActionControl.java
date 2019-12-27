@@ -6,9 +6,7 @@ import java.util.Set;
 import app.game.City;
 import app.game.Game;
 import app.game.Pathogen;
-import app.game.events.E_MedicationAvailable;
-import app.game.events.E_Outbreak;
-import app.game.events.E_VaccineAvailable;
+import app.game.events.Event;
 
 public class ActionControl {
 
@@ -89,7 +87,7 @@ public class ActionControl {
 	 */
 	private static void addDeployVaccActions(Game game, Set<Action> actions) {
 		
-		for (E_VaccineAvailable e : game.getVaccAvailableEvents()) {
+		for (Event e : game.getVaccAvailableEvents()) {
 			for (City city : game.getCities().values()) {
 				// Filter out cities that have been vaccinated already
 				if (city.getVaccineDeployed().stream().allMatch(vd -> vd.getPathogen() != e.getPathogen())) {
@@ -110,11 +108,11 @@ public class ActionControl {
 		
 		Set<Pathogen> medAvailable = new HashSet<>();
 
-		for (E_MedicationAvailable e : game.getMedAvailableEvents()) {
+		for (Event e : game.getMedAvailableEvents()) {
 			medAvailable.add(e.getPathogen());
 		}
 
-		for (E_Outbreak outbreak : game.getOutbreakEvents()) {
+		for (Event outbreak : game.getOutbreakEvents()) {
 			if (medAvailable.contains(outbreak.getPathogen())) {
 				Action a = new Action(ActionType.deployMedication, game, outbreak.getCity(), outbreak.getPathogen());
 				actions.add(a);
@@ -190,7 +188,7 @@ public class ActionControl {
 		
 		for (City city : game.getCities().values()) {
 			for (City to : city.getConnections()) {
-				if (city.getConnectionClosed().stream().allMatch(e -> e.getTo() != city)) {
+				if (city.getConnectionClosed().stream().allMatch(e -> e.getCityTo() != city)) {
 					for (int rounds = 1; game.getPoints() >= ActionType.closeConnection.getCosts(rounds); rounds++) {
 						Action a = new Action(game, city, to, rounds);
 						actions.add(a);

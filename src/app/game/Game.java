@@ -1,7 +1,6 @@
 package app.game;
 
 import java.util.Collection;
-
 import java.util.HashMap;
 
 import java.util.HashSet;
@@ -12,24 +11,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import app.game.events.E_AirportClosed;
-import app.game.events.E_AntiVacc;
-import app.game.events.E_BioTerror;
-import app.game.events.E_CampaignLaunched;
-import app.game.events.E_ConnectionClosed;
-import app.game.events.E_ElectionsCalled;
-import app.game.events.E_HygienicMeasuresApplied;
-import app.game.events.E_InfluenceExerted;
-import app.game.events.E_MedicationAvailable;
-import app.game.events.E_MedicationDeployed;
-import app.game.events.E_MedicationInDevelopment;
-import app.game.events.E_Outbreak;
-import app.game.events.E_PathogenEncounter;
-import app.game.events.E_Quarantine;
-import app.game.events.E_Uprising;
-import app.game.events.E_VaccineAvailable;
-import app.game.events.E_VaccineDeployed;
-import app.game.events.E_VaccineInDevelopment;
 import app.game.events.Event;
 import app.game.events.EventType;
 
@@ -111,27 +92,27 @@ public class Game {
 			int sinceRound = Integer.parseInt(event.get("sinceRound").toString());
 			double prevalence = Double.parseDouble(event.get("prevalence").toString());
 			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
-			E_Outbreak e = new E_Outbreak(city, sinceRound, pathogen, prevalence);
+			Event e = new Event(sinceRound, pathogen, city, prevalence);
 			addToGeneralEventMap(e);
 			city.addEvent(e);
 
 		} else if (type.equals("bioTerrorism")) {
 			int sinceRound = Integer.parseInt(event.get("round").toString());
 			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
-			E_BioTerror e = new E_BioTerror(city, sinceRound, pathogen);
+			Event e = new Event(EventType.bioTerrorism, sinceRound, pathogen, city);
 			addToGeneralEventMap(e);
 			city.addEvent(e);
 
 		} else if (type.equals("antiVaccinationism")) {
 			int sinceRound = Integer.parseInt(event.get("sinceRound").toString());
-			E_AntiVacc e = new E_AntiVacc(city, sinceRound);
+			Event e = new Event(EventType.antiVaccinationism, sinceRound, city);
 			addToGeneralEventMap(e);
 			city.addEvent(e);
 
 		} else if (type.equals("pathogenEncountered")) {
 			int round = Integer.parseInt(event.get("round").toString());
 			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
-			E_PathogenEncounter e = new E_PathogenEncounter(round, pathogen);
+			Event e = new Event(EventType.pathogenEncountered, round, pathogen);
 			addToGeneralEventMap(e);
 
 		} else if (type.equals("largeScalePanic")) {
@@ -143,14 +124,14 @@ public class Game {
 		} else if (type.equals("uprising")) {
 			int round = Integer.parseInt(event.get("sinceRound").toString());
 			int participants = Integer.parseInt(event.get("participants").toString());
-			E_Uprising e = new E_Uprising(city, round, participants);
+			Event e = new Event(round, city, participants);
 			addToGeneralEventMap(e);
 			city.addEvent(e);
 
 		} else if (type.equals("quarantine")) {
 			int until = Integer.parseInt(event.get("untilRound").toString());
 			int since = Integer.parseInt(event.get("sinceRound").toString());
-			E_Quarantine e = new E_Quarantine(until, since, city);
+			Event e = new Event(EventType.quarantine, until, since, city);
 			addToGeneralEventMap(e);
 			city.addEvent(e);
 
@@ -158,78 +139,78 @@ public class Game {
 			int until = Integer.parseInt(event.get("untilRound").toString());
 			int since = Integer.parseInt(event.get("sinceRound").toString());
 			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
-			E_VaccineInDevelopment e = new E_VaccineInDevelopment(since, until, pathogen);
+			Event e = new Event(EventType.vaccineInDevelopment, since, until, pathogen);
 			addToGeneralEventMap(e);
 
 		} else if (type.equals("vaccineAvailable")) {
 			int since = Integer.parseInt(event.get("sinceRound").toString());
 			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
-			E_VaccineAvailable e = new E_VaccineAvailable(since, pathogen);
+			Event e = new Event(EventType.vaccineAvailable, since, pathogen);
 			addToGeneralEventMap(e);
 
 		} else if (type.equals("medicationInDevelopment")) {
 			int until = Integer.parseInt(event.get("untilRound").toString());
 			int since = Integer.parseInt(event.get("sinceRound").toString());
 			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
-			E_MedicationInDevelopment e = new E_MedicationInDevelopment(since, until, pathogen);
+			Event e = new Event(EventType.medicationInDevelopment, since, until, pathogen);
 			addToGeneralEventMap(e);
 
 		} else if (type.equals("medicationAvailable")) {
 			int since = Integer.parseInt(event.get("sinceRound").toString());
 			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
-			E_MedicationAvailable e = new E_MedicationAvailable(since, pathogen);
+			Event e = new Event(EventType.medicationAvailable, since, pathogen);
 			addToGeneralEventMap(e);
 
 		} else if (type.equals("connectionClosed")) {
 			int until = Integer.parseInt(event.get("untilRound").toString());
 			int since = Integer.parseInt(event.get("sinceRound").toString());
 			City to = getCities().get((String) event.get("city"));
-			E_ConnectionClosed e = new E_ConnectionClosed(since, until, city, to);
+			Event e = new Event(since, until, city, to);
 			addToGeneralEventMap(e);
 			city.addEvent(e);
 
 		} else if (type.equals("airportClosed")) {
 			int until = Integer.parseInt(event.get("untilRound").toString());
 			int since = Integer.parseInt(event.get("sinceRound").toString());
-			E_AirportClosed e = new E_AirportClosed(since, until, city);
+			Event e = new Event(EventType.airportClosed, since, until, city);
 			addToGeneralEventMap(e);
 			city.addEvent(e);
 
 		} else if (type.equals("medicationDeployed")) {
 			int round = Integer.parseInt(event.get("round").toString());
 			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
-			E_MedicationDeployed e = new E_MedicationDeployed(round, pathogen, city);
+			Event e = new Event(EventType.medicationDeployed, round, pathogen, city);
 			addToGeneralEventMap(e);
 			city.addEvent(e);
 
 		} else if (type.equals("vaccineDeployed")) {
 			int round = Integer.parseInt(event.get("round").toString());
 			Pathogen pathogen = parsePathogen((JSONObject) event.get("pathogen"));
-			E_VaccineDeployed e = new E_VaccineDeployed(round, pathogen, city);
+			Event e = new Event(EventType.vaccineDeployed, round, pathogen, city);
 			addToGeneralEventMap(e);
 			city.addEvent(e);
 
 		} else if (type.contentEquals("campaignLaunched")) {
 			int round = Integer.parseInt(event.get("round").toString());
-			E_CampaignLaunched e = new E_CampaignLaunched(city, round);
+			Event e = new Event(EventType.campaignLaunched, round, city);
 			addToGeneralEventMap(e);
 			city.addEvent(e);
 
 		} else if (type.contentEquals("electionsCalled")) {
 			int round = Integer.parseInt(event.get("round").toString());
-			E_ElectionsCalled e = new E_ElectionsCalled(city, round);
+			Event e = new Event(EventType.electionsCalled, round, city);
 			addToGeneralEventMap(e);
 			city.addEvent(e);
 
 		} else if (type.contentEquals("hygienicMeasuresApplied")) {
 			int round = Integer.parseInt(event.get("round").toString());
-			E_HygienicMeasuresApplied e = new E_HygienicMeasuresApplied(city, round);
+			Event e = new Event(EventType.hygienicMeasuresApplied, round, city);
 			addToGeneralEventMap(e);
 			city.addEvent(e);
 
 		} else if (type.contentEquals("influenceExerted")) {
 			int round = Integer.parseInt(event.get("round").toString());
-			E_InfluenceExerted e = new E_InfluenceExerted(city, round);
+			Event e = new Event(EventType.influenceExerted, round, city);
 			addToGeneralEventMap(e);
 			city.addEvent(e);
 
@@ -384,8 +365,8 @@ public class Game {
 	 * @return A Set of all anti-vaccionationism events
 	 */
 	@SuppressWarnings("unchecked")
-	public HashSet<E_AntiVacc> getAntiVaccEvents() {
-		return (HashSet<E_AntiVacc>) events.get(EventType.antiVaccinationism);
+	public HashSet<Event> getAntiVaccEvents() {
+		return (HashSet<Event>) events.get(EventType.antiVaccinationism);
 	}
 
 	/**
@@ -393,8 +374,8 @@ public class Game {
 	 * @return A Set of all the bio-terrorism taking place
 	 */
 	@SuppressWarnings("unchecked")
-	public HashSet<E_BioTerror> getBioTerrorEvents() {
-		return (HashSet<E_BioTerror>) events.get(EventType.bioTerrorism);
+	public HashSet<Event> getBioTerrorEvents() {
+		return (HashSet<Event>) events.get(EventType.bioTerrorism);
 	}
 
 	/**
@@ -402,8 +383,8 @@ public class Game {
 	 * @return A set of all pathogen-outbreaks
 	 */
 	@SuppressWarnings("unchecked")
-	public HashSet<E_Outbreak> getOutbreakEvents() {
-		return (HashSet<E_Outbreak>) events.get(EventType.outbreak);
+	public HashSet<Event> getOutbreakEvents() {
+		return (HashSet<Event>) events.get(EventType.outbreak);
 
 	}
 
@@ -412,8 +393,8 @@ public class Game {
 	 * @return The set of all uprisings taking place
 	 */
 	@SuppressWarnings("unchecked")
-	public HashSet<E_Uprising> getUprisingEvents() {
-		return (HashSet<E_Uprising>) events.get(EventType.uprising);
+	public HashSet<Event> getUprisingEvents() {
+		return (HashSet<Event>) events.get(EventType.uprising);
 	}
 
 	/**
@@ -421,8 +402,8 @@ public class Game {
 	 * @return A set of all the pathogens encountered
 	 */
 	@SuppressWarnings("unchecked")
-	public HashSet<E_PathogenEncounter> getPathEncounterEvents() {
-		return (HashSet<E_PathogenEncounter>) events.get(EventType.pathogenEncountered);
+	public HashSet<Event> getPathEncounterEvents() {
+		return (HashSet<Event>) events.get(EventType.pathogenEncountered);
 	}
 
 	/**
@@ -430,8 +411,8 @@ public class Game {
 	 * @return A set of all Quarantines
 	 */
 	@SuppressWarnings("unchecked")
-	public HashSet<E_Quarantine> getQuarantineEvents() {
-		return (HashSet<E_Quarantine>) events.get(EventType.quarantine);
+	public HashSet<Event> getQuarantineEvents() {
+		return (HashSet<Event>) events.get(EventType.quarantine);
 	}
 
 	/**
@@ -439,8 +420,8 @@ public class Game {
 	 * @return A set of all vaccines currently in development
 	 */
 	@SuppressWarnings("unchecked")
-	public HashSet<E_VaccineInDevelopment> getVaccDevEvents() {
-		return (HashSet<E_VaccineInDevelopment>) events.get(EventType.vaccineInDevelopment);
+	public HashSet<Event> getVaccDevEvents() {
+		return (HashSet<Event>) events.get(EventType.vaccineInDevelopment);
 	}
 
 	/**
@@ -448,8 +429,8 @@ public class Game {
 	 * @return A set of all available vaccines
 	 */
 	@SuppressWarnings("unchecked")
-	public HashSet<E_VaccineAvailable> getVaccAvailableEvents() {
-		return (HashSet<E_VaccineAvailable>) events.get(EventType.vaccineAvailable);
+	public HashSet<Event> getVaccAvailableEvents() {
+		return (HashSet<Event>) events.get(EventType.vaccineAvailable);
 	}
 
 	/**
@@ -457,8 +438,8 @@ public class Game {
 	 * @return A set of all medication currently in development
 	 */
 	@SuppressWarnings("unchecked")
-	public HashSet<E_MedicationInDevelopment> getMedDevEvents() {
-		return (HashSet<E_MedicationInDevelopment>) events.get(EventType.medicationInDevelopment);
+	public HashSet<Event> getMedDevEvents() {
+		return (HashSet<Event>) events.get(EventType.medicationInDevelopment);
 	}
 
 	/**
@@ -466,8 +447,8 @@ public class Game {
 	 * @return A set of all medication available.
 	 */
 	@SuppressWarnings("unchecked")
-	public HashSet<E_MedicationAvailable> getMedAvailableEvents() {
-		return (HashSet<E_MedicationAvailable>) events.get(EventType.medicationAvailable);
+	public HashSet<Event> getMedAvailableEvents() {
+		return (HashSet<Event>) events.get(EventType.medicationAvailable);
 	}
 
 	/**
@@ -475,8 +456,8 @@ public class Game {
 	 * @return A set of all connections closed.
 	 */
 	@SuppressWarnings("unchecked")
-	public HashSet<E_ConnectionClosed> getConnClosedEvents() {
-		return (HashSet<E_ConnectionClosed>) events.get(EventType.connectionClosed);
+	public HashSet<Event> getConnClosedEvents() {
+		return (HashSet<Event>) events.get(EventType.connectionClosed);
 
 	}
 
@@ -485,8 +466,8 @@ public class Game {
 	 * @return A set of all airports currently closed.
 	 */
 	@SuppressWarnings("unchecked")
-	public HashSet<E_AirportClosed> getAirportClosedEvents() {
-		return (HashSet<E_AirportClosed>) events.get(EventType.airportClosed);
+	public HashSet<Event> getAirportClosedEvents() {
+		return (HashSet<Event>) events.get(EventType.airportClosed);
 
 	}
 
@@ -495,8 +476,8 @@ public class Game {
 	 * @return A set of all cities a certain medication is being deployed in.
 	 */
 	@SuppressWarnings("unchecked")
-	public HashSet<E_MedicationDeployed> getMedDeployedEvents() {
-		return (HashSet<E_MedicationDeployed>) events.get(EventType.medicationDeployed);
+	public HashSet<Event> getMedDeployedEvents() {
+		return (HashSet<Event>) events.get(EventType.medicationDeployed);
 	}
 
 	/**
@@ -504,8 +485,8 @@ public class Game {
 	 * @return A set of all cities a certain vaccine is being deployed in.
 	 */
 	@SuppressWarnings("unchecked")
-	public HashSet<E_VaccineDeployed> getVaccDeployedEvents() {
-		return (HashSet<E_VaccineDeployed>) events.get(EventType.vaccineDeployed);
+	public HashSet<Event> getVaccDeployedEvents() {
+		return (HashSet<Event>) events.get(EventType.vaccineDeployed);
 	}
 
 	/**
@@ -580,7 +561,7 @@ public class Game {
 			return this.ignoredPathogens.get(pathogen);
 		}
 
-		Optional<E_PathogenEncounter> encounter = this.getPathEncounterEvents().stream()
+		Optional<Event> encounter = this.getPathEncounterEvents().stream()
 				.filter(e -> e.getPathogen() == pathogen).findAny();
 
 		// Ignore bio terror.

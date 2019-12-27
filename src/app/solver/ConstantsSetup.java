@@ -1,4 +1,4 @@
-package app.game.actions;
+package app.solver;
 
 import java.io.File;
 import java.util.ArrayList;

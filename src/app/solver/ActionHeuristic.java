@@ -1,4 +1,4 @@
-package app.game.actions;
+package app.solver;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -7,6 +7,7 @@ import app.game.City;
 import app.game.Game;
 import app.game.Pathogen;
 import app.game.Scale;
+import app.game.actions.Action;
 
 public class ActionHeuristic {
 	
@@ -107,7 +108,7 @@ public class ActionHeuristic {
 
 		// If a pathogen is not expanding fast, medication should not be developed.
 		// Unless it already has infected enough (see the
-		// DEV_MEDICATION_PREVALANCE_THRESHOLD)
+		// DEV_MEDICATION_PREVALANCEvent)
 		if (score <= constants.get("DEV_MEDICATION_THRESHOLD")) {
 			double totalPopulation = game.getPopulation();
 			double infectedPopulation = game.getCities().values().stream().filter(c -> c.isInfected(pathogen))

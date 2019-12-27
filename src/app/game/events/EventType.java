@@ -1,7 +1,7 @@
 package app.game.events;
 
 /**
- * Enum to assign a value to each type of event
+ * Enumeration to assign a value to each type of event.
  */
 public enum EventType {
 
@@ -10,28 +10,17 @@ public enum EventType {
 	vaccineInDevelopment, campaignLaunched, electionsCalled, hygienicMeasuresApplied, influenceExerted;
 
 	/**
-	 * 
-	 * @return whether this EventType is City specific, i.e in the event-list of a City
+	 * @return whether this EventType is City specific, i.e in the event-list of a
+	 *         City
 	 */
 	public boolean containedByCity() {
-		return  this == airportClosed		||
-				this == antiVaccinationism	||
-				this == bioTerrorism		||
-				this == connectionClosed	||
-				this == medicationDeployed	||
-				this == outbreak			||
-				this == quarantine			||
-				this == uprising			||
-				this == campaignLaunched	||
-				this == electionsCalled		||
-				this == hygienicMeasuresApplied 			||
-				this == influenceExerted		 	||
-				this == vaccineDeployed;
+		return this == airportClosed || this == antiVaccinationism || this == bioTerrorism || this == connectionClosed
+				|| this == medicationDeployed || this == outbreak || this == quarantine || this == uprising
+				|| this == campaignLaunched || this == electionsCalled || this == hygienicMeasuresApplied
+				|| this == influenceExerted || this == vaccineDeployed;
 	}
-	
+
 	public boolean isMultipleEventType() {
-		return  this == vaccineDeployed 	|| 
-				this == medicationDeployed	||
-				this == connectionClosed;
+		return this == vaccineDeployed || this == medicationDeployed || this == connectionClosed;
 	}
 }
