@@ -12,6 +12,7 @@ import app.http.GameExchange;
 import app.http.GameServer;
 import app.io.FileHandler;
 import app.solver.Solver;
+
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -115,7 +116,7 @@ public class GuiController {
 		ObservableList<String> allPathogens = this.currentGame.getPathogens().stream().map(p -> p.getName()).sorted()
 				.collect(FXCollections::<String>observableArrayList, ObservableList<String>::add,
 						ObservableList<String>::addAll);
-		
+
 		// Add "no pathogen" as choice
 		allPathogens.add(0, null);
 		if (!this.pathogenesCB.getItems().equals(allPathogens)) {
@@ -159,15 +160,15 @@ public class GuiController {
 	}
 
 	/**
-	 * Method to detect whether the GUI is ready for a new round to play. The GUI
-	 * is ready if there is no active round at the time.
+	 * Method to detect whether the GUI is ready for a new round to play. The GUI is
+	 * ready if there is no active round at the time.
 	 * 
 	 * @return True if GUI is ready.
 	 */
 	public boolean ready() {
 		return this.currentGameExchange == null;
 	}
-	
+
 	/**
 	 * Closes the GUI
 	 */
@@ -183,10 +184,10 @@ public class GuiController {
 		// Close the primaryStage and close the Server (terminate the Programm)
 		primaryStage.close();
 	}
-	
+
 	/**
-	 * On action method for the "Quit" button in the GUI.
-	 * When pressed closes the GUI and ends the programm.
+	 * On action method for the "Quit" button in the GUI. When pressed closes the
+	 * GUI and ends the programm.
 	 */
 	@FXML
 	public void quit() {
@@ -282,8 +283,8 @@ public class GuiController {
 
 	/**
 	 * Returns the number of rounds given by the user in the rounds text field. If
-	 * the number is less or equal to zero or no number is given the method
-	 * returns 1.
+	 * the number is less or equal to zero or no number is given the method returns
+	 * 1.
 	 * 
 	 * @return Amount in text field.
 	 */
@@ -329,8 +330,8 @@ public class GuiController {
 	}
 
 	/**
-	 * On action method for the "End round" button in the GUI.
-	 * When pressed send the end round action
+	 * On action method for the "End round" button in the GUI. When pressed send the
+	 * end round action
 	 */
 	@FXML
 	private void endRound() {
@@ -348,8 +349,8 @@ public class GuiController {
 	}
 
 	/**
-	 * On action method for the "Auto turn" button in the GUI.
-	 * When pressed the end round action is passed to the GameExchange
+	 * On action method for the "Auto turn" button in the GUI. When pressed the end
+	 * round action is passed to the GameExchange
 	 */
 	@FXML
 	private void autoTurn() {
@@ -367,10 +368,10 @@ public class GuiController {
 	}
 
 	/**
-	 * On action method for the "Quarantine" button in the GUI.
-	 * The action requires a city and rounds as its input.
-	 * When pressed the quarantine action is passed to the GameExchange.
-	 * If no city or amount of rounds was selected the method does nothing.
+	 * On action method for the "Quarantine" button in the GUI. The action requires
+	 * a city and rounds as its input. When pressed the quarantine action is passed
+	 * to the GameExchange. If no city or amount of rounds was selected the method
+	 * does nothing.
 	 */
 	@FXML
 	private void putUnderQuarantine() {
@@ -387,10 +388,10 @@ public class GuiController {
 	}
 
 	/**
-	 * On action method for the "Close Airport" button in the GUI.
-	 * The action requires a city and rounds as its input.
-	 * When pressed the quarantine action is passed to the GameExchange.
-	 * If no city or amount of rounds was selected the method does nothing.
+	 * On action method for the "Close Airport" button in the GUI. The action
+	 * requires a city and rounds as its input. When pressed the quarantine action
+	 * is passed to the GameExchange. If no city or amount of rounds was selected
+	 * the method does nothing.
 	 */
 	@FXML
 	private void closeAirport() {
@@ -407,10 +408,10 @@ public class GuiController {
 	}
 
 	/**
-	 * On action method for the "Close Connection" button in the GUI.
-	 * The action requires two cities and rounds as its input.
-	 * When pressed the quarantine action is passed to the GameExchange.
-	 * If no cities or amount of rounds was selected the method does nothing.
+	 * On action method for the "Close Connection" button in the GUI. The action
+	 * requires two cities and rounds as its input. When pressed the quarantine
+	 * action is passed to the GameExchange. If no cities or amount of rounds was
+	 * selected the method does nothing.
 	 */
 	@FXML
 	private void closeConnection() {
@@ -430,10 +431,10 @@ public class GuiController {
 	}
 
 	/**
-	 * On action method for the "Develop Vaccine" button in the GUI.
-	 * The action requires a pathogen as its input.
-	 * When pressed the develop vaccine action is passed to the GameExchange.
-	 * If no pathogen was selected the method does nothing.
+	 * On action method for the "Develop Vaccine" button in the GUI. The action
+	 * requires a pathogen as its input. When pressed the develop vaccine action is
+	 * passed to the GameExchange. If no pathogen was selected the method does
+	 * nothing.
 	 */
 	@FXML
 	private void developVaccine() {
@@ -448,10 +449,10 @@ public class GuiController {
 	}
 
 	/**
-	 * On action method for the "Deploy Vaccine" button in the GUI.
-	 * The action requires a pathogen and a city as its input.
-	 * When pressed the deploy vaccine action is passed to the GameExchange.
-	 * If no pathogen or city was selected the method does nothing.
+	 * On action method for the "Deploy Vaccine" button in the GUI. The action
+	 * requires a pathogen and a city as its input. When pressed the deploy vaccine
+	 * action is passed to the GameExchange. If no pathogen or city was selected the
+	 * method does nothing.
 	 */
 	@FXML
 	private void deployVaccine() {
@@ -469,10 +470,10 @@ public class GuiController {
 	}
 
 	/**
-	 * On action method for the "Develop Medication" button in the GUI.
-	 * The action requires a pathogen as its input.
-	 * When pressed the develop medication action is passed to the GameExchange.
-	 * If no pathogen was selected the method does nothing
+	 * On action method for the "Develop Medication" button in the GUI. The action
+	 * requires a pathogen as its input. When pressed the develop medication action
+	 * is passed to the GameExchange. If no pathogen was selected the method does
+	 * nothing
 	 */
 	@FXML
 	private void developMedication() {
@@ -487,10 +488,10 @@ public class GuiController {
 	}
 
 	/**
-	 * On action method for the "Deploy Medication" button in the GUI.
-	 * The action requires a pathogen and a city as its input.
-	 * When pressed the deploy medication action is passed to the GameExchange.
-	 * If no pathogen or city was selected the method does nothing.
+	 * On action method for the "Deploy Medication" button in the GUI. The action
+	 * requires a pathogen and a city as its input. When pressed the deploy
+	 * medication action is passed to the GameExchange. If no pathogen or city was
+	 * selected the method does nothing.
 	 */
 	@FXML
 	private void deployMedication() {
@@ -524,10 +525,9 @@ public class GuiController {
 	}
 
 	/**
-	 * On action method for the "Apply Hygiene" button in the GUI.
-	 * The action requires a city as its input.
-	 * When pressed the apply hygiene action is passed to the GameExchange.
-	 * If no city was selected the method does nothing.
+	 * On action method for the "Apply Hygiene" button in the GUI. The action
+	 * requires a city as its input. When pressed the apply hygiene action is passed
+	 * to the GameExchange. If no city was selected the method does nothing.
 	 */
 	@FXML
 	private void applyHygienicMeasures() {
@@ -535,10 +535,9 @@ public class GuiController {
 	}
 
 	/**
-	 * On action method for the "Exert Influence" button in the GUI.
-	 * The action requires a city as its input.
-	 * When pressed the exert influence action is passed to the GameExchange.
-	 * If no city was selected the method does nothing.
+	 * On action method for the "Exert Influence" button in the GUI. The action
+	 * requires a city as its input. When pressed the exert influence action is
+	 * passed to the GameExchange. If no city was selected the method does nothing.
 	 */
 	@FXML
 	private void exertInfluence() {
@@ -546,10 +545,9 @@ public class GuiController {
 	}
 
 	/**
-	 * On action method for the "Call Elections" button in the GUI.
-	 * The action requires a city as its input.
-	 * When pressed the call elections action is passed to the GameExchange.
-	 * If no city was selected the method does nothing.
+	 * On action method for the "Call Elections" button in the GUI. The action
+	 * requires a city as its input. When pressed the call elections action is
+	 * passed to the GameExchange. If no city was selected the method does nothing.
 	 */
 	@FXML
 	private void callElections() {
@@ -557,10 +555,9 @@ public class GuiController {
 	}
 
 	/**
-	 * On action method for the "Launch Campaign" button in the GUI.
-	 * The action requires a city as its input.
-	 * When pressed the launch campaign action is passed to the GameExchange.
-	 * If no city was selected the method does nothing.
+	 * On action method for the "Launch Campaign" button in the GUI. The action
+	 * requires a city as its input. When pressed the launch campaign action is
+	 * passed to the GameExchange. If no city was selected the method does nothing.
 	 */
 	@FXML
 	private void launchCampaign() {
@@ -568,12 +565,13 @@ public class GuiController {
 	}
 
 	/**
-	 * On action method for the "Vaccinate big Cities" button in the GUI.
-	 * The action requreds a pathogen and can be given a number of cities it should try to vaccinate as its input.
-	 * When pressed the method calculates which cities will be the most affected by vaccination
-	 * and adds the deploy vaccines action for those cities to the repliesToSend Queue in the GameServer
-	 * If no pathogen was selected the method does nothing.
-	 * If no number of cities was given this will vaccinate the single most effected city.
+	 * On action method for the "Vaccinate big Cities" button in the GUI. The action
+	 * requreds a pathogen and can be given a number of cities it should try to
+	 * vaccinate as its input. When pressed the method calculates which cities will
+	 * be the most affected by vaccination and adds the deploy vaccines action for
+	 * those cities to the repliesToSend Queue in the GameServer If no pathogen was
+	 * selected the method does nothing. If no number of cities was given this will
+	 * vaccinate the single most effected city.
 	 */
 	@FXML
 	private void vaccinateBiggestCities() {
@@ -635,12 +633,13 @@ public class GuiController {
 	}
 
 	/**
-	 * On action method for the "Medicate big Cities" button in the GUI.
-	 * The action requreds a pathogen and can be given a number of cities it should try to medicate as its input.
-	 * When pressed the method calculates which cities will be the most affected by medication
-	 * and adds the deploy mediaction action for those cities to the repliesToSend Queue in the GameServer
-	 * If no pathogen was selected the method does nothing.
-	 * If no number of cities was given this will medicate the single most effected city.
+	 * On action method for the "Medicate big Cities" button in the GUI. The action
+	 * requreds a pathogen and can be given a number of cities it should try to
+	 * medicate as its input. When pressed the method calculates which cities will
+	 * be the most affected by medication and adds the deploy mediaction action for
+	 * those cities to the repliesToSend Queue in the GameServer If no pathogen was
+	 * selected the method does nothing. If no number of cities was given this will
+	 * medicate the single most effected city.
 	 */
 	@FXML
 	private void medicateBiggestCities() {
@@ -707,7 +706,7 @@ public class GuiController {
 		this.currentGameExchange.sendReply(action);
 		this.currentGameExchange = null;
 	}
-	
+
 	/**
 	 * Executes the given action.
 	 * 
@@ -727,8 +726,9 @@ public class GuiController {
 	}
 
 	/**
-	 * On action method for the "Export Map" button in the GUI.
-	 * When pressed this will export the current representation of the game state in the Canvas as a picture.
+	 * On action method for the "Export Map" button in the GUI. When pressed this
+	 * will export the current representation of the game state in the Canvas as a
+	 * picture.
 	 */
 	@FXML
 	public void exportMap() {
@@ -812,7 +812,7 @@ public class GuiController {
 			// TODO: Find height and width of text
 			double height = 0;
 			double width = 0;
-			
+
 			gc.strokeText(cityName, x - height / 2, y - width / 2);
 		}
 	}
