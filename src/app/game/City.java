@@ -294,6 +294,6 @@ public class City {
 	 * @return True if city is infected by pathogen.
 	 */
 	public boolean isInfected(Pathogen pathogen) {
-		return this.getPathogen() != null && this.getPathogen() == pathogen;
+		return pathogen != null && this.getPathogen() == pathogen;
 	}
 }
