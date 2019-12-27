@@ -4,65 +4,117 @@ import app.game.City;
 import app.game.Game;
 import app.game.Pathogen;
 
-public class Action{
+public class Action {
 
 	private final ActionType type;
 
 	private final Game game;
 
-	// Parameters for the actions
+	/// Parameters for the actions
 	private final City city;
-	private final City toCity;
+	private final City cityTo;
 	private final Pathogen pathogen;
 	private final int rounds;
 
-	// Heueristic parameter score
+	/// Heueristic parameter score
 	private final int score;
-	
-	// Basis constructor
-	public Action(ActionType type, Game game, City city, City toCity, Pathogen pathogen, int rounds) {
+
+	/**
+	 * Creates a generic action.
+	 * 
+	 * @param type     The type of this action.
+	 * @param game     The game for which the action will be used.
+	 * @param city     The city in which the action will be used.
+	 * @param cityTo   Only necessary for close connection events.
+	 * @param pathogen The pathogen for which will be used.
+	 * @param rounds   The amount of rounds this action will be active.
+	 */
+	public Action(ActionType type, Game game, City city, City cityTo, Pathogen pathogen, int rounds) {
 		this.type = type;
 		this.game = game;
 		this.city = city;
-		this.toCity = toCity;
+		this.cityTo = cityTo;
 		this.pathogen = pathogen;
 		this.rounds = rounds;
 		this.score = ActionHeuristic.getValue(this);
 	}
-	
-	// endRound constructor
+
+	/**
+	 * Creates an end round action.
+	 * 
+	 * @param game The game for which the action will be used.
+	 */
 	public Action(Game game) {
 		this(ActionType.endRound, game, null, null, null, 0);
 	}
 
-	// quarantine and closeAirport constructor
+	/**
+	 * Creates a quarantine or close airport action..
+	 * 
+	 * @param type   The type of this action.
+	 * @param game   The game for which the action will be used.
+	 * @param city   The city in which the action will be used.
+	 * @param rounds The amount of rounds this action will be active.
+	 */
 	public Action(ActionType type, Game game, City city, int rounds) {
 		this(type, game, city, null, null, rounds);
 	}
 
-	// developVaccine or developMedication constructor
+	/**
+	 * Creates a develop vaccine or medication action.
+	 * 
+	 * @param type     The type of this action.
+	 * @param game     The game for which the action will be used.
+	 * @param pathogen The pathogen for which will be used.
+	 */
 	public Action(ActionType type, Game game, Pathogen pathogen) {
 		this(type, game, null, null, pathogen, 0);
 	}
 
-	// deployVaccine or deployMedication constructor
+	/**
+	 * Creates a deploy vaccine or medication action.
+	 * 
+	 * @param type     The type of this action.
+	 * @param game     The game for which the action will be used.
+	 * @param city     The city in which the action will be used.
+	 * @param pathogen The pathogen for which will be used.
+	 */
 	public Action(ActionType type, Game game, City city, Pathogen pathogen) {
 		this(type, game, city, null, pathogen, 0);
 	}
 
-	// closeConnection constructor
+	/**
+	 * Creates a close connection action.
+	 * 
+	 * @param type   The type of this action.
+	 * @param game   The game for which the action will be used.
+	 * @param city   The city in which the action will be used.
+	 * @param toCity Only necessary for close connection events.
+	 * @param rounds The amount of rounds this action will be active.
+	 */
 	public Action(Game game, City city, City toCity, int rounds) {
 		this(ActionType.closeConnection, game, city, toCity, null, rounds);
 	}
-	
-	// exertInfluence callElections applyHygienicMeasures launchCampaign constructor
-		public Action(ActionType type, Game game, City city) {
-			this(type, game, city, null, null, 0);
-		}
-	
-	public String toString() {
-		switch (this.getType()) {
 
+	/**
+	 * Creates a exert influence, call elections, apply hygienic measures or launch
+	 * campaign action.
+	 * 
+	 * @param type The type of this action.
+	 * @param game The game for which the action will be used.
+	 * @param city The city in which the action will be used.
+	 */
+	public Action(ActionType type, Game game, City city) {
+		this(type, game, city, null, null, 0);
+	}
+
+	/**
+	 * @return The basic information of pathogen as JSON formated string matching
+	 *         the format of the GI client.
+	 */
+	public String toString() {
+		
+		switch (this.getType()) {
 		case endRound:
 			return "{\"type\": \"endRound\"}";
 
@@ -77,10 +129,11 @@ public class Action{
 		case closeConnection:
 			return String.format(
 					"{\"type\": \"closeConnection\", \"fromCity\":\"%s\", \"toCity\": \"%s\", \"rounds\": %d}",
-					this.getCity().getName(), this.getToCity().getName(), this.getRounds());
+					this.getCity().getName(), this.getCityTo().getName(), this.getRounds());
 
 		case developMedication:
-			return String.format("{\"type\": \"developMedication\", \"pathogen\":\"%s\"}", this.getPathogen().getName());
+			return String.format("{\"type\": \"developMedication\", \"pathogen\":\"%s\"}",
+					this.getPathogen().getName());
 
 		case deployMedication:
 			return String.format("{\"type\": \"deployMedication\", \"pathogen\":\"%s\", \"city\": \"%s\"}",
@@ -106,34 +159,55 @@ public class Action{
 			return String.format("{\"type\": \"callElections\", \"city\": \"%s\"}", this.getCity().getName());
 
 		}
+		
 		return null;
 	}
-	
 
+	/** 
+	 * @return  The game for which the action will be used.
+	 */
 	public Game getGame() {
 		return game;
 	}
 
-	public int getScore () {
+	/**
+	 * @return The score for this action in the action's game calculated by the heuristic.
+	 */
+	public int getScore() {
 		return this.score;
 	}
 
+	/**
+	 * @return The type of this action.
+	 */
 	public ActionType getType() {
 		return type;
 	}
 
+	/**
+	 * @return The city in which the action will be used.
+	 */
 	public City getCity() {
 		return city;
 	}
 
-	public City getToCity() {
-		return toCity;
+	/**
+	 * @return Only necessary for close connection events.
+	 */
+	public City getCityTo() {
+		return cityTo;
 	}
 
+	/**
+	 * @return The pathogen for which will be used.
+	 */
 	public Pathogen getPathogen() {
 		return pathogen;
 	}
 
+	/**
+	 * @return The amount of rounds this action will be active.
+	 */
 	public int getRounds() {
 		return rounds;
 	}
