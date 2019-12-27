@@ -11,7 +11,7 @@ import com.sun.net.httpserver.HttpServer;
 import app.App;
 import app.game.Game;
 import app.solver.GameEvaluater;
-import app.solver.Main;
+import app.solver.Solver;
 import javafx.application.Platform;
 
 public class GameServer {
@@ -28,7 +28,7 @@ public class GameServer {
 			System.err.println("Blocking deque Lock was executed!");
 			GameServer.addReply(GameServer.LOCK);
 
-			return Main.solve(currentGame);
+			return Solver.solve(currentGame);
 		}
 	};
 
@@ -65,7 +65,7 @@ public class GameServer {
 		GameEvaluater eval = null;
 		synchronized (GameServer.class) {
 			if (hasReplies() && peekReply() == LOCK) {	
-				eval = (Game g) -> Main.solve(g);
+				eval = (Game g) -> Solver.solve(g);
 			} else if (hasReplies()) {
 				eval = getReply();
 			} else if (App.guiController != null && App.guiController.ready()) {
@@ -75,11 +75,11 @@ public class GameServer {
 				addReply(LOCK);
 
 				Platform.runLater(() -> {
-					App.guiController.executeAction(Main.solve(ge.getGame()));
+					App.guiController.executeAction(Solver.solve(ge.getGame()));
 					App.guiController.close();
 				});
 
-				eval = (Game g) -> Main.solve(g);
+				eval = (Game g) -> Solver.solve(g);
 			}
 		}
 

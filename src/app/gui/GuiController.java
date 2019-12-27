@@ -14,7 +14,7 @@ import app.game.actions.ActionType;
 import app.http.GameExchange;
 import app.http.GameServer;
 import app.io.FileHandler;
-import app.solver.Main;
+import app.solver.Solver;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -362,7 +362,7 @@ public class GuiController {
 
 		// Add actions into action queue
 		for (int i = 0; i < amount; i++) {
-			GameServer.addReply((Game g) -> Main.solve(g));
+			GameServer.addReply((Game g) -> Solver.solve(g));
 		}
 
 		// Execute first action
