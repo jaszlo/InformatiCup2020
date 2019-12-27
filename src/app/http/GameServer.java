@@ -124,8 +124,11 @@ public class GameServer {
 				eval = (Game g) -> Solver.solve(g);
 			}
 		}
-
-		ge.sendReply(eval.evaluate(ge.getGame()));
+		
+		// Only send a reply if the GUI was not selected
+		if (eval != null) {
+			ge.sendReply(eval.evaluate(ge.getGame()));
+		}
 	}
 
 	/**

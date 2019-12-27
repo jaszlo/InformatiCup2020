@@ -26,10 +26,13 @@ public class FileHandler {
 	 *         folder, otherwise null is returned.
 	 */
 	public static File getFileFromResources(String path) {
+
 		ClassLoader classLoader = FileHandler.class.getClassLoader();
 		URL resource = classLoader.getResource(path);
+
 		if (resource == null) {
 			return null;
+
 		} else {
 			return new File(resource.getFile());
 		}
@@ -45,17 +48,15 @@ public class FileHandler {
 	 *             determined by the iterator of the collection.
 	 */
 	public static void writeFile(File file, Collection<String> text) {
-		// check if file exists
-		if (file == null || !file.exists())
+
+		// Check if file exists
+		if (file == null || !file.exists()) {
 			return;
+		}
 
-		FileWriter writeFile = null;
-		BufferedWriter writer = null;
-		try {
-			writeFile = new FileWriter(file);
-			writer = new BufferedWriter(writeFile);
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
 
-			// write text line by line into file
+			// Write text line by line into file
 			for (String s : text) {
 				writer.write(s);
 				writer.newLine();
@@ -63,13 +64,6 @@ public class FileHandler {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				if (writer != null) {
-					writer.close();
-				}
-			} catch (Exception e) {
-			}
 		}
 	}
 
@@ -78,14 +72,19 @@ public class FileHandler {
 	}
 
 	public static void writeFile(File file, WritableImage image) {
-		if (file == null)
+
+		if (file == null) {
 			return;
+		}
 
 		try {
-			if (!file.exists())
+			if (!file.exists()) {
 				file.createNewFile();
+			}
+
 			BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
 			ImageIO.write(bufferedImage, "png", file);
+
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -105,26 +104,20 @@ public class FileHandler {
 	 *         in the list, etc.
 	 */
 	public static ArrayList<String> readFile(File file) {
-		// check if file exists
-		if (file == null || !file.exists())
+
+		// Check if file exists
+		if (file == null || !file.exists()) {
 			return null;
+		}
 
 		ArrayList<String> content = new ArrayList<>();
 
-		BufferedReader reader = null;
-		try {
-			reader = new BufferedReader(new FileReader(file));
-			// read lines and store them into content
+		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+			// Read lines and store them into content
 			content = reader.lines().collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				if (reader != null)
-					reader.close();
-			} catch (Exception x) {
-				x.printStackTrace();
-			}
 		}
 
 		return content;
