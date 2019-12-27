@@ -544,10 +544,8 @@ public class Game {
 		}
 
 		// Check if a pathogen is no longer active by checking if it has been there for
-		// over 10 rounds and has not infected more than 10% of all citie's population
-		// on average or has not infected more than 10 cities. Or no city is infected by
-		// the pathogen at all.
-		// This is to guess stateless that a pathogen is old and no longer a threat.
+		// over 10 rounds and has not infected more than 10% of all the infected cities population on average. 
+		// This is to guess stateless that a pathogen is old and no longer a threat in order to safe points
 		boolean isOld = this.getRound() - encounter.get().getRound() >= 10;
 		boolean hasLessAverage = this.getOutbreakEvents().stream().filter(e -> e.getPathogen() == pathogen)
 				.mapToDouble(e -> e.getPrevalence()).average().orElseGet(() -> 0) <= 0.10;
