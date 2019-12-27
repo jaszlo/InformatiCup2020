@@ -14,7 +14,7 @@ public class Event {
 
 	private final int roundUntil, round;
 
-	private final double magnitude; // not be confused with magnetism
+	private final double magnitude;
 
 	private final Pathogen pathogen;
 

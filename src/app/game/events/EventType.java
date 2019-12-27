@@ -20,6 +20,9 @@ public enum EventType {
 				|| this == influenceExerted || this == vaccineDeployed;
 	}
 
+	/**
+	 * @return Whether the event can occur more than once in one city.
+	 */
 	public boolean isMultipleEventType() {
 		return this == vaccineDeployed || this == medicationDeployed || this == connectionClosed;
 	}

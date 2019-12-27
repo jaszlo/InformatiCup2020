@@ -28,40 +28,44 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
+/**
+ *	Controller class for the GUI.
+ */
 public class GuiController {
 
-	@FXML // All Buttons in the GUI
+	@FXML /// All Buttons in the GUI
 	private Button quitB, endRoundB, putUnderQuarantineB, closeAirportB, closeConnectionB, developVaccineB,
 			deployVaccineB, developMedicationB, deployMedicationB, applyHygienicMeasuresB, exertInfluenceB,
 			callElectionsB, launchCampaignB, medicateBiggestCitiesB, vaccinateBiggestCitiesB, autoTurnB;
 
-	@FXML // Input fields
+	@FXML /// Input fields
 	private TextField roundsT, amountT;
 	@FXML
 	private ChoiceBox<String> pathogenesCB, citiesToCB, showDistinctCityCB;
 	@FXML
 	private ComboBox<String> citiesCB;
 
-	@FXML // CityInfo
+	@FXML /// CityInfo
 	private Text population, economy, goverment, awareness, hygiene, events;
-	@FXML // PathogenInfo
+	@FXML /// PathogenInfo
 	private Text infectivity, mobility, duration, lethality, prevalance;
-	@FXML // OtherInfo
+	@FXML /// OtherInfo
 	private Text currentRound, currentPoints, lastAction;
 
-	@FXML // Draw elements
+	@FXML /// Draw elements
 	private Canvas currentMap;
 
-	@FXML // Checking what to draw
+	@FXML /// Checking what to draw
 	private CheckBox connectionBox, populationBox, infectedBox, cityNamesBox;
 
-	// Backend components of the GUI
+	/// Backend components of the GUI
 	private String lastActionString;
 	private GameExchange currentGameExchange;
 	private Game currentGame;
 
-	// Constructor
+	/**
+	 * 	Creates the controller for the GUI. The map draws an "empty" game state.
+	 */
 	public GuiController() {
 
 		String json = FileHandler.readFile("resources/EmptyGame.json").stream()
@@ -70,12 +74,18 @@ public class GuiController {
 		this.currentGame = new Game(json);
 	}
 
+	/**
+	 * Initializes the controller for the GUI by calling the update method.
+	 */
 	public void initialize() {
 
 		// Update and draw
 		this.update();
 	}
 
+	/**
+	 * Updates the GUI. That means drawing the map and updating displayed information.
+	 */
 	public void update() {
 
 		// Set the last Action in the Text to the static String where it was saved.
@@ -100,9 +110,8 @@ public class GuiController {
 	}
 
 	/**
-	 * Update method for the choiceBoxes. It will completly empty the choicebox.
-	 * Afterwards the choicebox is refilled with valid city and pathogennames
-	 *
+	 * Update method for the choice boxes. It will completely empty the choice boxes.
+	 * Afterwards the choice boxes are refilled with valid city and pathogen names
 	 */
 	private void updateChoiceBox() {
 
@@ -118,9 +127,17 @@ public class GuiController {
 						ObservableList<String>::addAll);
 
 		// Add "no pathogen" as choice
-		allPathogens.add(0, null);
+		allPathogens.add(0, "None");
 		if (!this.pathogenesCB.getItems().equals(allPathogens)) {
+			String current = this.pathogenesCB.getValue();
 			this.pathogenesCB.setItems(allPathogens);
+			
+			if (!this.pathogenesCB.getItems().contains(current)) {
+				this.pathogenesCB.setValue("None");
+				
+			} else {
+				this.pathogenesCB.setValue(current);
+			}
 		}
 
 		// Add all cities to the cities ChoiceBox
@@ -128,10 +145,18 @@ public class GuiController {
 				.collect(FXCollections::<String>observableArrayList, ObservableList<String>::add,
 						ObservableList<String>::addAll);
 		// Add no city as choice
-		allCities.add(0, null);
+		allCities.add(0, "None");
 		// Update ChoiceBox if changed in a new thread to boost performance
 		if (!this.citiesCB.getItems().equals(allCities)) {
+			String current = this.citiesCB.getValue();
 			this.citiesCB.setItems(allCities);
+			
+			if (!this.citiesCB.getItems().contains(current)) {
+				this.citiesCB.setValue("None");
+				
+			} else {
+				this.citiesCB.setValue(current);
+			}
 		}
 
 		// Show only connections of selected city in city to ChoiceBox
@@ -142,10 +167,19 @@ public class GuiController {
 				FXCollections::<String>observableArrayList, ObservableList<String>::add,
 				ObservableList<String>::addAll);
 		// Add no city as choice
-		citiesTo.add(0, null);
+		citiesTo.add(0, "None");
 		// Update ChoiceBox if changed
 		if (!this.citiesToCB.getItems().equals(citiesTo)) {
+			String current = this.citiesCB.getValue();
 			this.citiesToCB.setItems(citiesTo);
+			
+			if (!this.citiesToCB.getItems().contains(current)) {
+				this.citiesToCB.setValue("None");
+				
+			} else {
+				this.citiesToCB.setValue(current);
+			}
+			
 		}
 	}
 
