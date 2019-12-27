@@ -11,8 +11,7 @@ import app.game.actions.ActionType;
 import app.http.GameExchange;
 import app.http.GameServer;
 import app.io.FileHandler;
-import app.solver.Solver;
-
+import app.solver.ActionHeuristic;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -394,7 +393,7 @@ public class GuiController {
 
 		// Add actions into action queue
 		for (int i = 0; i < amount; i++) {
-			GameServer.addReply((Game g) -> Solver.solve(g));
+			GameServer.addReply((Game g) -> ActionHeuristic.solve(g));
 		}
 
 		// Execute first action

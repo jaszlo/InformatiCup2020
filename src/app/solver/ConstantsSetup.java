@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import app.io.FileHandler;
-
+/**
+ * Getting constants that are used in the heuristic from an external file.
+ */
 public class ConstantsSetup {
 
 	public static final String CONSTANTS_PATH = "resources/constants.txt";

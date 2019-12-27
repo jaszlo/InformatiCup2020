@@ -15,7 +15,9 @@ import javax.imageio.ImageIO;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.WritableImage;
-
+/**
+ * A handler that can write or read files.
+ */
 public class FileHandler {
 
 	/**

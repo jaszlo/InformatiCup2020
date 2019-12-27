@@ -8,7 +8,12 @@ import app.game.Game;
 import app.game.Pathogen;
 import app.game.Scale;
 import app.game.actions.Action;
+import app.game.actions.ActionControl;
 
+/**
+ * Evaluator class that can evaluate a given action within the context of the
+ * current game state.
+ */
 public class ActionHeuristic {
 
 	private static HashMap<String, Double> constants = null;
@@ -344,6 +349,23 @@ public class ActionHeuristic {
 			break;
 		}
 		return score;
+	}
+
+	/**
+	 * Calculates the best possible action found by this heuristic and returns the
+	 * action in a string format compatible with the GI client.
+	 * 
+	 * @param game The game that the best action will be calculated for.
+	 * @return The best found action as a string for the GI client.
+	 */
+	public static String solve(Game game) {
+
+		// Generate all possible action and stream them. Get the score for every action
+		// and set it in the action. Afterwards the action with the highest score will
+		// be executed.
+		return ActionControl.generatePossibleActions(game).parallelStream()
+				.filter(a -> a.getType().getCosts(a.getRounds()) <= game.getPoints())
+				.max((Action a, Action b) -> a.getScore() - b.getScore()).orElse(new Action(game)).toString();
 	}
 
 }

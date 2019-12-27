@@ -11,8 +11,8 @@ import com.sun.net.httpserver.HttpServer;
 
 import app.App;
 import app.game.Game;
+import app.solver.ActionHeuristic;
 import app.solver.GameEvaluator;
-import app.solver.Solver;
 import javafx.application.Platform;
 
 /**
@@ -37,7 +37,7 @@ public class GameServer {
 			System.err.println("Blocking deque LOCK was executed!");
 			GameServer.addReply(GameServer.LOCK);
 
-			return Solver.solve(currentGame);
+			return ActionHeuristic.solve(currentGame);
 		}
 	};
 
@@ -100,7 +100,7 @@ public class GameServer {
 		synchronized (GameServer.class) {
 			// (3)
 			if (hasReplies() && peekReply() == LOCK) {
-				eval = (Game g) -> Solver.solve(g);
+				eval = (Game g) -> ActionHeuristic.solve(g);
 
 				// (2)
 			} else if (hasReplies()) {
@@ -116,12 +116,12 @@ public class GameServer {
 				addReply(LOCK);
 
 				Platform.runLater(() -> {
-					App.guiController.executeAction(Solver.solve(ge.getGame()));
+					App.guiController.executeAction(ActionHeuristic.solve(ge.getGame()));
 					App.guiController.close();
 				});
 
 				// Set heuristic as game evaluator
-				eval = (Game g) -> Solver.solve(g);
+				eval = (Game g) -> ActionHeuristic.solve(g);
 			}
 		}
 		
