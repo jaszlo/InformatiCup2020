@@ -795,8 +795,8 @@ public class GuiController {
 		Pathogen selectedPathogen = this.getSelectedPathogen();
 
 		// Iterate over all cities find the one we want to print and print those
-		cities.stream().filter(c -> !this.showDistinctCityCB.getValue().equals("Healthy") || !c.isInfected())
-				.filter(c -> !this.showDistinctCityCB.getValue().equals("Infected")
+		cities.stream().filter(c -> !this.showDistinctCityCB.getValue().contains("Healthy") || !c.isInfected())
+				.filter(c -> !this.showDistinctCityCB.getValue().contains("Infected")
 						|| c.isInfected(selectedPathogen) && selectedPathogen != null
 						|| selectedPathogen == null && c.isInfected())
 				.filter(c -> selectedCity == null || selectedCity == c
