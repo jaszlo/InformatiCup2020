@@ -36,7 +36,7 @@ if(args.aws):
 
 
 # Set seeds
-SEEDS = list(range(args.range[0], args.range[1]))
+SEEDS = list(range(args.range[0], args.range[1] + 1))
 
 # Parse seeds out of seeds file
 if(args.file):
