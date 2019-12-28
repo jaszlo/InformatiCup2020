@@ -1,21 +1,23 @@
-GUI TODOS:
-
-- GUI tooltips
-- GUI output (error und was macht es)
-- Canvas class für GUI (resizeable)?
-
-=============================================================
 
 
-HEURISTIC:
+______________ALLGEMEIN______________
 
-- doDev Funktion (if pathogen.duration == --) return false AUßER ES IST DAS EINZIG AKTIVE PATHOGEN HINZUFÜGEN
-- PrevalanceThreshhold Konsistent implementieren (nicht einmal in dodevMed und einmal in devvaceval)
+->  Statt Nullobjekten Sigeltons (bei z.B. HashSets)                            | OPTIONAL
+->  Skript für Konstantenoptimierung schreiben                                  | OPTIONA
+->  Laufzeit optimieren                                                         | OPTIONAL
+->  JavaDoc vervollständiger (letzten Getter schreiben und Korrektur lesen)     | REQUIRED
+->  Dokumentation                                                               | REQUIRED 
 
-============================================================
+_____________HEUERISTIK______________
 
+->  Nothing left to do. Außer ihr habt noch Idee.
 
-DOKU:
-
-- CONSTANTS einbauen / erklären
-- 
+________________GUI__________________
+(nach persönlicher Priorität sortiert)
+->  Tooltip vervollständigen                                                    | REQUIRED
+->  GUI schließen per WindowManger soll auch Server beenden.                    | OPTIONAL BUT IMPORTANT
+->  GUI output (error und was macht es)                                         | OPTIONAL BUT IMPORTANT
+->  (evt.) ComboBox (Suchen ermöglichen)                                        | OPTIONAL (wäre halt schön)
+->  (evt.) Resizeable Canvas und als eigene Klasse                              | OPTIONAL (wäre halt schön)
+->  Wenn obige Punkt erfüllt ist Zoomalbe Canvas                                | OPTIONAL (wäre halt schön)
+->  BrowserGUI fertigstellen oder entfernen.                                    | REQUIRED 
