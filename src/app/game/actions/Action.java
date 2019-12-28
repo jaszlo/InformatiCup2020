@@ -88,7 +88,6 @@ public class Action {
 	/**
 	 * Creates a close connection action.
 	 * 
-	 * @param type   The type of this action.
 	 * @param game   The game for which the action will be used.
 	 * @param city   The city in which the action will be used.
 	 * @param toCity Only necessary for close connection events.

@@ -1,6 +1,5 @@
 package app.game.events;
 
-
 import app.game.City;
 import app.game.Pathogen;
 
@@ -126,11 +125,11 @@ public class Event {
 	/**
 	 * Creates an outbreak event.
 	 * 
-	 * @param round     The round in which the event occurred or since it has been
-	 *                  active.
-	 * @param pathogen  The pathogen of the event.
-	 * @param city     The city of the event.
-	 * @param magnitude Prevalence or participants of an event.
+	 * @param round      The round in which the event occurred or since it has been
+	 *                   active.
+	 * @param pathogen   The pathogen of the event.
+	 * @param city       The city of the event.
+	 * @param prevalence Prevalence the event.
 	 */
 	public Event(int round, Pathogen pathogen, City city, double prevalence) {
 		this(EventType.outbreak, round, 0, pathogen, city, null, prevalence);
@@ -139,10 +138,10 @@ public class Event {
 	/**
 	 * Creates an uprising event.
 	 * 
-	 * @param round     The round in which the event occurred or since it has been
-	 *                  active.
-	 * @param city      The city of the event.
-	 * @param magnitude Prevalence or participants of an event.
+	 * @param round       The round in which the event occurred or since it has been
+	 *                    active.
+	 * @param city        The city of the event.
+	 * @param paricipants participants of the event.
 	 */
 	public Event(int round, City city, double participants) {
 		this(EventType.uprising, round, 0, null, city, null, participants);
@@ -198,7 +197,7 @@ public class Event {
 		return this.roundUntil;
 	}
 
-	/** 
+	/**
 	 * @return The prevalence of the event.
 	 */
 	public double getPrevalence() {
@@ -211,5 +210,5 @@ public class Event {
 	public double getParticipants() {
 		return this.magnitude;
 	}
-	
+
 }
