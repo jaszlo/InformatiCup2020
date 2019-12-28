@@ -116,21 +116,7 @@ public class ActionHeuristic {
 		}
 
 		// If a pathogen is not expanding fast, medication should not be developed.
-		// Unless it already has infected enough (see the
-		// DEV_MEDICATION_PREVALANCEvent)
-		if (score <= constants.get("DEV_MEDICATION_THRESHOLD")) {
-			double totalPopulation = game.getPopulation();
-			double infectedPopulation = game.getCities().stream().filter(c -> c.isInfected(pathogen))
-					.mapToDouble(c -> c.getPrevalance() * c.getPopulation()).sum();
-
-			double globalPrevalance = infectedPopulation / totalPopulation;
-			if (globalPrevalance <= constants.get("DEV_MEDICATION_PREVALENCE_THRESHOLD")) {
-				return false;
-			}
-		}
-
-		// Medication should not be available already or in development
-		return true;
+		return score <= constants.get("DEV_MEDICATION_THRESHOLD"); 
 	}
 
 	public static double getScore(Set<Action> actions) {
@@ -292,6 +278,18 @@ public class ActionHeuristic {
 			if (doDevMedication(pathogen, game)) {
 				score += (constants.get("DEV_MEDICATION_FACTOR") * pathogen.getLethality().getNumericRepresentation());
 			}
+			
+			// Unless it already has infected enough (see the
+			// DEV_MEDICATION_PREVALANCEvent)
+			totalPopulation = game.getPopulation();
+			infectedPopulation = game.getCities().stream().filter(c -> c.isInfected(pathogen))
+					.mapToDouble(c -> c.getPrevalance() * c.getPopulation()).sum();
+
+			globalPrevalance = infectedPopulation / totalPopulation;
+			if (globalPrevalance <= constants.get("DEV_MEDICATION_PREVALENCE_THRESHOLD")) {
+				break;
+			}
+			
 			break;
 
 		case deployMedication:
