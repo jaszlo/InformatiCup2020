@@ -39,3 +39,6 @@ remember.txt
 
 #javadoc
 /javadoc
+
+#maven compiled folder
+/target
