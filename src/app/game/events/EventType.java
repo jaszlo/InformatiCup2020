@@ -10,8 +10,11 @@ public enum EventType {
 	vaccineInDevelopment, campaignLaunched, electionsCalled, hygienicMeasuresApplied, influenceExerted;
 
 	/**
-	 * @return whether this EventType is City specific, i.e in the event-list of a
-	 *         City
+	 * Returns whether this EventType is city specific, i.e in the event-list of a
+	 * city.
+	 * 
+	 * @return Whether this EventType is city specific, i.e in the event-list of a
+	 *         city.
 	 */
 	public boolean containedByCity() {
 		return this == airportClosed || this == antiVaccinationism || this == bioTerrorism || this == connectionClosed
@@ -21,6 +24,8 @@ public enum EventType {
 	}
 
 	/**
+	 * Returns whether the event can occur more than once in one city.
+	 * 
 	 * @return Whether the event can occur more than once in one city.
 	 */
 	public boolean isMultipleEventType() {
