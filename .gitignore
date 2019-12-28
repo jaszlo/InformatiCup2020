@@ -42,3 +42,4 @@ remember.txt
 
 #maven compiled folder
 /target
+/src/target
