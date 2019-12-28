@@ -15,7 +15,6 @@ import app.game.Pathogen;
  */
 public class City {
 
-	public static final Set<City> EMPTY_CITY_SET = Collections.<City>emptySet();
 	private final String name;
 
 	private final double x, y;
