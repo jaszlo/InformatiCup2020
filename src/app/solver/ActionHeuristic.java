@@ -86,8 +86,8 @@ public class ActionHeuristic {
 			return false;
 		}
 
-		// If a pathogen expands fast vaccines should not be developed.
-		return score <= constants.get("DEV_VACCINE_THRESHOLD");
+		// If a pathogen expands slowly, vaccines should be developed.
+		return score <= constants.get("MAX_SLOW_PRODUCT");
 	}
 
 	/**
@@ -115,8 +115,8 @@ public class ActionHeuristic {
 			return false;
 		}
 
-		// If a pathogen is not expanding fast, medication should not be developed.
-		return score <= constants.get("DEV_MEDICATION_THRESHOLD"); 
+		// If a pathogen expands fast, medication should be developed.
+		return score >= constants.get("MIN_FAST_PRODUCT"); 
 	}
 
 	public static double getScore(Set<Action> actions) {

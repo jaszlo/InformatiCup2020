@@ -1,4 +1,4 @@
-ls# Compiled class file
+# Compiled class file
 *.class
 
 # Log file
@@ -39,6 +39,7 @@ remember.txt
 
 #javadoc
 /javadoc
+/docs
 
 #maven compiled folder
 /target
