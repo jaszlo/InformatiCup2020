@@ -11,6 +11,7 @@ HEURISTIC:
 
 - isOnlyActivePathogen(Pathogen pathogen) hinzufügen
 - doDev Funktion (if pathogen.duration == --) return false AUßER ES IST DAS EINZIG AKTIVE PATHOGEN HINZUFÜGEN
+- PrevalanceThreshhold Konsistent implementieren (nicht einmal in dodevMed und einmal in devvaceval)
 
 ============================================================
 
