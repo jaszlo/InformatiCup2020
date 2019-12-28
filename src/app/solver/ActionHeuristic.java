@@ -1,7 +1,8 @@
 package app.solver;
 
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import app.game.City;
 import app.game.Game;
@@ -16,7 +17,7 @@ import app.game.actions.ActionControl;
  */
 public class ActionHeuristic {
 
-	private static HashMap<String, Double> constants = null;
+	private static Map<String, Double> constants = null;
 
 	static {
 		ActionHeuristic.constants = new HashMap<>();
@@ -29,7 +30,7 @@ public class ActionHeuristic {
 	 */
 	public static void updateConstants() {
 
-		HashMap<String, Double> constantsOfFile = ConstantsSetup.getConstants(ConstantsSetup.CONSTANTS_PATH);
+		Map<String, Double> constantsOfFile = ConstantsSetup.getConstants(ConstantsSetup.CONSTANTS_PATH);
 
 		if (constantsOfFile == null) {
 			System.out.println("Konstanten konnten nicht geladen werden.");
@@ -119,7 +120,7 @@ public class ActionHeuristic {
 		// DEV_MEDICATION_PREVALANCEvent)
 		if (score <= constants.get("DEV_MEDICATION_THRESHOLD")) {
 			double totalPopulation = game.getPopulation();
-			double infectedPopulation = game.getCities().values().stream().filter(c -> c.isInfected(pathogen))
+			double infectedPopulation = game.getCities().stream().filter(c -> c.isInfected(pathogen))
 					.mapToDouble(c -> c.getPrevalance() * c.getPopulation()).sum();
 
 			double globalPrevalance = infectedPopulation / totalPopulation;
@@ -132,18 +133,14 @@ public class ActionHeuristic {
 		return true;
 	}
 
-	public static int getValue(HashSet<Action> actions) {
-
-		int sum = 0;
-		for (Action a : actions)
-			sum += getValue(a);
-		return sum;
+	public static double getScore(Set<Action> actions) {
+		return actions.stream().mapToDouble(a -> a.getScore()).sum();
 	}
 
-	public static int getValue(Action action) {
+	public static double getScore(Action action) {
 
 		// Get all values that will be required multiple times during the evaluation
-		int score = 0;
+		double score = 0;
 		City city = action.getCity();
 		Game game = action.getGame();
 		Pathogen pathogen = action.getPathogen();
@@ -221,7 +218,7 @@ public class ActionHeuristic {
 
 			// Check whether every city is infected and the quarantined pathogen can not
 			// spread any further. In this case there is no quarantine required.
-			if (game.getCities().values().stream().allMatch((City c) -> c.isInfected())) {
+			if (game.getCities().stream().allMatch((City c) -> c.isInfected())) {
 				break;
 			}
 
@@ -250,7 +247,7 @@ public class ActionHeuristic {
 			 * opposite of that condition is checked and if not met no vaccines will be
 			 * developed.
 			 */
-			if (!doDevVaccine(pathogen, game) && game.getCities().values().stream().filter(c -> !c.isInfected())
+			if (!doDevVaccine(pathogen, game) && game.getCities().stream().filter(c -> !c.isInfected())
 					.mapToDouble(c -> c.getPopulation()).sum() >= 0.1 * game.getPopulation()) {
 				break;
 			}
@@ -258,7 +255,7 @@ public class ActionHeuristic {
 			// Calculate the global prevalance. If everyone is already
 			// infected vaccines are not required.
 			double totalPopulation = game.getPopulation();
-			double infectedPopulation = game.getCities().values().stream().filter(c -> c.isInfected(pathogen))
+			double infectedPopulation = game.getCities().stream().filter(c -> c.isInfected(pathogen))
 					.mapToDouble(c -> c.getPrevalance() * c.getPopulation()).sum();
 
 			double globalPrevalance = infectedPopulation / totalPopulation;
@@ -365,7 +362,8 @@ public class ActionHeuristic {
 		// be executed.
 		return ActionControl.generatePossibleActions(game).parallelStream()
 				.filter(a -> a.getType().getCosts(a.getRounds()) <= game.getPoints())
-				.max((Action a, Action b) -> a.getScore() - b.getScore()).orElse(new Action(game)).toString();
+				.max((Action a, Action b) -> a.getScore() == b.getScore() ? 0 : a.getScore() > b.getScore() ? 1 : -1)
+				.orElse(new Action(game)).toString();
 	}
 
 }

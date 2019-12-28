@@ -18,7 +18,7 @@ public class ActionControl {
 	 */
 	public static Set<Action> generatePossibleActions(Game game) {
 		
-		Set<Action> allActions = new HashSet<Action>();
+		Set<Action> allActions = new HashSet<>();
 		allActions.add(new Action(game));
 		addQuarantineActions(game, allActions);
 		addCloseConnectionsActions(game, allActions);
@@ -38,7 +38,7 @@ public class ActionControl {
 	 * @param actions Actions set to add to.
 	 */
 	private static void addRerollActions(Game game, Set<Action> actions) {
-		for (City city : game.getCities().values()) {
+		for (City city : game.getCities()) {
 			if (game.getPoints() >= ActionType.exertInfluence.getCosts(1)) {
 				Action influence = new Action(ActionType.exertInfluence, game, city);
 				actions.add(influence);
@@ -69,7 +69,7 @@ public class ActionControl {
 	 */
 	private static void addQuarantineActions(Game game, Set<Action> actions) {
 		
-		for (City city : game.getCities().values()) {
+		for (City city : game.getCities()) {
 			if (city.getQuarantine() == null) {
 				for (int rounds = 1; game.getPoints() >= ActionType.putUnderQuarantine.getCosts(rounds); rounds++) {
 					Action a = new Action(ActionType.putUnderQuarantine, game, city, rounds);
@@ -88,7 +88,7 @@ public class ActionControl {
 	private static void addDeployVaccActions(Game game, Set<Action> actions) {
 		
 		for (Event e : game.getVaccAvailableEvents()) {
-			for (City city : game.getCities().values()) {
+			for (City city : game.getCities()) {
 				// Filter out cities that have been vaccinated already
 				if (city.getVaccineDeployed().stream().allMatch(vd -> vd.getPathogen() != e.getPathogen())) {
 					Action a = new Action(ActionType.deployVaccine, game, city, e.getPathogen());
@@ -168,7 +168,7 @@ public class ActionControl {
 	 */
 	private static void addCloseAirportActions(Game game, Set<Action> actions) {
 		
-		for (City city : game.getCities().values()) {
+		for (City city : game.getCities()) {
 			if (city.getAirportClosed() == null) {
 				for (int rounds = 1; game.getPoints() >= ActionType.closeAirport.getCosts(rounds); rounds++) {
 					Action a = new Action(ActionType.closeAirport, game, city, rounds);
@@ -186,7 +186,7 @@ public class ActionControl {
 	 */
 	private static void addCloseConnectionsActions(Game game, Set<Action> actions) {
 		
-		for (City city : game.getCities().values()) {
+		for (City city : game.getCities()) {
 			for (City to : city.getConnections()) {
 				if (city.getConnectionClosed().stream().allMatch(e -> e.getCityTo() != city)) {
 					for (int rounds = 1; game.getPoints() >= ActionType.closeConnection.getCosts(rounds); rounds++) {

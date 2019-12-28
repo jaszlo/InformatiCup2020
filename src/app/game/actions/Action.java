@@ -18,7 +18,7 @@ public class Action {
 	private final int rounds;
 
 	/// Heueristic parameter score
-	private final int score;
+	private final double score;
 
 	/**
 	 * Creates a generic action.
@@ -38,7 +38,7 @@ public class Action {
 		this.cityTo = cityTo;
 		this.pathogen = pathogen;
 		this.rounds = rounds;
-		this.score = ActionHeuristic.getValue(this);
+		this.score = ActionHeuristic.getScore(this);
 	}
 
 	/**
@@ -176,7 +176,7 @@ public class Action {
 	 * @return The score for this action in the action's game calculated by the
 	 *         heuristic.
 	 */
-	public int getScore() {
+	public double getScore() {
 		return this.score;
 	}
 

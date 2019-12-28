@@ -3,6 +3,7 @@ package app.solver;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import app.io.FileHandler;
 /**
@@ -22,9 +23,9 @@ public class ConstantsSetup {
 	 *                         folder.
 	 * @return A map of constants that were parsed from a file.
 	 */
-	public static HashMap<String, Double> getConstants(String resourceFilename) {
+	public static Map<String, Double> getConstants(String resourceFilename) {
 
-		HashMap<String, Double> constants = new HashMap<String, Double>();
+		Map<String, Double> constants = new HashMap<String, Double>();
 		File constFile = FileHandler.getFileFromResources(resourceFilename);
 		ArrayList<String> constantsList = FileHandler.readFile(constFile);
 

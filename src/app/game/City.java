@@ -1,7 +1,11 @@
 package app.game;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import app.game.events.Event;
 import app.game.events.EventType;
 import app.game.Pathogen;
@@ -11,14 +15,14 @@ import app.game.Pathogen;
  */
 public class City {
 
-	public static final HashSet<City> EMPTY_CITY_SET = new HashSet<>();
+	public static final Set<City> EMPTY_CITY_SET = Collections.<City>emptySet();
 	private final String name;
 
 	private final double x, y;
 
-	private final HashSet<City> connections;
-	private final HashMap<EventType, Event> singleEvents;
-	private final HashMap<EventType, HashSet<? extends Event>> multipleEvents;
+	private final Set<City> connections;
+	private final Map<EventType, Event> singleEvents;
+	private final Map<EventType, Set<Event>> multipleEvents;
 
 	private int population;
 
@@ -39,7 +43,7 @@ public class City {
 	 * @param hygiene     Hygiene standards of city.
 	 * @param awareness   The awareness towards pathogens of the citizens.
 	 */
-	public City(String name, double x, double y, HashSet<City> connections, int population, Scale economy,
+	public City(String name, double x, double y, Set<City> connections, int population, Scale economy,
 			Scale government, Scale hygiene, Scale awareness) {
 
 		this.name = name;
@@ -80,7 +84,7 @@ public class City {
 	/**
 	 * @return Set of all cities this one is connected to.
 	 */
-	public HashSet<City> getConnections() {
+	public Set<City> getConnections() {
 		return connections;
 	}
 
@@ -159,14 +163,13 @@ public class City {
 	 * 
 	 * @param event Event that takes places in the city and should be added.
 	 */
-	@SuppressWarnings("unchecked")
 	public void addEvent(Event event) {
 
 		if (!event.getType().isMultipleEventType()) {
 			this.singleEvents.put(event.getType(), event);
-
+			
 		} else {
-			((HashSet<Event>) this.multipleEvents.get(event.getType())).add(event);
+			this.multipleEvents.get(event.getType()).add(event);
 		}
 	}
 
@@ -198,7 +201,7 @@ public class City {
 	 * @return Airport closed event. If the airport is not closed, null is returned.
 	 */
 	public Event getAirportClosed() {
-		return (Event) this.singleEvents.get(EventType.airportClosed);
+		return this.singleEvents.get(EventType.airportClosed);
 	}
 
 	/**
@@ -206,7 +209,7 @@ public class City {
 	 *         place in the city, null is returned.
 	 */
 	public Event getAntiVacc() {
-		return (Event) this.singleEvents.get(EventType.antiVaccinationism);
+		return this.singleEvents.get(EventType.antiVaccinationism);
 	}
 
 	/**
@@ -214,52 +217,49 @@ public class City {
 	 *         null is returned.
 	 */
 	public Event getBioTerror() {
-		return (Event) this.singleEvents.get(EventType.bioTerrorism);
+		return this.singleEvents.get(EventType.bioTerrorism);
 	}
 
 	/**
 	 * @return Set of all connections that are closed as connection closed events.
 	 */
-	@SuppressWarnings("unchecked")
-	public HashSet<Event>  getConnectionClosed() {
-		return (HashSet<Event> ) this.multipleEvents.get(EventType.connectionClosed);
+	public Set<Event>  getConnectionClosed() {
+		return this.multipleEvents.get(EventType.connectionClosed);
 	}
 
 	/**
 	 * @return Set of all medication that is deployed in the city.
 	 */
-	@SuppressWarnings("unchecked")
-	public HashSet<Event>  getMedicationDeployed() {
-		return (HashSet<Event> ) this.multipleEvents.get(EventType.medicationDeployed);
+	public Set<Event>  getMedicationDeployed() {
+		return this.multipleEvents.get(EventType.medicationDeployed);
 	}
 
 	/**
 	 * @return Outbreak event. If no outbreak is present in the city, null is returned.
 	 */
 	public Event getOutbreak() {
-		return (Event) this.singleEvents.get(EventType.outbreak);
+		return this.singleEvents.get(EventType.outbreak);
 	}
 
 	/**
 	 * @return Quarantine event. If city is not under quarantine, null is returned.
 	 */
 	public Event getQuarantine() {
-		return (Event) this.singleEvents.get(EventType.quarantine);
+		return this.singleEvents.get(EventType.quarantine);
 	}
 
 	/**
 	 * @return Uprising event. If no uprising takes place in the city, null is returned.
 	 */
 	public Event getUprising() {
-		return (Event) this.singleEvents.get(EventType.uprising);
+		return this.singleEvents.get(EventType.uprising);
 	}
 
 	/**
 	 * @return Set of all vaccines that were deployed in the city.
 	 */
-	@SuppressWarnings("unchecked")
-	public HashSet<Event>  getVaccineDeployed() {
-		return (HashSet<Event> ) this.multipleEvents.get(EventType.vaccineDeployed);
+	public Set<Event>  getVaccineDeployed() {
+		return this.multipleEvents.get(EventType.vaccineDeployed);
 	}
 
 	/**

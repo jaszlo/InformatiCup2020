@@ -4,7 +4,9 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -15,17 +17,18 @@ import app.game.events.Event;
 import app.game.events.EventType;
 
 /**
- * Class to represent the state of the game and stores all necessary information.
+ * Class to represent the state of the game and stores all necessary
+ * information.
  */
 public class Game {
 
 	/// General
-	private final HashMap<String, City> cities = new HashMap<String, City>();
-	private final HashMap<String, Pathogen> pathogenes = new HashMap<String, Pathogen>();
-	private final HashMap<EventType, HashSet<? extends Event>> events = new HashMap<>(); // Eventtypen nach Namen
+	private final Map<String, City> cities = new HashMap<>();
+	private final Map<String, Pathogen> pathogenes = new HashMap<>();
+	private final Map<EventType, Set<Event>> events = new HashMap<>(); // Events by type
 
 	/// A map with all pathogens we want to ignore in our heuristic
-	private HashMap<Pathogen, Boolean> ignoredPathogens = new HashMap<>();
+	private Map<Pathogen, Boolean> ignoredPathogens = new HashMap<>();
 
 	private int ecoCrisisStart = -1, panicStart = -1;
 
@@ -164,7 +167,7 @@ public class Game {
 		} else if (type.equals("connectionClosed")) {
 			int until = Integer.parseInt(event.get("untilRound").toString());
 			int since = Integer.parseInt(event.get("sinceRound").toString());
-			City to = getCities().get((String) event.get("city"));
+			City to = getCity((String) event.get("city"));
 			Event e = new Event(since, until, city, to);
 			addToGeneralEventMap(e);
 			city.addEvent(e);
@@ -226,8 +229,7 @@ public class Game {
 
 		for (EventType type : EventType.values()) {
 			if (!events.containsKey(type)) {
-				HashSet<Event> eventType = new HashSet<Event>();
-				events.put(type, eventType);
+				events.put(type, new HashSet<>());
 			}
 		}
 	}
@@ -235,18 +237,8 @@ public class Game {
 	/**
 	 * Helper method to put an event into the event map.
 	 */
-	@SuppressWarnings("unchecked")
 	private void addToGeneralEventMap(Event event) {
-
-		EventType type = event.getType();
-		if (events.containsKey(type)) {
-			((HashSet<Event>) events.get(type)).add(event);
-
-		} else {
-			HashSet<Event> eventType = new HashSet<Event>();
-			eventType.add(event);
-			events.put(type, eventType);
-		}
+		events.get(event.getType()).add(event);
 	}
 
 	/**
@@ -278,18 +270,18 @@ public class Game {
 				int pop = (int) ((long) city.get("population"));
 				totalPop += pop;
 
-				City c = new City(name, x, y, new HashSet<City>(), pop, economy, government, hygiene, awareness);
+				City c = new City(name, x, y, new HashSet<>(), pop, economy, government, hygiene, awareness);
 				this.cities.put(name, c);
 			}
 
 			// Parse city connections
 			for (Object o : cities.values()) {
 				JSONObject city = (JSONObject) o;
-				City source = getCities().get(city.get("name"));
+				City source = getCity((String) city.get("name"));
 				JSONArray arr = (JSONArray) city.get("connections");
 
 				for (Object connection : arr) {
-					City sink = getCities().get(connection);
+					City sink = getCity((String) connection);
 					source.getConnections().add(sink);
 				}
 
@@ -320,19 +312,19 @@ public class Game {
 	/**
 	 * //TODO java doc getters
 	 * 
-	 * @param cityName
+	 * @param name
 	 * @return the City with the given name.
 	 */
-	public City getCity(String cityName) {
-		return this.cities.get(cityName);
+	public City getCity(String name) {
+		return this.cities.get(name);
 	}
 
 	/**
 	 * 
 	 * @return A Map of Cities in the game. The Key is the unique name of the City.
 	 */
-	public HashMap<String, City> getCities() {
-		return cities;
+	public Collection<City> getCities() {
+		return cities.values();
 	}
 
 	/**
@@ -364,27 +356,24 @@ public class Game {
 	 * 
 	 * @return A Set of all anti-vaccionationism events
 	 */
-	@SuppressWarnings("unchecked")
-	public HashSet<Event> getAntiVaccEvents() {
-		return (HashSet<Event>) events.get(EventType.antiVaccinationism);
+	public Set<Event> getAntiVaccEvents() {
+		return events.get(EventType.antiVaccinationism);
 	}
 
 	/**
 	 * 
 	 * @return A Set of all the bio-terrorism taking place
 	 */
-	@SuppressWarnings("unchecked")
-	public HashSet<Event> getBioTerrorEvents() {
-		return (HashSet<Event>) events.get(EventType.bioTerrorism);
+	public Set<Event> getBioTerrorEvents() {
+		return events.get(EventType.bioTerrorism);
 	}
 
 	/**
 	 * 
 	 * @return A set of all pathogen-outbreaks
 	 */
-	@SuppressWarnings("unchecked")
-	public HashSet<Event> getOutbreakEvents() {
-		return (HashSet<Event>) events.get(EventType.outbreak);
+	public Set<Event> getOutbreakEvents() {
+		return events.get(EventType.outbreak);
 
 	}
 
@@ -392,72 +381,64 @@ public class Game {
 	 * 
 	 * @return The set of all uprisings taking place
 	 */
-	@SuppressWarnings("unchecked")
-	public HashSet<Event> getUprisingEvents() {
-		return (HashSet<Event>) events.get(EventType.uprising);
+	public Set<Event> getUprisingEvents() {
+		return events.get(EventType.uprising);
 	}
 
 	/**
 	 * 
 	 * @return A set of all the pathogens encountered
 	 */
-	@SuppressWarnings("unchecked")
-	public HashSet<Event> getPathEncounterEvents() {
-		return (HashSet<Event>) events.get(EventType.pathogenEncountered);
+	public Set<Event> getPathEncounterEvents() {
+		return events.get(EventType.pathogenEncountered);
 	}
 
 	/**
 	 * 
 	 * @return A set of all Quarantines
 	 */
-	@SuppressWarnings("unchecked")
-	public HashSet<Event> getQuarantineEvents() {
-		return (HashSet<Event>) events.get(EventType.quarantine);
+	public Set<Event> getQuarantineEvents() {
+		return events.get(EventType.quarantine);
 	}
 
 	/**
 	 * 
 	 * @return A set of all vaccines currently in development
 	 */
-	@SuppressWarnings("unchecked")
-	public HashSet<Event> getVaccDevEvents() {
-		return (HashSet<Event>) events.get(EventType.vaccineInDevelopment);
+	public Set<Event> getVaccDevEvents() {
+		return events.get(EventType.vaccineInDevelopment);
 	}
 
 	/**
 	 * 
 	 * @return A set of all available vaccines
 	 */
-	@SuppressWarnings("unchecked")
-	public HashSet<Event> getVaccAvailableEvents() {
-		return (HashSet<Event>) events.get(EventType.vaccineAvailable);
+	public Set<Event> getVaccAvailableEvents() {
+		return events.get(EventType.vaccineAvailable);
 	}
 
 	/**
 	 * 
 	 * @return A set of all medication currently in development
 	 */
-	@SuppressWarnings("unchecked")
-	public HashSet<Event> getMedDevEvents() {
-		return (HashSet<Event>) events.get(EventType.medicationInDevelopment);
+	public Set<Event> getMedDevEvents() {
+		return events.get(EventType.medicationInDevelopment);
 	}
 
 	/**
 	 * 
 	 * @return A set of all medication available.
 	 */
-	@SuppressWarnings("unchecked")
-	public HashSet<Event> getMedAvailableEvents() {
-		return (HashSet<Event>) events.get(EventType.medicationAvailable);
+	public Set<Event> getMedAvailableEvents() {
+		return events.get(EventType.medicationAvailable);
 	}
 
 	/**
 	 * 
 	 * @return A set of all connections closed.
 	 */
-	@SuppressWarnings("unchecked")
-	public HashSet<Event> getConnClosedEvents() {
-		return (HashSet<Event>) events.get(EventType.connectionClosed);
+	public Set<Event> getConnClosedEvents() {
+		return events.get(EventType.connectionClosed);
 
 	}
 
@@ -465,9 +446,8 @@ public class Game {
 	 * 
 	 * @return A set of all airports currently closed.
 	 */
-	@SuppressWarnings("unchecked")
-	public HashSet<Event> getAirportClosedEvents() {
-		return (HashSet<Event>) events.get(EventType.airportClosed);
+	public Set<Event> getAirportClosedEvents() {
+		return events.get(EventType.airportClosed);
 
 	}
 
@@ -475,18 +455,16 @@ public class Game {
 	 * 
 	 * @return A set of all cities a certain medication is being deployed in.
 	 */
-	@SuppressWarnings("unchecked")
-	public HashSet<Event> getMedDeployedEvents() {
-		return (HashSet<Event>) events.get(EventType.medicationDeployed);
+	public Set<Event> getMedDeployedEvents() {
+		return events.get(EventType.medicationDeployed);
 	}
 
 	/**
 	 * 
 	 * @return A set of all cities a certain vaccine is being deployed in.
 	 */
-	@SuppressWarnings("unchecked")
-	public HashSet<Event> getVaccDeployedEvents() {
-		return (HashSet<Event>) events.get(EventType.vaccineDeployed);
+	public Set<Event> getVaccDeployedEvents() {
+		return events.get(EventType.vaccineDeployed);
 	}
 
 	/**
@@ -561,8 +539,8 @@ public class Game {
 			return this.ignoredPathogens.get(pathogen);
 		}
 
-		Optional<Event> encounter = this.getPathEncounterEvents().stream()
-				.filter(e -> e.getPathogen() == pathogen).findAny();
+		Optional<Event> encounter = this.getPathEncounterEvents().stream().filter(e -> e.getPathogen() == pathogen)
+				.findAny();
 
 		// Ignore bio terror.
 		if (!encounter.isPresent()) {

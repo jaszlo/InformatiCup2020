@@ -140,7 +140,7 @@ public class GuiController {
 		}
 
 		// Add all cities to the cities ChoiceBox
-		ObservableList<String> allCities = currentGame.getCities().values().stream().map(c -> c.getName()).sorted()
+		ObservableList<String> allCities = currentGame.getCities().stream().map(c -> c.getName()).sorted()
 				.collect(FXCollections::<String>observableArrayList, ObservableList<String>::add,
 						ObservableList<String>::addAll);
 		// Add no city as choice
@@ -630,7 +630,7 @@ public class GuiController {
 
 				// Search the city with the most uninfected people to maximize the resulting
 				// immunity
-				City bestCity = g.getCities().values().stream() // Search all cities
+				City bestCity = g.getCities().stream() // Search all cities
 						.filter(c -> c.getVaccineDeployed().stream().allMatch(e -> e.getPathogen() != pathogen)) // Filter
 																													// cities
 																													// that
@@ -698,7 +698,7 @@ public class GuiController {
 
 				// Search the city with the most infected people to maximize the resulting
 				// healing
-				City bestCity = g.getCities().values().stream() // Search all cities
+				City bestCity = g.getCities().stream() // Search all cities
 						.filter(c -> c.isInfected(pathogen)) // Filter cities that are not infected by the
 																// pathogen
 						.max((City c1,
@@ -789,11 +789,11 @@ public class GuiController {
 		gc.clearRect(0, 0, this.currentMap.getWidth(), this.currentMap.getHeight());
 
 		// Get the selected city and the selected pathogen
-		Collection<City> cities = this.currentGame.getCities().values();
+		Collection<City> cities = this.currentGame.getCities();
 		City selectedCity = this.getSelectedCity();
 		Pathogen selectedPathogen = this.getSelectedPathogen();
 
-		// Iterate over all cities find the one we want to print and print those
+		// Stream all cities find the one we want to draw and draw those
 		cities.stream().filter(c -> !this.showDistinctCityCB.getValue().contains("Healthy") || !c.isInfected())
 				.filter(c -> !this.showDistinctCityCB.getValue().contains("Infected")
 						|| c.isInfected(selectedPathogen) && selectedPathogen != null
