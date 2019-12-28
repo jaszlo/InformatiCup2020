@@ -1,6 +1,7 @@
 package app.gui;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 import app.game.City;
@@ -160,7 +161,7 @@ public class GuiController {
 
 		// Show only connections of selected city in city to ChoiceBox
 		// If no city is selected clear choicebox
-		Collection<City> cities = this.getSelectedCity() == null ? City.EMPTY_CITY_SET
+		Collection<City> cities = this.getSelectedCity() == null ? Collections.<City>emptySet()
 				: this.getSelectedCity().getConnections();
 		ObservableList<String> citiesTo = cities.stream().map(c -> c.getName()).sorted().collect(
 				FXCollections::<String>observableArrayList, ObservableList<String>::add,
