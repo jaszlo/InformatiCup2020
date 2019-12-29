@@ -64,7 +64,7 @@ public class GuiController {
 	private static String outputString = "Waiting for game to start ...";
 	private GameExchange currentGameExchange;
 	private Game currentGame;
-
+	private boolean autoPlaying = false;
 	/**
 	 * Creates the controller for the GUI. The map draws an "empty" game state.
 	 */
@@ -101,6 +101,9 @@ public class GuiController {
 			this.currentRound.setText(this.currentGame.getRound() + "");
 			this.currentPoints.setText(this.currentGame.getPoints() + "");
 		}
+		
+		// Reset autoPlaying flag to default (false)
+		this.autoPlaying = false;
 
 		// Update the ChoiceBoxes items.
 		this.updateChoiceBox();
@@ -108,8 +111,9 @@ public class GuiController {
 		// Update the Info views
 		this.updateInfo();
 
-		// Draw Call for the MapCanvas
+		// Draw Call for the MapCanvas.
 		this.drawMap();
+	
 	}
 
 	/**
@@ -291,6 +295,15 @@ public class GuiController {
 	}
 
 	/**
+	 * Set a boolean that defines whether the GUI is in the auto-play mode or not
+	 * 
+	 * @param autoPlaying The boolean value that will be set. 
+	 */
+	public void setAutoPlaying (boolean autoPlaying) {
+		this.autoPlaying = autoPlaying;
+	}
+	
+	/**
 	 * Sets the output for the GUI to any String. This method will only update the
 	 * output and not the complete GUI.
 	 * 
@@ -298,10 +311,11 @@ public class GuiController {
 	 */
 	public void setOutput(String output) {
 		outputString = output;
-		this.output.setText(outputString);
+		if (!autoPlaying) {
+			this.output.setText(outputString);
+		}
 	}
-
-
+	
 	/**
 	 * Sets the Output text in the GUI to an executed action.
 	 * 
@@ -465,10 +479,7 @@ public class GuiController {
 
 		// Get amount
 		int amount = getAmount();
-
-		if (amount > 1) {
-			App.guiController.setOutput("Auto playing ...");
-		}
+			
 		// Add actions into action queue
 		for (int i = 0; i < amount; i++) {
 			GameServer.addReply((Game g) -> ActionHeuristic.solve(g));

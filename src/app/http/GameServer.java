@@ -103,6 +103,8 @@ public class GameServer {
 
 				// (2)
 			} else if (hasReplies()) {
+				App.guiController.setOutput("Auto playing ...");
+				App.guiController.setAutoPlaying(true);
 				eval = getReply();
 
 				// (1)
