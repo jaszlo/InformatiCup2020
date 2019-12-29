@@ -462,7 +462,11 @@ public class GuiController {
 
 		// Get amount
 		int amount = getAmount();
-
+		
+		if (amount > 1) {
+			App.guiController.setOutput("Auto playing ...");
+			this.update();
+		}
 		// Add actions into action queue
 		for (int i = 0; i < amount; i++) {
 			GameServer.addReply((Game g) -> ActionHeuristic.solve(g));
@@ -941,7 +945,7 @@ public class GuiController {
 			});
 		}
 
-		App.guiController.setOutput("Vaccinating the biggest cities...");
+		App.guiController.setOutput("Vaccinating the biggest cities ...");
 
 		// Execute the Action generated addReply methode above.
 		this.executeAction();
@@ -1003,7 +1007,7 @@ public class GuiController {
 			});
 		}
 
-		App.guiController.setOutput("Medicating the biggest cities...");
+		App.guiController.setOutput("Medicating the biggest cities ...");
 
 		// Execute the Action generated addReply methode above.
 		this.executeAction();

@@ -84,11 +84,11 @@ public class GameServer {
 		if (!outcome.equals("pending")) {
 			if (outcome.equals("win")) {
 				App.guiController.setOutput("Game over. You won.");
-				App.guiController.executeAction();
+			
 			} else {
 				App.guiController.setOutput("Game over. You lost.");
-				App.guiController.executeAction();
 			}
+			App.guiController.update();
 		}
 
 		GameEvaluator eval = null;
@@ -113,6 +113,7 @@ public class GameServer {
 				App.guiController.setGame(ge);
 				if (!inGame) {
 					App.guiController.setOutput("Game found. Start playing");
+					App.guiController.update();
 					inGame = true;
 				}
 
@@ -120,7 +121,6 @@ public class GameServer {
 			} else {
 				// Detected more than one game. CLose GUI and enable auto play.
 				addReply(LOCK);
-
 				Platform.runLater(() -> {
 					App.guiController.executeAction(ActionHeuristic.solve(ge.getGame()));
 					App.guiController.close();
