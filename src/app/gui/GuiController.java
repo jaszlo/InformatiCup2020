@@ -63,17 +63,18 @@ public class GuiController {
 	private CheckBox connectionBox, populationBox, infectedBox, cityNamesBox;
 
 	/// Backend components of the GUI
-	private static String outputString = "Waiting for game to start ...";
+	private String outputString;
 	private GameExchange currentGameExchange;
 	private Game currentGame;
-	private boolean autoTurning = false;
 	private String comboSearch = "";
 
 	/**
 	 * Creates the controller for the GUI. The map draws an "empty" game state.
 	 */
 	public GuiController() {
-
+		
+		this.outputString = "Waiting for game to start ...";
+		
 		String json = FileHandler.readFile("resources/EmptyGame.json").stream()
 				.collect(Collectors.joining(System.lineSeparator()));
 
@@ -98,7 +99,7 @@ public class GuiController {
 	public void update() {
 
 		// Set the output in the Text to the static String where it was saved.
-		// If chombo box is showing a search is active and therefore the output should not be changed
+		// If combo box is showing a search is active and therefore the output should not be changed
 		if (!this.citiesCB.isShowing()) {
 			this.output.setText(outputString);
 		}
@@ -110,9 +111,6 @@ public class GuiController {
 			this.currentRound.setText(this.currentGame.getRound() + "");
 			this.currentPoints.setText(this.currentGame.getPoints() + "");
 		}
-
-		// Reset autoTurning flag to default (false)
-		this.autoTurning = false;
 
 		// Clear the round and amount text field.
 		this.amountT.setText("");
@@ -282,6 +280,11 @@ public class GuiController {
 
 		this.currentGameExchange = exchange;
 		this.currentGame = this.currentGameExchange.getGame();
+		
+		if (this.currentGame.getPoints() == 40 && this.currentGame.getRound() == 1) {
+			this.outputString =  "Game found. Start playing";
+		}
+		
 		Platform.runLater(() -> this.update());
 	}
 
@@ -379,15 +382,6 @@ public class GuiController {
 	}
 
 	/**
-	 * Set a boolean that defines whether the GUI is in the auto-play mode or not
-	 * 
-	 * @param autoTurning The boolean value that will be set.
-	 */
-	public void setAutoPlaying(boolean autoTurning) {
-		this.autoTurning = autoTurning;
-	}
-
-	/**
 	 * Sets the output for the GUI to any String. This method will only update the
 	 * output and not the complete GUI.
 	 * 
@@ -395,9 +389,8 @@ public class GuiController {
 	 */
 	public void setOutput(String output) {
 		outputString = output;
-		if (!autoTurning) {
-			this.output.setText(outputString);
-		}
+		
+		Platform.runLater(() -> this.output.setText(outputString));
 	}
 
 	/**

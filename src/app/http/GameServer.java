@@ -20,7 +20,6 @@ import javafx.application.Platform;
  */
 public class GameServer {
 
-	private static boolean init = true;
 	private HttpServer server;
 	private static LinkedBlockingDeque<GameEvaluator> repliesToSend = new LinkedBlockingDeque<>();
 
@@ -81,11 +80,10 @@ public class GameServer {
 		if (!outcome.equals("pending")) {
 			if (outcome.equals("win")) {
 				App.guiController.setOutput("Game over. You won.");
-			
+				
 			} else {
 				App.guiController.setOutput("Game over. You lost.");
 			}
-			App.guiController.update();
 		}
 
 		GameEvaluator eval = null;
@@ -103,17 +101,11 @@ public class GameServer {
 
 				// (2)
 			} else if (hasReplies()) {
-				App.guiController.setOutput("Auto playing ...");
-				App.guiController.setAutoPlaying(true);
 				eval = getReply();
 
 				// (1)
 			} else if (App.guiController != null && App.guiController.ready()) {
 				App.guiController.setGame(ge);
-				if (init) {
-					App.guiController.setOutput("Game found. Start playing");
-					init = false;
-				}
 
 				// Initializing the (3) way of playing.
 			} else {
@@ -132,11 +124,6 @@ public class GameServer {
 		// Only send a reply if the GUI was not selected
 		if (eval != null) {
 			ge.sendReply(eval.evaluate(ge.getGame()));
-		}
-		
-		// Reset flag if the game was over.
-		if (!outcome.equals("pending")) {
-			init = true;
 		}
 	}
 
@@ -172,6 +159,13 @@ public class GameServer {
 	 */
 	public static boolean hasReplies() {
 		return !repliesToSend.isEmpty();
+	}
+	
+	/**
+	 * @return Whether there are multiple replies to send.
+	 */
+	public static boolean hasMultipleReplies() {
+		return repliesToSend.size() > 1;
 	}
 
 	/**
