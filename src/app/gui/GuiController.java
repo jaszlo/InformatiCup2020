@@ -60,7 +60,7 @@ public class GuiController {
 	private CheckBox connectionBox, populationBox, infectedBox, cityNamesBox;
 
 	/// Backend components of the GUI
-	private static String outputString;
+	private static String outputString = "Waiting for game to start ...";
 	private GameExchange currentGameExchange;
 	private Game currentGame;
 
@@ -442,7 +442,7 @@ public class GuiController {
 		}
 
 		// Set output
-		App.guiController.setOutput(new Action(this.currentGame).toString());
+		App.guiController.setOutput(new Action(this.currentGame), this.currentGame);
 		
 		// Execute first action
 		this.executeAction();
@@ -480,11 +480,15 @@ public class GuiController {
 
 		// Get the rounds specified by the user
 		int rounds = this.getRounds();
-
+		
 		// Execute action if a valid city was selected
 		if (city != null) {
 			this.executeAction(new Action(ActionType.putUnderQuarantine, this.currentGame, city, rounds));
-		} 
+			
+		} else {
+			App.guiController.setOutput("No city was selected");
+			this.update();
+		}
 	}
 
 	/**
