@@ -13,7 +13,8 @@ _____________HEUERISTIK______________
 ->  Nothing left to do. Außer ihr habt noch Idee.
 
 ________________GUI__________________
-(nach persönlicher Priorität sortiert)
+(nach persönlicher Priorität sortiert)i
+->  Amountfeld und Runden nach aufrufen von einer Aktion clearen 		| REQUIED (auch wenn es ne Design entscheidung ist)
 ->  Tooltip vervollständigen                                                    | REQUIRED
 ->  GUI schließen per WindowManger soll auch Server beenden.                    | OPTIONAL BUT IMPORTANT
 ->  GUI output (error und was macht es)                                         | OPTIONAL BUT IMPORTANT
