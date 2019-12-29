@@ -58,4 +58,10 @@ public class App extends Application {
 			App.guiController = null;
 		}
 	}
+	
+	// This is added because closing the GUI window should also close the Application
+	@Override
+	public void stop () {
+		System.exit(0);
+	}
 }
