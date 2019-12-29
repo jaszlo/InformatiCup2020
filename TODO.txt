@@ -1,7 +1,7 @@
 
 
 ______________ALLGEMEIN______________
-
+->  AWS und MASTER branch auf gleichen stand					| REQUIRED
 ->  Statt Nullobjekten Sigeltons (bei z.B. HashSets)                            | OPTIONAL
 ->  Skript für Konstantenoptimierung schreiben                                  | OPTIONA
 ->  Laufzeit optimieren                                                         | OPTIONAL
