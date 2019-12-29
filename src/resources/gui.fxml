@@ -258,7 +258,7 @@
                      </font>
                   </Text>
                   <ChoiceBox fx:id="pathogenesCB" layoutX="200.0" layoutY="786.0" onAction="#update" prefHeight="28.0" prefWidth="220.0" GridPane.rowIndex="1" />
-                  <ComboBox fx:id="citiesCB" onAction="#update" onKeyPressed="#searchComboBox" onShowing="#showingComboBox" onHiding="#hidingComboBox" prefHeight="20.0" prefWidth="220.0" GridPane.rowIndex="5" />
+                  <ComboBox fx:id="citiesCB" onAction="#update" onHiding="#hidingComboBox" onKeyPressed="#searchComboBox" onShowing="#showingComboBox" prefHeight="28.0" prefWidth="220.0" stylesheets="@comboBox.css" GridPane.rowIndex="5" />
                   <Text stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="Select city" GridPane.rowIndex="4">
                      <font>
                         <Font name="Ubuntu Light" size="30.0" />
