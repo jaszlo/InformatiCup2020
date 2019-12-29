@@ -1030,8 +1030,11 @@ public class GuiController {
 	 */
 	@FXML
 	public void exportMap() {
+		
+		String path = System.getProperty("user.dir") + "/ic20_export.png";
+		this.setOutput("Exported the Canvas to the current work direcoty " + path);
 		this.currentMap.snapshot((SnapshotResult sr) -> {
-			FileHandler.writeFile("Test.png", sr.getImage());
+			FileHandler.writeFile(path, sr.getImage());
 			return null;
 		}, null, null);
 	}
