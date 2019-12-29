@@ -1,3 +1,4 @@
 All:
+	mvn clean
 	mvn package
-	java -cp target/ic20_local_webservice-1.0.jar app.App	
+	java -cp target/ic_local_webservice-20.jar app.App	
