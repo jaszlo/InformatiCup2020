@@ -105,6 +105,10 @@ public class GuiController {
 		// Reset autoPlaying flag to default (false)
 		this.autoPlaying = false;
 
+		// Clear the round and amount text field.
+		this.amountT.setText("");
+		this.roundsT.setText("");
+		
 		// Update the ChoiceBoxes items.
 		this.updateChoiceBox();
 
