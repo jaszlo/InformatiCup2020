@@ -483,7 +483,9 @@ public class GuiController {
 		
 		// Execute action if a valid city was selected
 		if (city != null) {
-			this.executeAction(new Action(ActionType.putUnderQuarantine, this.currentGame, city, rounds));
+			Action a = new Action(ActionType.putUnderQuarantine, this.currentGame, city, rounds);
+			App.guiController.setOutput(a, this.currentGame);
+			this.executeAction(a);
 			
 		} else {
 			App.guiController.setOutput("No city was selected");
@@ -507,7 +509,13 @@ public class GuiController {
 
 		// Execute action if a valid city was selected
 		if (city != null) {
-			this.executeAction(new Action(ActionType.closeAirport, this.currentGame, city, rounds));
+			Action a = new Action(ActionType.closeAirport, this.currentGame, city, rounds);
+			App.guiController.setOutput(a, this.currentGame);
+			this.executeAction(a);
+	
+		} else {
+			App.guiController.setOutput("No city was selected");
+			this.update();
 		}
 	}
 
@@ -530,8 +538,22 @@ public class GuiController {
 
 		// Execute action if two valid cities were selected
 		if (city != null && cityTo != null) {
-			this.executeAction(new Action(this.currentGame, city, cityTo, rounds));
+			Action a = new Action(this.currentGame, city, cityTo, rounds);
+			App.guiController.setOutput(a, this.currentGame);
+			this.executeAction(a);
+			return;
+		
+		} else if (city == null && cityTo != null) {
+			App.guiController.setOutput("Missing the first city");
+		
+		} else if (city != null && cityTo == null) {
+			App.guiController.setOutput("Missing the second city");
+		
+		} else {
+			App.guiController.setOutput("Missing selected cities");
 		}
+		
+		this.update();
 	}
 
 	/**
