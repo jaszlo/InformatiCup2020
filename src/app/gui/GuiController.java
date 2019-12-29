@@ -50,7 +50,7 @@ public class GuiController {
 	@FXML /// PathogenInfo
 	private Text infectivity, mobility, duration, lethality, prevalance;
 	@FXML /// OtherInfo
-	private Text currentRound, currentPoints, lastAction;
+	private Text currentRound, currentPoints, lastAction, output;
 
 	@FXML /// Draw elements
 	private Canvas currentMap;
@@ -295,6 +295,15 @@ public class GuiController {
 		this.lastActionString = action;
 	}
 
+	/**
+	 * Sets the output for the GUI.
+	 * 
+	 * @param output The string that will be set as the output.
+	 */
+	public void setOutput (String output) {
+		this.output.setText(output);
+	}
+	
 	/**
 	 * Returns the amount given by the user in the amount text field. If the number
 	 * is less or equal to zero or no number is given the method returns 1.

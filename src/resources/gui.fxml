@@ -550,7 +550,7 @@
          </rowConstraints>
          <children>
             <Canvas fx:id="currentMap" height="740.0" width="1530.0" />
-            <Text fill="#4468ddf7" strokeType="OUTSIDE" strokeWidth="0.0" text="Waiting for game to start ..." wrappingWidth="1503.7294921875" GridPane.rowIndex="1">
+            <Text fx:id="output" fill="#4468ddf7" strokeType="OUTSIDE" strokeWidth="0.0" text="Waiting for game to start ..." wrappingWidth="1503.7294921875" GridPane.rowIndex="1">
                <font>
                   <Font name="Ubuntu Light" size="30.0" />
                </font>
