@@ -64,7 +64,7 @@ public class GuiController {
 	private static String outputString = "Waiting for game to start ...";
 	private GameExchange currentGameExchange;
 	private Game currentGame;
-	private boolean autoPlaying = false;
+	private boolean autoTurning = false;
 	/**
 	 * Creates the controller for the GUI. The map draws an "empty" game state.
 	 */
@@ -102,8 +102,8 @@ public class GuiController {
 			this.currentPoints.setText(this.currentGame.getPoints() + "");
 		}
 		
-		// Reset autoPlaying flag to default (false)
-		this.autoPlaying = false;
+		// Reset autoTurning flag to default (false)
+		this.autoTurning = false;
 
 		// Clear the round and amount text field.
 		this.amountT.setText("");
@@ -301,10 +301,10 @@ public class GuiController {
 	/**
 	 * Set a boolean that defines whether the GUI is in the auto-play mode or not
 	 * 
-	 * @param autoPlaying The boolean value that will be set. 
+	 * @param autoTurning The boolean value that will be set. 
 	 */
-	public void setAutoPlaying (boolean autoPlaying) {
-		this.autoPlaying = autoPlaying;
+	public void setAutoPlaying (boolean autoTurning) {
+		this.autoTurning = autoTurning;
 	}
 	
 	/**
@@ -315,7 +315,7 @@ public class GuiController {
 	 */
 	public void setOutput(String output) {
 		outputString = output;
-		if (!autoPlaying) {
+		if (!autoTurning) {
 			this.output.setText(outputString);
 		}
 	}
