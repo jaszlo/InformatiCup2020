@@ -68,7 +68,8 @@ public class GuiController {
 	private GameExchange currentGameExchange;
 	private Game currentGame;
 	private boolean autoTurning = false;
-	private String comboSearch ="";
+	private String comboSearch = "";
+
 	/**
 	 * Creates the controller for the GUI. The map draws an "empty" game state.
 	 */
@@ -78,6 +79,7 @@ public class GuiController {
 				.collect(Collectors.joining(System.lineSeparator()));
 
 		this.currentGame = new Game(json);
+		
 	}
 
 	/**
@@ -87,6 +89,7 @@ public class GuiController {
 
 		// Update and draw
 		this.update();
+		
 	}
 
 	/**
@@ -94,7 +97,7 @@ public class GuiController {
 	 * information.
 	 */
 	public void update() {
-		
+
 		// Set the output in the Text to the static String where it was saved.
 		this.output.setText(outputString);
 
@@ -124,38 +127,44 @@ public class GuiController {
 
 	}
 
+	/**
+	 * Event handler for a key press when the cities combo box is showing. This allows for
+	 * a search through all entries in the combo box.
+	 * 
+	 * @param event Key pressed.
+	 */
 	@FXML
 	private void searchComboBox(KeyEvent event) {
-		
+
 		// Only do something if the ComoBox is showing the cities.
 		if (!this.citiesCB.isShowing()) {
 			return;
 		}
-		
+
 		// Only do something if an alphabetical char has been pressed.
 		if (!event.getCode().isLetterKey()) {
-			
+
 			// Backspaces removes a char from the search string
 			if (event.getCode() == KeyCode.BACK_SPACE && this.comboSearch.length() > 0) {
 				this.comboSearch = this.comboSearch.substring(0, this.comboSearch.length() - 1);
 			}
-			
+
 			// Reset the search string with entf key.
 			else if (event.getCode() == KeyCode.DELETE) {
 				this.comboSearch = "";
 			}
-			
+
 			// Set output
 			this.setOutput("Searching for the city " + this.comboSearch + " ...");
 			return;
 		}
-		
+
 		// Add the newly typed char to the search string
 		this.comboSearch += event.getText();
-		
+
 		// Set output
 		this.setOutput("Searching for the city " + this.comboSearch + " ...");
-	
+
 		// Get the current selection. If no entry with that Letter is found we do not
 		// want to change selection.
 		String selectThis = this.citiesCB.getValue();
@@ -168,6 +177,19 @@ public class GuiController {
 
 		// Select the first found new city.
 		this.citiesCB.setValue(selectThis);
+	}
+
+	/**
+	 * On showing method for the cities combo box. Sets output for search information.
+	 */
+	@FXML
+	private void showingComboBox() {
+		this.output.setText("Write to search or Press'ENTF' to clear the search");
+	}
+	
+	@FXML
+	private void hidingComboBox() {
+		this.output.setText(outputString);
 	}
 
 	/**
