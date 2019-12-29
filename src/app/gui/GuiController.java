@@ -380,7 +380,7 @@ public class GuiController {
 
 	/**
 	 * Returns the number of rounds given by the user in the rounds text field. If
-	 * the number is less or equal to zero or no number is given the method returns
+	 * the number is less or equal to zero or no number or an invalid one is given the method returns
 	 * 1.
 	 * 
 	 * @return Amount in text field.
@@ -441,6 +441,9 @@ public class GuiController {
 			GameServer.addReply((Game g) -> new Action(g).toString());
 		}
 
+		// Set output
+		App.guiController.setOutput(new Action(this.currentGame).toString());
+		
 		// Execute first action
 		this.executeAction();
 	}
@@ -481,7 +484,7 @@ public class GuiController {
 		// Execute action if a valid city was selected
 		if (city != null) {
 			this.executeAction(new Action(ActionType.putUnderQuarantine, this.currentGame, city, rounds));
-		}
+		} 
 	}
 
 	/**
