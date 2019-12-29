@@ -20,9 +20,6 @@ import javafx.application.Platform;
  */
 public class GameServer {
 
-	static double games = 0;
-	static double wins = 0;
-
 	private HttpServer server;
 	private static LinkedBlockingDeque<GameEvaluator> repliesToSend = new LinkedBlockingDeque<>();
 
@@ -81,12 +78,11 @@ public class GameServer {
 		String outcome = ge.getGame().getOutcome();
 		if (!outcome.equals("pending")) {
 			if (outcome.equals("win")) {
-				wins++;
+				App.guiController.setOutput("Game over. You won.");
+			
+			} else {
+				App.guiController.setOutput("Game over. You lost.");
 			}
-			games++;
-			outcome = outcome.equals("loss") ? outcome : outcome + " ";
-			System.out.println(
-					"Game Nr. " + games + " was a " + outcome + " | Current winrate = " + (100 * wins / games) + "%");
 		}
 
 		GameEvaluator eval = null;
@@ -109,6 +105,7 @@ public class GameServer {
 				// (1)
 			} else if (App.guiController != null && App.guiController.ready()) {
 				App.guiController.setGame(ge);
+				App.guiController.setOutput("Game found. Start playing");
 
 				// Initializing the (3) way of playing.
 			} else {
