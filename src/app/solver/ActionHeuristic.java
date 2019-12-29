@@ -133,6 +133,7 @@ public class ActionHeuristic {
 		int currentPoints = game.getPoints();
 
 		// A condition that must be met in order to do reroll events.
+		// Checks that all Pathogens can be ignored right now
 		boolean doRerolls = game.getPathEncounterEvents().stream()
 				.allMatch(e -> game.ignorePathogenThisRound(e.getPathogen()));
 
