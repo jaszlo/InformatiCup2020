@@ -15,7 +15,6 @@ _____________HEUERISTIK______________
 ________________GUI__________________
 (nach persönlicher Priorität sortiert)i
 ->  Tooltip vervollständigen                                                    | REQUIRED
-->  (evt.) ComboBox (Suchen ermöglichen)                                        | OPTIONAL (wäre halt schön)
 ->  (evt.) Resizeable Canvas und als eigene Klasse                              | OPTIONAL (wäre halt schön)
 ->  Wenn obige Punkt erfüllt ist Zoomalbe Canvas                                | OPTIONAL (wäre halt schön)
 ->  BrowserGUI fertigstellen oder entfernen.                                    | REQUIRED 
