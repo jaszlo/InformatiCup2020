@@ -312,7 +312,7 @@
                   <Tooltip text="The attentiveness of a certain city's population will be increased&#10;city (from) : city name" />
                </tooltip>
             </Button>
-            <Button fx:id="quitB" layoutX="1633.0" layoutY="912.0" mnemonicParsing="false" onAction="#quit" prefHeight="20.0" prefWidth="140.0" text="Quit" GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <Button fx:id="quitB" layoutX="1633.0" layoutY="912.0" mnemonicParsing="false" onAction="#quit" prefHeight="20.0" prefWidth="140.0" text="Quit" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <font>
                   <Font name="Ubuntu Light" size="16.0" />
                </font>
@@ -346,7 +346,7 @@
                </tooltip>
             </Button>
             
-            <Button fx:id="endRoundB" mnemonicParsing="false" onAction="#endRound" prefHeight="20.0" prefWidth="220.0" text="End round" GridPane.rowIndex="6">
+            <Button fx:id="endRoundB" mnemonicParsing="false" onAction="#endRound" prefHeight="20.0" prefWidth="220.0" text="End round" GridPane.rowIndex="5">
                <font>
                   <Font name="Ubuntu Light" size="16.0" />
                </font>
@@ -365,7 +365,6 @@
             <RowConstraints maxHeight="58.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="76.0" minHeight="0.0" prefHeight="53.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="75.0" minHeight="10.0" prefHeight="26.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="91.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="91.0" minHeight="10.0" prefHeight="51.0" vgrow="SOMETIMES" />
          </rowConstraints>
       </GridPane>
@@ -390,7 +389,7 @@
                         <Font name="Ubuntu Light" size="22.0" />
                      </font>
                   </Text>
-                  <Text stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="parameters" wrappingWidth="160.0" GridPane.columnIndex="1">
+                  <Text stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="  parameters" wrappingWidth="189.0" GridPane.columnIndex="1">
                      <font>
                         <Font name="Ubuntu Light" size="30.0" />
                      </font>
@@ -528,21 +527,21 @@
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
       </GridPane>
-      <GridPane>
+      <GridPane prefHeight="817.0" prefWidth="1527.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="1531.0" minWidth="10.0" prefWidth="1519.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="56.0" minWidth="2.0" prefWidth="2.0" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="37.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="31.0" minHeight="3.0" prefHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="755.0" minHeight="10.0" prefHeight="729.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="103.0" minHeight="10.0" prefHeight="58.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="31.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Canvas fx:id="currentMap" height="740.0" width="1530.0" />
+            <Canvas fx:id="currentMap" height="676.0" width="1650.0" />
             <Text fx:id="output" fill="#4468ddf7" strokeType="OUTSIDE" strokeWidth="0.0" text="Waiting for game to start ..." wrappingWidth="1503.7294921875" GridPane.rowIndex="1">
                <font>
-                  <Font name="Ubuntu Light" size="30.0" />
+                  <Font name="Ubuntu Light" size="26.0" />
                </font>
             </Text>
             <Separator prefHeight="8.0" prefWidth="1507.0" GridPane.rowIndex="2" />
@@ -552,11 +551,11 @@
       </GridPane>
    </children>
    <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1528.0" minWidth="10.0" prefWidth="1528.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="408.0" minWidth="10.0" prefWidth="372.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1547.0" minWidth="10.0" prefWidth="1547.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="408.0" minWidth="10.0" prefWidth="353.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints maxHeight="769.0" minHeight="10.0" prefHeight="768.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="795.0" minHeight="10.0" prefHeight="768.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="269.0" minHeight="10.0" prefHeight="232.0" vgrow="SOMETIMES" />
    </rowConstraints>
 </GridPane>
