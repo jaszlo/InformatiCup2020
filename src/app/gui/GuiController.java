@@ -29,8 +29,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
 /**
- *	Controller class for the GUI.
+ * Controller class for the GUI.
  */
 public class GuiController {
 
@@ -65,7 +66,7 @@ public class GuiController {
 	private Game currentGame;
 
 	/**
-	 * 	Creates the controller for the GUI. The map draws an "empty" game state.
+	 * Creates the controller for the GUI. The map draws an "empty" game state.
 	 */
 	public GuiController() {
 
@@ -85,13 +86,14 @@ public class GuiController {
 	}
 
 	/**
-	 * Updates the GUI. That means drawing the map and updating displayed information.
+	 * Updates the GUI. That means drawing the map and updating displayed
+	 * information.
 	 */
 	public void update() {
 
 		// Set the output in the Text to the static String where it was saved.
 		this.output.setText(outputString);
-		
+
 		// Set Points and current Round.
 		if (this.currentGameExchange != null) {
 
@@ -111,8 +113,9 @@ public class GuiController {
 	}
 
 	/**
-	 * Update method for the choice boxes. It will completely empty the choice boxes.
-	 * Afterwards the choice boxes are refilled with valid city and pathogen names
+	 * Update method for the choice boxes. It will completely empty the choice
+	 * boxes. Afterwards the choice boxes are refilled with valid city and pathogen
+	 * names
 	 */
 	private void updateChoiceBox() {
 
@@ -132,29 +135,29 @@ public class GuiController {
 		if (!this.pathogenesCB.getItems().equals(allPathogens)) {
 			String current = this.pathogenesCB.getValue();
 			this.pathogenesCB.setItems(allPathogens);
-			
+
 			if (!this.pathogenesCB.getItems().contains(current)) {
 				this.pathogenesCB.setValue("None");
-				
+
 			} else {
 				this.pathogenesCB.setValue(current);
 			}
 		}
 
 		// Add all cities to the cities ChoiceBox
-		ObservableList<String> allCities = currentGame.getCities().stream().map(c -> c.getName()).sorted()
-				.collect(FXCollections::<String>observableArrayList, ObservableList<String>::add,
-						ObservableList<String>::addAll);
+		ObservableList<String> allCities = currentGame.getCities().stream().map(c -> c.getName()).sorted().collect(
+				FXCollections::<String>observableArrayList, ObservableList<String>::add,
+				ObservableList<String>::addAll);
 		// Add no city as choice
 		allCities.add(0, "None");
 		// Update ChoiceBox if changed in a new thread to boost performance
 		if (!this.citiesCB.getItems().equals(allCities)) {
 			String current = this.citiesCB.getValue();
 			this.citiesCB.setItems(allCities);
-			
+
 			if (!this.citiesCB.getItems().contains(current)) {
 				this.citiesCB.setValue("None");
-				
+
 			} else {
 				this.citiesCB.setValue(current);
 			}
@@ -173,14 +176,14 @@ public class GuiController {
 		if (!this.citiesToCB.getItems().equals(citiesTo)) {
 			String current = this.citiesCB.getValue();
 			this.citiesToCB.setItems(citiesTo);
-			
+
 			if (!this.citiesToCB.getItems().contains(current)) {
 				this.citiesToCB.setValue("None");
-				
+
 			} else {
 				this.citiesToCB.setValue(current);
 			}
-			
+
 		}
 	}
 
@@ -292,23 +295,24 @@ public class GuiController {
 	 * 
 	 * @param output The string that will be set as the output.
 	 */
-	public void setOutput (String output) {
+	public void setOutput(String output) {
 		outputString = output;
 	}
-	
+
 	/**
 	 * Sets the Output text in the GUI to an executed action.
 	 * 
 	 * @param action The action that will be displayed in the output.
 	 */
-	public void setOutput (Action action, Game game) {
+	public void setOutput(Action action, Game game) {
 
 		// Get all relevant usual information most events have.
 		City city = action.getCity();
 		Pathogen pathogen = action.getPathogen();
 		String rounds = action.getRounds() + "";
-		
-		// Create a formated String and call the overloaded method with a string as the input.
+
+		// Create a formated String and call the overloaded method with a string as the
+		// input.
 		switch (action.getType()) {
 		case endRound:
 			App.guiController.setOutput("Round was ended");
@@ -351,13 +355,14 @@ public class GuiController {
 			App.guiController.setOutput("Hygiene standards of the city " + city.getName() + "will be randomly reset");
 			break;
 		case launchCampaign:
-			App.guiController.setOutput("Launched informative campaign to raise awareness in the city " + city.getName());
+			App.guiController
+					.setOutput("Launched informative campaign to raise awareness in the city " + city.getName());
 			break;
 		default:
 			App.guiController.setOutput("Could not identify executed action");
 		}
 	}
-	
+
 	/**
 	 * Returns the amount given by the user in the amount text field. If the number
 	 * is less or equal to zero or no number is given the method returns 1.
@@ -380,8 +385,8 @@ public class GuiController {
 
 	/**
 	 * Returns the number of rounds given by the user in the rounds text field. If
-	 * the number is less or equal to zero or no number or an invalid one is given the method returns
-	 * 1.
+	 * the number is less or equal to zero or no number or an invalid one is given
+	 * the method returns 1.
 	 * 
 	 * @return Amount in text field.
 	 */
@@ -443,7 +448,7 @@ public class GuiController {
 
 		// Set output
 		App.guiController.setOutput(new Action(this.currentGame), this.currentGame);
-		
+
 		// Execute first action
 		this.executeAction();
 	}
@@ -480,17 +485,27 @@ public class GuiController {
 
 		// Get the rounds specified by the user
 		int rounds = this.getRounds();
-		
+
 		// Execute action if a valid city was selected
 		if (city != null) {
+
+			// Create the action and calculate its cost.
 			Action a = new Action(ActionType.putUnderQuarantine, this.currentGame, city, rounds);
-			App.guiController.setOutput(a, this.currentGame);
-			this.executeAction(a);
-			
+			int costs = (10 * a.getRounds() + 20);
+
+			if (this.currentGame.getPoints() >= costs) {
+				App.guiController.setOutput(a, this.currentGame);
+				this.executeAction(a);
+
+			} else {
+				App.guiController.setOutput("Missing " + (costs - this.currentGame.getPoints()) + " points");
+			}
+
 		} else {
-			App.guiController.setOutput("No city was selected");
-			this.update();
+			App.guiController.setOutput("Missing selected city");
 		}
+
+		this.update();
 	}
 
 	/**
@@ -504,19 +519,29 @@ public class GuiController {
 		// Get the selected city
 		City city = this.getSelectedCity();
 
-		// Get the rounds specified by the user
+		// Get the rounds specified by the user.
 		int rounds = this.getRounds();
 
-		// Execute action if a valid city was selected
+		// Execute action if a valid city was selected.
 		if (city != null) {
+
+			// Create the action and calculate its cost.
 			Action a = new Action(ActionType.closeAirport, this.currentGame, city, rounds);
-			App.guiController.setOutput(a, this.currentGame);
-			this.executeAction(a);
-	
+			int costs = (5 * a.getRounds() + 15);
+
+			if (this.currentGame.getPoints() >= costs) {
+				App.guiController.setOutput(a, this.currentGame);
+				this.executeAction(a);
+
+			} else {
+				App.guiController.setOutput("Missing " + (costs - this.currentGame.getPoints() + " points"));
+			}
+
 		} else {
-			App.guiController.setOutput("No city was selected");
-			this.update();
+			App.guiController.setOutput("Missing selected city");
 		}
+
+		this.update();
 	}
 
 	/**
@@ -527,32 +552,41 @@ public class GuiController {
 	 */
 	@FXML
 	private void closeConnection() {
-		// Get the selected city
+		// Get the selected city.
 		City city = this.getSelectedCity();
 
-		// Get the selected cityTo
+		// Get the selected cityTo.
 		City cityTo = this.getSelectedCityTo();
 
-		// Get the rounds specified by the user
+		// Get the rounds specified by the user.
 		int rounds = this.getRounds();
 
-		// Execute action if two valid cities were selected
+		// Execute action if two valid cities were selected.
 		if (city != null && cityTo != null) {
+
+			// Create the action and calculate its cost.
 			Action a = new Action(this.currentGame, city, cityTo, rounds);
-			App.guiController.setOutput(a, this.currentGame);
-			this.executeAction(a);
+			int costs = (3 * a.getRounds() + 3);
+			if (this.currentGame.getPoints() >= costs) {
+				App.guiController.setOutput(a, this.currentGame);
+				this.executeAction(a);
+
+			} else {
+				App.guiController.setOutput("Missing " + (costs - this.currentGame.getPoints()) + " points");
+			}
+
 			return;
-		
+
 		} else if (city == null && cityTo != null) {
 			App.guiController.setOutput("Missing the first city");
-		
+
 		} else if (city != null && cityTo == null) {
 			App.guiController.setOutput("Missing the second city");
-		
+
 		} else {
 			App.guiController.setOutput("Missing selected cities");
 		}
-		
+
 		this.update();
 	}
 
@@ -570,8 +604,23 @@ public class GuiController {
 
 		// Execute action if a valid pathogen was selected
 		if (pathogen != null) {
-			this.executeAction(new Action(ActionType.developVaccine, this.currentGame, pathogen));
+
+			// Create the action and calculate its cost.
+			Action a = new Action(ActionType.developVaccine, this.currentGame, pathogen);
+			int costs = 40;
+			if (this.currentGame.getPoints() >= costs) {
+				App.guiController.setOutput(a, this.currentGame);
+				this.executeAction(a);
+
+			} else {
+				App.guiController.setOutput("Missing " + (costs - this.currentGame.getPoints()) + " points");
+			}
+
+		} else {
+			App.guiController.setOutput("Missing selected pathogen");
 		}
+
+		this.update();
 	}
 
 	/**
@@ -591,8 +640,29 @@ public class GuiController {
 
 		// Execute action if a valid city and pathogen were selected
 		if (city != null && pathogen != null) {
-			this.executeAction(new Action(ActionType.deployVaccine, this.currentGame, city, pathogen));
+
+			Action a = new Action(ActionType.deployVaccine, this.currentGame, city, pathogen);
+			int costs = 10;
+			if (this.currentGame.getPoints() >= costs) {
+				App.guiController.setOutput(a, this.currentGame);
+				this.executeAction(a);
+
+			} else {
+				App.guiController.setOutput("Missing " + (costs - this.currentGame.getPoints()) + " points");
+			}
+
+		} else if (city == null && pathogen != null) {
+			App.guiController.setOutput("Missing selected city");
+
+		} else if (city != null && pathogen == null) {
+			App.guiController.setOutput("Missing selected pathogen");
+
+		} else {
+			App.guiController.setOutput("Missing selected city and pathogen");
+
 		}
+
+		this.update();
 	}
 
 	/**
@@ -609,7 +679,21 @@ public class GuiController {
 
 		// Execute action if a valid pathogen was selected
 		if (pathogen != null) {
-			this.executeAction(new Action(ActionType.developMedication, this.currentGame, pathogen));
+
+			// Create the action and calculate its cost.
+			Action a = new Action(ActionType.developMedication, this.currentGame, pathogen);
+			int costs = 20;
+
+			if (this.currentGame.getPoints() >= costs) {
+				App.guiController.setOutput(a, this.currentGame);
+				this.executeAction(a);
+
+			} else {
+				App.guiController.setOutput("Missing " + (costs - this.currentGame.getPoints()) + " points");
+			}
+
+		} else {
+			App.guiController.setOutput("Missing selected pathogen");
 		}
 	}
 
