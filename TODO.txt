@@ -16,7 +16,6 @@ ________________GUI__________________
 (nach persönlicher Priorität sortiert)i
 ->  Amountfeld und Runden nach aufrufen von einer Aktion clearen 		| REQUIED (auch wenn es ne Design entscheidung ist)
 ->  Tooltip vervollständigen                                                    | REQUIRED
-->  GUI schließen per WindowManger soll auch Server beenden.                    | OPTIONAL BUT IMPORTANT
 ->  (evt.) ComboBox (Suchen ermöglichen)                                        | OPTIONAL (wäre halt schön)
 ->  (evt.) Resizeable Canvas und als eigene Klasse                              | OPTIONAL (wäre halt schön)
 ->  Wenn obige Punkt erfüllt ist Zoomalbe Canvas                                | OPTIONAL (wäre halt schön)
