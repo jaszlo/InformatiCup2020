@@ -25,7 +25,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -65,6 +68,7 @@ public class GuiController {
 	private GameExchange currentGameExchange;
 	private Game currentGame;
 	private boolean autoTurning = false;
+	private String comboSearch ="";
 	/**
 	 * Creates the controller for the GUI. The map draws an "empty" game state.
 	 */
@@ -90,7 +94,7 @@ public class GuiController {
 	 * information.
 	 */
 	public void update() {
-
+		
 		// Set the output in the Text to the static String where it was saved.
 		this.output.setText(outputString);
 
@@ -101,14 +105,14 @@ public class GuiController {
 			this.currentRound.setText(this.currentGame.getRound() + "");
 			this.currentPoints.setText(this.currentGame.getPoints() + "");
 		}
-		
+
 		// Reset autoTurning flag to default (false)
 		this.autoTurning = false;
 
 		// Clear the round and amount text field.
 		this.amountT.setText("");
 		this.roundsT.setText("");
-		
+
 		// Update the ChoiceBoxes items.
 		this.updateChoiceBox();
 
@@ -117,7 +121,53 @@ public class GuiController {
 
 		// Draw Call for the MapCanvas.
 		this.drawMap();
+
+	}
+
+	@FXML
+	private void searchComboBox(KeyEvent event) {
+		
+		// Only do something if the ComoBox is showing the cities.
+		if (!this.citiesCB.isShowing()) {
+			return;
+		}
+		
+		// Only do something if an alphabetical char has been pressed.
+		if (!event.getCode().isLetterKey()) {
+			
+			// Backspaces removes a char from the search string
+			if (event.getCode() == KeyCode.BACK_SPACE && this.comboSearch.length() > 0) {
+				this.comboSearch = this.comboSearch.substring(0, this.comboSearch.length() - 1);
+			}
+			
+			// Reset the search string with entf key.
+			else if (event.getCode() == KeyCode.DELETE) {
+				this.comboSearch = "";
+			}
+			
+			// Set output
+			this.setOutput("Searching for the city " + this.comboSearch + " ...");
+			return;
+		}
+		
+		// Add the newly typed char to the search string
+		this.comboSearch += event.getText();
+		
+		// Set output
+		this.setOutput("Searching for the city " + this.comboSearch + " ...");
 	
+		// Get the current selection. If no entry with that Letter is found we do not
+		// want to change selection.
+		String selectThis = this.citiesCB.getValue();
+		for (String current : this.citiesCB.getItems()) {
+			if (current.toLowerCase().startsWith(this.comboSearch.toLowerCase())) {
+				selectThis = current;
+				break;
+			}
+		}
+
+		// Select the first found new city.
+		this.citiesCB.setValue(selectThis);
 	}
 
 	/**
@@ -301,12 +351,12 @@ public class GuiController {
 	/**
 	 * Set a boolean that defines whether the GUI is in the auto-play mode or not
 	 * 
-	 * @param autoTurning The boolean value that will be set. 
+	 * @param autoTurning The boolean value that will be set.
 	 */
-	public void setAutoPlaying (boolean autoTurning) {
+	public void setAutoPlaying(boolean autoTurning) {
 		this.autoTurning = autoTurning;
 	}
-	
+
 	/**
 	 * Sets the output for the GUI to any String. This method will only update the
 	 * output and not the complete GUI.
@@ -319,7 +369,7 @@ public class GuiController {
 			this.output.setText(outputString);
 		}
 	}
-	
+
 	/**
 	 * Sets the Output text in the GUI to an executed action.
 	 * 
@@ -483,7 +533,7 @@ public class GuiController {
 
 		// Get amount
 		int amount = getAmount();
-			
+
 		// Add actions into action queue
 		for (int i = 0; i < amount; i++) {
 			GameServer.addReply((Game g) -> ActionHeuristic.solve(g));
@@ -1034,7 +1084,7 @@ public class GuiController {
 	 */
 	@FXML
 	public void exportMap() {
-		
+
 		String path = System.getProperty("user.dir") + "/ic20_export.png";
 		this.setOutput("Exported the Canvas to the current work direcoty " + path);
 		this.currentMap.snapshot((SnapshotResult sr) -> {
