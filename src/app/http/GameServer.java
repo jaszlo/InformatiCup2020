@@ -20,6 +20,7 @@ import javafx.application.Platform;
  */
 public class GameServer {
 
+	private static boolean inGame;
 	private HttpServer server;
 	private static LinkedBlockingDeque<GameEvaluator> repliesToSend = new LinkedBlockingDeque<>();
 
@@ -44,6 +45,10 @@ public class GameServer {
 	 */
 	public GameServer() {
 		try {
+			
+			// Set flag that tells if in game or not.
+			inGame = false;
+			
 			// Creates a new HTTP server with the port 50123.
 			this.server = HttpServer.create(new InetSocketAddress(50123), 0);
 
@@ -79,9 +84,10 @@ public class GameServer {
 		if (!outcome.equals("pending")) {
 			if (outcome.equals("win")) {
 				App.guiController.setOutput("Game over. You won.");
-			
+				App.guiController.executeAction();
 			} else {
 				App.guiController.setOutput("Game over. You lost.");
+				App.guiController.executeAction();
 			}
 		}
 
@@ -105,7 +111,10 @@ public class GameServer {
 				// (1)
 			} else if (App.guiController != null && App.guiController.ready()) {
 				App.guiController.setGame(ge);
-				App.guiController.setOutput("Game found. Start playing");
+				if (!inGame) {
+					App.guiController.setOutput("Game found. Start playing");
+					inGame = true;
+				}
 
 				// Initializing the (3) way of playing.
 			} else {
@@ -125,6 +134,11 @@ public class GameServer {
 		// Only send a reply if the GUI was not selected
 		if (eval != null) {
 			ge.sendReply(eval.evaluate(ge.getGame()));
+		}
+		
+		// Reset flag if the game was over.
+		if (!outcome.equals("pending")) {
+			inGame = false;
 		}
 	}
 

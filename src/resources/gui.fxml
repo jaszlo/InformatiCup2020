@@ -345,17 +345,7 @@
                   <Tooltip text="Reset the economic strength of a certain city&#10;city (from) : city name" />
                </tooltip>
             </Button>
-            <Text layoutX="1810.0" layoutY="866.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3P" wrappingWidth="34.00927734375" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="last Action:" wrappingWidth="240.0" GridPane.rowIndex="5">
-               <font>
-                  <Font name="Ubuntu Light" size="25.0" />
-               </font>
-            </Text>
-            <Text fx:id="lastAction" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="216.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
-               <font>
-                  <Font name="Ubuntu Light" size="19.0" />
-               </font>
-            </Text>
+            
             <Button fx:id="endRoundB" mnemonicParsing="false" onAction="#endRound" prefHeight="20.0" prefWidth="220.0" text="End round" GridPane.rowIndex="6">
                <font>
                   <Font name="Ubuntu Light" size="16.0" />

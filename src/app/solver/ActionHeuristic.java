@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import app.App;
 import app.game.City;
 import app.game.Game;
 import app.game.Pathogen;
@@ -116,7 +117,7 @@ public class ActionHeuristic {
 		}
 
 		// If a pathogen expands fast, medication should be developed.
-		return score >= constants.get("MIN_FAST_PRODUCT"); 
+		return score >= constants.get("MIN_FAST_PRODUCT");
 	}
 
 	public static double getScore(Set<Action> actions) {
@@ -279,7 +280,7 @@ public class ActionHeuristic {
 			if (doDevMedication(pathogen, game)) {
 				score += (constants.get("DEV_MEDICATION_FACTOR") * pathogen.getLethality().getNumericRepresentation());
 			}
-			
+
 			// Unless it already has infected enough (see the
 			// DEV_MEDICATION_PREVALANCEvent)
 			totalPopulation = game.getPopulation();
@@ -290,7 +291,7 @@ public class ActionHeuristic {
 			if (globalPrevalance <= constants.get("DEV_MEDICATION_PREVALENCE_THRESHOLD")) {
 				break;
 			}
-			
+
 			break;
 
 		case deployMedication:
@@ -359,10 +360,16 @@ public class ActionHeuristic {
 		// Generate all possible action and stream them. Get the score for every action
 		// and set it in the action. Afterwards the action with the highest score will
 		// be executed.
-		return ActionControl.generatePossibleActions(game).parallelStream()
+		Action action = ActionControl.generatePossibleActions(game).parallelStream()
 				.filter(a -> a.getType().getCosts(a.getRounds()) <= game.getPoints())
 				.max((Action a, Action b) -> a.getScore() == b.getScore() ? 0 : a.getScore() > b.getScore() ? 1 : -1)
-				.orElse(new Action(game)).toString();
+				.orElse(new Action(game));
+		
+		// Set the output in the GUI to a formated string depending on the executed action.
+		if (action != null && game != null) {
+			App.guiController.setOutput(action, game);
+		}
+		
+		return action.toString();
 	}
-
 }

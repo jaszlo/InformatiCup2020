@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
+import app.App;
 import app.game.City;
 import app.game.Game;
 import app.game.Pathogen;
@@ -50,7 +51,7 @@ public class GuiController {
 	@FXML /// PathogenInfo
 	private Text infectivity, mobility, duration, lethality, prevalance;
 	@FXML /// OtherInfo
-	private Text currentRound, currentPoints, lastAction, output;
+	private Text currentRound, currentPoints, output;
 
 	@FXML /// Draw elements
 	private Canvas currentMap;
@@ -59,7 +60,7 @@ public class GuiController {
 	private CheckBox connectionBox, populationBox, infectedBox, cityNamesBox;
 
 	/// Backend components of the GUI
-	private String lastActionString;
+	private static String outputString;
 	private GameExchange currentGameExchange;
 	private Game currentGame;
 
@@ -88,9 +89,9 @@ public class GuiController {
 	 */
 	public void update() {
 
-		// Set the last Action in the Text to the static String where it was saved.
-		this.lastAction.setText(lastActionString);
-
+		// Set the output in the Text to the static String where it was saved.
+		this.output.setText(outputString);
+		
 		// Set Points and current Round.
 		if (this.currentGameExchange != null) {
 
@@ -287,21 +288,74 @@ public class GuiController {
 	}
 
 	/**
-	 * Sets the last action string that is displayed in the GUI
-	 * 
-	 * @param action Action to be displayed.
-	 */
-	public void setLastAction(String action) {
-		this.lastActionString = action;
-	}
-
-	/**
-	 * Sets the output for the GUI.
+	 * Sets the output for the GUI to any String.
 	 * 
 	 * @param output The string that will be set as the output.
 	 */
 	public void setOutput (String output) {
-		this.output.setText(output);
+		outputString = output;
+	}
+	
+	/**
+	 * Sets the Output text in the GUI to an executed action.
+	 * 
+	 * @param action The action that will be displayed in the output.
+	 */
+	public void setOutput (Action action, Game game) {
+
+		// Get all relevant usual information most events have.
+		City city = action.getCity();
+		Pathogen pathogen = action.getPathogen();
+		String rounds = action.getRounds() + "";
+		
+		// Create a formated String and call the overloaded method with a string as the input.
+		switch (action.getType()) {
+		case endRound:
+			App.guiController.setOutput("Round was ended");
+			break;
+		case putUnderQuarantine:
+			App.guiController
+					.setOutput("The city " + city.getName() + " was put under quarantine for " + rounds + " rounds");
+			break;
+		case closeAirport:
+			App.guiController.setOutput(
+					"The airport of the city " + city.getName() + " airport was closed for " + rounds + " rounds");
+			break;
+		case closeConnection:
+			App.guiController.setOutput("The city " + city.getName() + " closed the connection to the city "
+					+ action.getCityTo().getName() + " for " + rounds + " Rounds");
+			break;
+		case developVaccine:
+			App.guiController.setOutput("Started developing vaccines for the pathogen " + pathogen.getName()
+					+ ". Development will be finished in round " + (game.getRound() + 7));
+			break;
+		case deployVaccine:
+			App.guiController.setOutput(
+					"Deployed vaccines in the city " + city.getName() + " for the pathogen " + pathogen.getName());
+			break;
+		case developMedication:
+			App.guiController.setOutput("Started developing medication for the pathogen " + pathogen.getName()
+					+ ". Development will be finished in round " + (game.getRound() + 3));
+			break;
+		case deployMedication:
+			App.guiController.setOutput(
+					"Deployed medication in the city " + city.getName() + " for the pathogen " + pathogen.getName());
+			break;
+		case exertInfluence:
+			App.guiController.setOutput("Economy of the city " + city.getName() + " will randomly be incread");
+			break;
+		case callElections:
+			App.guiController.setOutput("Elections were called for the city " + city.getName());
+			break;
+		case applyHygienicMeasures:
+			App.guiController.setOutput("Hygiene standards of the city " + city.getName() + "will be randomly reset");
+			break;
+		case launchCampaign:
+			App.guiController.setOutput("Launched informative campaign to raise awareness in the city " + city.getName());
+			break;
+		default:
+			App.guiController.setOutput("Could not identify executed action");
+		}
 	}
 	
 	/**

@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 
 import com.sun.net.httpserver.HttpExchange;
 
-import app.App;
 import app.game.Game;
 
 /**
@@ -57,7 +56,6 @@ public class GameExchange {
 
 			// Close the output stream and set the last action string in the GUI
 			os.close();
-			App.guiController.setLastAction(response);
 			this.exchange = null;
 
 		} catch (IOException e) {
