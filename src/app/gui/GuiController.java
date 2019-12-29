@@ -417,7 +417,7 @@ public class GuiController {
 			break;
 		case closeAirport:
 			App.guiController.setOutput(
-					"The airport of the city " + city.getName() + " airport was closed for " + rounds + " rounds");
+					"The airport of the city " + city.getName() + " was closed for " + rounds + " rounds");
 			break;
 		case closeConnection:
 			App.guiController.setOutput("The city " + city.getName() + " closed the connection to the city "
