@@ -695,6 +695,8 @@ public class GuiController {
 		} else {
 			App.guiController.setOutput("Missing selected pathogen");
 		}
+		
+		this.update();
 	}
 
 	/**
