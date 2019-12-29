@@ -291,13 +291,16 @@ public class GuiController {
 	}
 
 	/**
-	 * Sets the output for the GUI to any String.
+	 * Sets the output for the GUI to any String. This method will only update the
+	 * output and not the complete GUI.
 	 * 
 	 * @param output The string that will be set as the output.
 	 */
 	public void setOutput(String output) {
 		outputString = output;
+		this.output.setText(outputString);
 	}
+
 
 	/**
 	 * Sets the Output text in the GUI to an executed action.
@@ -462,10 +465,9 @@ public class GuiController {
 
 		// Get amount
 		int amount = getAmount();
-		
+
 		if (amount > 1) {
 			App.guiController.setOutput("Auto playing ...");
-			this.update();
 		}
 		// Add actions into action queue
 		for (int i = 0; i < amount; i++) {
@@ -500,20 +502,16 @@ public class GuiController {
 			if (this.currentGame.getPoints() >= costs) {
 				App.guiController.setOutput(a, this.currentGame);
 				this.executeAction(a);
-				this.update();
 				return;
 
 			} else {
 				App.guiController.setOutput("Missing " + (costs - this.currentGame.getPoints()) + " points");
-				this.update();
 				return;
 			}
 
 		} else {
 			App.guiController.setOutput("Missing selected city");
 		}
-
-		this.update();
 	}
 
 	/**
@@ -540,20 +538,16 @@ public class GuiController {
 			if (this.currentGame.getPoints() >= costs) {
 				App.guiController.setOutput(a, this.currentGame);
 				this.executeAction(a);
-				this.update();
 				return;
 
 			} else {
 				App.guiController.setOutput("Missing " + (costs - this.currentGame.getPoints() + " points"));
-				this.update();
 				return;
 			}
 
 		} else {
 			App.guiController.setOutput("Missing selected city");
 		}
-
-		this.update();
 	}
 
 	/**
@@ -582,12 +576,10 @@ public class GuiController {
 			if (this.currentGame.getPoints() >= costs) {
 				App.guiController.setOutput(a, this.currentGame);
 				this.executeAction(a);
-				this.update();
 				return;
 
 			} else {
 				App.guiController.setOutput("Missing " + (costs - this.currentGame.getPoints()) + " points");
-				this.update();
 				return;
 			}
 
@@ -600,8 +592,6 @@ public class GuiController {
 		} else {
 			App.guiController.setOutput("Missing selected cities");
 		}
-
-		this.update();
 	}
 
 	/**
@@ -625,33 +615,27 @@ public class GuiController {
 			if (this.currentGame.getPoints() >= costs) {
 				if (this.currentGame.getVaccDevEvents().stream().anyMatch(e -> e.getPathogen() == pathogen)) {
 					App.guiController.setOutput("Vaccine allready in development");
-					this.update();
 					return;
 
 				} else if (this.currentGame.getVaccAvailableEvents().stream()
 						.anyMatch(e -> e.getPathogen() == pathogen)) {
-					
+
 					App.guiController.setOutput("Vaccine allready developed");
-					this.update();
 					return;
 				}
 
 				App.guiController.setOutput(a, this.currentGame);
 				this.executeAction(a);
-				this.update();
 				return;
 
 			} else {
 				App.guiController.setOutput("Missing " + (costs - this.currentGame.getPoints()) + " points");
-				this.update();
 				return;
 			}
 
 		} else {
 			App.guiController.setOutput("Missing selected pathogen");
 		}
-
-		this.update();
 	}
 
 	/**
@@ -677,18 +661,15 @@ public class GuiController {
 			if (this.currentGame.getPoints() >= costs) {
 				if (this.currentGame.getVaccAvailableEvents().stream().noneMatch(e -> e.getPathogen() == pathogen)) {
 					App.guiController.setOutput("Vaccines for " + pathogen.getName() + " were not developed yet");
-					this.update();
 					return;
 				}
-				
+
 				App.guiController.setOutput(a, this.currentGame);
 				this.executeAction(a);
-				this.update();
 				return;
 
 			} else {
 				App.guiController.setOutput("Missing " + (costs - this.currentGame.getPoints()) + " points");
-				this.update();
 				return;
 			}
 
@@ -701,8 +682,6 @@ public class GuiController {
 		} else {
 			App.guiController.setOutput("Missing selected city and pathogen");
 		}
-
-		this.update();
 	}
 
 	/**
@@ -727,32 +706,26 @@ public class GuiController {
 			if (this.currentGame.getPoints() >= costs) {
 				if (this.currentGame.getMedDevEvents().stream().anyMatch(e -> e.getPathogen() == pathogen)) {
 					App.guiController.setOutput("Vaccine allready in development");
-					this.update();
 					return;
 
 				} else if (this.currentGame.getMedAvailableEvents().stream()
 						.anyMatch(e -> e.getPathogen() == pathogen)) {
-					
+
 					App.guiController.setOutput("Vaccine allready developed");
-					this.update();
 					return;
 				}
 				App.guiController.setOutput(a, this.currentGame);
 				this.executeAction(a);
-				this.update();
 				return;
 
 			} else {
 				App.guiController.setOutput("Missing " + (costs - this.currentGame.getPoints()) + " points");
-				this.update();
 				return;
 			}
 
 		} else {
 			App.guiController.setOutput("Missing selected pathogen");
 		}
-
-		this.update();
 	}
 
 	/**
@@ -780,18 +753,15 @@ public class GuiController {
 			if (this.currentGame.getPoints() >= costs) {
 				if (this.currentGame.getMedAvailableEvents().stream().noneMatch(e -> e.getPathogen() == pathogen)) {
 					App.guiController.setOutput("Medication for " + pathogen.getName() + " was not developed yet");
-					this.update();
 					return;
 				}
-				
+
 				App.guiController.setOutput(a, this.currentGame);
 				this.executeAction(a);
-				this.update();
 				return;
 
 			} else {
 				App.guiController.setOutput("Missing " + (costs - this.currentGame.getPoints()) + " points");
-				this.update();
 				return;
 			}
 		} else if (city == null && pathogen != null) {
@@ -803,8 +773,6 @@ public class GuiController {
 		} else {
 			App.guiController.setOutput("Missing selected city and pathogen");
 		}
-
-		this.update();
 	}
 
 	/**
@@ -825,20 +793,16 @@ public class GuiController {
 			if (this.currentGame.getPoints() >= costs) {
 				App.guiController.setOutput(a, this.currentGame);
 				this.executeAction(a);
-				this.update();
 				return;
 
 			} else {
 				App.guiController.setOutput("Missing " + (costs - this.currentGame.getPoints()) + " points");
-				this.update();
 				return;
 			}
 
 		} else {
 			App.guiController.setOutput("Missing selected city");
 		}
-
-		this.update();
 	}
 
 	/**

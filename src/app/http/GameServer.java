@@ -20,7 +20,7 @@ import javafx.application.Platform;
  */
 public class GameServer {
 
-	private static boolean inGame;
+	private static boolean init = true;
 	private HttpServer server;
 	private static LinkedBlockingDeque<GameEvaluator> repliesToSend = new LinkedBlockingDeque<>();
 
@@ -45,9 +45,6 @@ public class GameServer {
 	 */
 	public GameServer() {
 		try {
-			
-			// Set flag that tells if in game or not.
-			inGame = false;
 			
 			// Creates a new HTTP server with the port 50123.
 			this.server = HttpServer.create(new InetSocketAddress(50123), 0);
@@ -111,10 +108,9 @@ public class GameServer {
 				// (1)
 			} else if (App.guiController != null && App.guiController.ready()) {
 				App.guiController.setGame(ge);
-				if (!inGame) {
+				if (init) {
 					App.guiController.setOutput("Game found. Start playing");
-					App.guiController.update();
-					inGame = true;
+					init = false;
 				}
 
 				// Initializing the (3) way of playing.
@@ -138,7 +134,7 @@ public class GameServer {
 		
 		// Reset flag if the game was over.
 		if (!outcome.equals("pending")) {
-			inGame = false;
+			init = true;
 		}
 	}
 
