@@ -40,6 +40,7 @@ SEEDS = list(range(args.range[0], args.range[1] + 1))
 
 # Parse seeds out of seeds file
 if(args.file):
+    SEEDS = []
     with codecs.open('seeds.txt', mode='r', encoding='utf_8') as f:
         for line in f.read().split("\n"):
             if(line != ""):
