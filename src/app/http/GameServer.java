@@ -34,7 +34,7 @@ public class GameServer {
 			System.err.println("Blocking deque LOCK was executed!");
 			GameServer.addReply(GameServer.LOCK);
 
-			return ActionHeuristic.solve(currentGame);
+			return ActionHeuristic.solve(currentGame).toString();
 		}
 	};
 
@@ -97,7 +97,7 @@ public class GameServer {
 		synchronized (GameServer.class) {
 			// (3)
 			if (hasReplies() && peekReply() == LOCK) {
-				eval = (Game g) -> ActionHeuristic.solve(g);
+				eval = (Game g) -> ActionHeuristic.solve(g).toString();
 
 				// (2)
 			} else if (hasReplies()) {
@@ -117,7 +117,7 @@ public class GameServer {
 				});
 
 				// Set heuristic as game evaluator
-				eval = (Game g) -> ActionHeuristic.solve(g);
+				eval = (Game g) -> ActionHeuristic.solve(g).toString();
 			}
 		}
 		

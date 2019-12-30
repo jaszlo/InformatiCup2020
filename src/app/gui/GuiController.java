@@ -398,12 +398,13 @@ public class GuiController {
 	 * 
 	 * @param action The action that will be displayed in the output.
 	 */
-	public void setOutput(Action action, Game game) {
+	public void setOutput(Action action) {
 
 		// Get all relevant usual information most events have.
 		City city = action.getCity();
 		Pathogen pathogen = action.getPathogen();
 		String rounds = action.getRounds() + "";
+		Game game = action.getGame();
 
 		// Create a formated String and call the overloaded method with a string as the
 		// input.
@@ -541,7 +542,7 @@ public class GuiController {
 		}
 
 		// Set output
-		App.guiController.setOutput(new Action(this.currentGame), this.currentGame);
+		App.guiController.setOutput(new Action(this.currentGame));
 
 		// Execute first action
 		this.executeAction();
@@ -559,7 +560,11 @@ public class GuiController {
 
 		// Add actions into action queue
 		for (int i = 0; i < amount; i++) {
-			GameServer.addReply((Game g) -> ActionHeuristic.solve(g));
+			GameServer.addReply((Game g) -> {
+				Action a = ActionHeuristic.solve(g);
+				this.setOutput(a);
+				return a.toString();
+			});
 		}
 
 		// Execute first action
@@ -588,7 +593,7 @@ public class GuiController {
 			int costs = (10 * a.getRounds() + 20);
 
 			if (this.currentGame.getPoints() >= costs) {
-				App.guiController.setOutput(a, this.currentGame);
+				App.guiController.setOutput(a);
 				this.executeAction(a);
 				return;
 
@@ -624,7 +629,7 @@ public class GuiController {
 			int costs = (5 * a.getRounds() + 15);
 
 			if (this.currentGame.getPoints() >= costs) {
-				App.guiController.setOutput(a, this.currentGame);
+				App.guiController.setOutput(a);
 				this.executeAction(a);
 				return;
 
@@ -662,7 +667,7 @@ public class GuiController {
 			Action a = new Action(this.currentGame, city, cityTo, rounds);
 			int costs = (3 * a.getRounds() + 3);
 			if (this.currentGame.getPoints() >= costs) {
-				App.guiController.setOutput(a, this.currentGame);
+				App.guiController.setOutput(a);
 				this.executeAction(a);
 				return;
 
@@ -712,7 +717,7 @@ public class GuiController {
 					return;
 				}
 
-				App.guiController.setOutput(a, this.currentGame);
+				App.guiController.setOutput(a);
 				this.executeAction(a);
 				return;
 
@@ -752,7 +757,7 @@ public class GuiController {
 					return;
 				}
 
-				App.guiController.setOutput(a, this.currentGame);
+				App.guiController.setOutput(a);
 				this.executeAction(a);
 				return;
 
@@ -802,7 +807,7 @@ public class GuiController {
 					App.guiController.setOutput("Vaccine allready developed");
 					return;
 				}
-				App.guiController.setOutput(a, this.currentGame);
+				App.guiController.setOutput(a);
 				this.executeAction(a);
 				return;
 
@@ -844,7 +849,7 @@ public class GuiController {
 					return;
 				}
 
-				App.guiController.setOutput(a, this.currentGame);
+				App.guiController.setOutput(a);
 				this.executeAction(a);
 				return;
 
@@ -879,7 +884,7 @@ public class GuiController {
 			Action a = new Action(type, this.currentGame, city);
 			int costs = 3;
 			if (this.currentGame.getPoints() >= costs) {
-				App.guiController.setOutput(a, this.currentGame);
+				App.guiController.setOutput(a);
 				this.executeAction(a);
 				return;
 
