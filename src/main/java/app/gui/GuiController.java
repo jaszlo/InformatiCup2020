@@ -386,8 +386,8 @@ public class GuiController {
 	}
 
 	/**
-	 * Sets the output for the GUI to any String. This method will only update the
-	 * output and not the complete GUI.
+	 * Sets the output for the GUI to any String if the GUI is ready. This method
+	 * will only update the output and not the complete GUI.
 	 * 
 	 * @param output The string that will be set as the output.
 	 */
