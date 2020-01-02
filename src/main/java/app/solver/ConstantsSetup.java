@@ -11,7 +11,7 @@ import app.io.FileHandler;
  */
 public class ConstantsSetup {
 
-	public static final String CONSTANTS_PATH = "resources/constants.txt";
+	public static final String CONSTANTS_PATH = "constants.txt";
 
 	/**
 	 * Maps the values of the constants from a specified file. Reads from a specified file.

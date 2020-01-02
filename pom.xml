@@ -5,11 +5,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>app</groupId>
-	<artifactId>ic_local_webservice</artifactId>
+	<artifactId>ic_webservice</artifactId>
 	<packaging>jar</packaging>
 	<version>20</version>
-	<name>ic_local_webservice</name>
-
+	<name>ic_webservice</name>
 	<properties>
     		<maven.compiler.source>1.8</maven.compiler.source>
     		<maven.compiler.target>1.8</maven.compiler.target>
@@ -26,47 +25,27 @@
 			<artifactId>json-simple</artifactId>
 			<version>1.1.1</version>
 		</dependency>
-		<dependency>
-      			<groupId>junit</groupId>
-      			<artifactId>junit</artifactId>
-      			<version>3.8.1</version>
-      			<scope>test</scope>
-   	 	</dependency>
-		<dependency>
-    			<groupId>org.openjfx</groupId>
-    			<artifactId>javafx</artifactId>
-    			<version>11</version>
-    			<type>pom</type>
-		</dependency>
-		<dependency>
-			<groupId>org.openjfx</groupId>
-			<artifactId>javafx</artifactId>
-			<version>14-ea+6</version>
-			<type>pom</type>
-		</dependency>
-		<dependency>
-			<groupId>org.openjfx</groupId>
-			<artifactId>javafx-fxml</artifactId>
-			<version>14-ea+6</version>
-		</dependency>
-		<dependency>
-			<groupId>org.openjfx</groupId>
-			<artifactId>javafx-controls</artifactId>
-			<version>14-ea+6</version>
-		</dependency>
-		<dependency>
-			<groupId>org.openjfx</groupId>
-			<artifactId>javafx-swing</artifactId>
-			<version>14-ea+6</version>
-		</dependency>
 	</dependencies>
+	
+<build>
+	<plugins>
+     	<plugin>
+       	<groupId>org.codehaus.mojo</groupId>
+       	<artifactId>exec-maven-plugin</artifactId>
+       	<version>1.1.1</version>
+       		<executions>
+        		<execution>
+	         		<phase>package</phase>
+	         		<goals>
+	          			<goal>java</goal>
+	         		</goals>
+	         		<configuration>
+	          			<mainClass>app.App</mainClass>
+	         		</configuration>
+        		</execution>
+       		</executions>
+      	</plugin>
+     </plugins>
+</build>
 
-	<build>
-		<sourceDirectory>src</sourceDirectory>
-		<resources>
-			<resource>
-				<directory>src/resources</directory>
-			</resource>
-		</resources>
-	</build>
 </project>

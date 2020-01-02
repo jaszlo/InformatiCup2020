@@ -1,4 +1,4 @@
 All:
 	mvn clean
 	mvn package
-	java -cp target/ic_local_webservice-20.jar app.App	
+	java -jar target/ic_webservice-20.jar	

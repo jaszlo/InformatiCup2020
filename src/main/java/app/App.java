@@ -33,7 +33,7 @@ public class App extends Application {
 
 			// Create the loader for the GUI.
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/resources/gui.fxml"));
+			loader.setLocation(getClass().getResource("/gui.fxml"));
 
 			// Create and assign the controllers.
 			App.guiController = new GuiController();

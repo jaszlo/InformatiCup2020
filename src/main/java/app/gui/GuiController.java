@@ -75,7 +75,7 @@ public class GuiController {
 		
 		this.outputString = "Waiting for game to start ...";
 		
-		String json = FileHandler.readFile("resources/EmptyGame.json").stream()
+		String json = FileHandler.readFile("EmptyGame.json").stream()
 				.collect(Collectors.joining(System.lineSeparator()));
 
 		this.currentGame = new Game(json);
