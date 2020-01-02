@@ -13,7 +13,7 @@ ________________GUI__________________
 ->  Tooltip vervollständigen                                                    | REQUIRED
 ->  BrowserGUI fertigstellen oder entfernen.                                    | REQUIRED
 ->  Wenn Spiel zuende Queue leeren und outcome anzigen				| OPTIONAL
-
+->  Wenn Spiel zuende output unveränderbar bis neues spiel gefunden		| REQUIRED 
 
 ___________DOKUMENTATION____________
 ->  AWS installation								| REQUIRED
