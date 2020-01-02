@@ -2,19 +2,12 @@
 
 ______________ALLGEMEIN______________
 ->  AWS und MASTER branch auf gleichen stand					| REQUIRED
-->  Statt Nullobjekten Sigeltons (bei z.B. HashSets)                            | OPTIONAL
 ->  Skript für Konstantenoptimierung schreiben                                  | OPTIONA
 ->  Laufzeit optimieren                                                         | OPTIONAL
 ->  JavaDoc vervollständiger (letzten Getter schreiben und Korrektur lesen)     | REQUIRED
 ->  Dokumentation                                                               | REQUIRED 
 
-_____________HEUERISTIK______________
-
-->  Nothing left to do. Außer ihr habt noch Idee.
-
 ________________GUI__________________
 (nach persönlicher Priorität sortiert)i
 ->  Tooltip vervollständigen                                                    | REQUIRED
-->  (evt.) Resizeable Canvas und als eigene Klasse                              | OPTIONAL (wäre halt schön)
-->  Wenn obige Punkt erfüllt ist Zoomalbe Canvas                                | OPTIONAL (wäre halt schön)
 ->  BrowserGUI fertigstellen oder entfernen.                                    | REQUIRED 
