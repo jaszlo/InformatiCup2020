@@ -95,15 +95,6 @@ public class GameServer {
 
 		// Create a new game exchange to work with.
 		GameExchange ge = new GameExchange(exchange);
-		String outcome = ge.getGame().getOutcome();
-		if (!outcome.equals("pending")) {
-			if (outcome.equals("win")) {
-				App.guiController.setOutput("Game over. You won.");
-				
-			} else {
-				App.guiController.setOutput("Game over. You lost.");
-			}
-		}
 
 		GameEvaluator eval = null;
 

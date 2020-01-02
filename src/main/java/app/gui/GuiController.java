@@ -68,18 +68,19 @@ public class GuiController {
 	private Game currentGame;
 	private String comboSearch;
 	private boolean isClosed;
+
 	/**
 	 * Creates the controller for the GUI. The map draws an "empty" game state.
 	 */
 	public GuiController() {
-		
+
 		this.outputString = "Waiting for game to start ...";
-		
+
 		String json = FileHandler.readFile("EmptyGame.json").stream()
 				.collect(Collectors.joining(System.lineSeparator()));
 
 		this.currentGame = new Game(json);
-		this.comboSearch =  "";
+		this.comboSearch = "";
 		this.isClosed = false;
 	}
 
@@ -100,7 +101,8 @@ public class GuiController {
 	public void update() {
 
 		// Set the output in the Text to the static String where it was saved.
-		// If combo box is showing a search is active and therefore the output should not be changed
+		// If combo box is showing a search is active and therefore the output should
+		// not be changed
 		if (!this.citiesCB.isShowing()) {
 			this.output.setText(outputString);
 		}
@@ -281,11 +283,11 @@ public class GuiController {
 
 		this.currentGameExchange = exchange;
 		this.currentGame = this.currentGameExchange.getGame();
-		
+
 		if (this.currentGame.getPoints() == 40 && this.currentGame.getRound() == 1) {
-			this.outputString =  "Game found. Start playing";
+			this.outputString = "Game found. Start playing";
 		}
-		
+
 		Platform.runLater(() -> this.update());
 	}
 
@@ -391,8 +393,20 @@ public class GuiController {
 	 */
 	public void setOutput(String output) {
 		outputString = output;
-		
-		Platform.runLater(() -> this.output.setText(outputString));
+		if (this.ready()) {
+			Platform.runLater(() -> this.output.setText(outputString));
+
+		} else {
+			String outcome = this.currentGame.getOutcome();
+			if (!outcome.equals("pending")) {
+				if (outcome.equals("win")) {
+					Platform.runLater(() -> this.output.setText("Game over. You won."));
+
+				} else {
+					Platform.runLater(() -> this.output.setText("Game over. You lost."));
+				}
+			}
+		}
 	}
 
 	/**
@@ -419,8 +433,8 @@ public class GuiController {
 					.setOutput("The city " + city.getName() + " was put under quarantine for " + rounds + " rounds");
 			break;
 		case closeAirport:
-			App.guiController.setOutput(
-					"The airport of the city " + city.getName() + " was closed for " + rounds + " rounds");
+			App.guiController
+					.setOutput("The airport of the city " + city.getName() + " was closed for " + rounds + " rounds");
 			break;
 		case closeConnection:
 			App.guiController.setOutput("The city " + city.getName() + " closed the connection to the city "
