@@ -1,7 +1,8 @@
 package app.http;
 
 import java.io.IOException;
-
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -71,7 +72,25 @@ public class GameServer {
 
 		// Only handle post request.
 		if (!exchange.getRequestMethod().equals("POST")) {
-			System.err.println("Invalid request!");
+			System.err.println("Got a non POST request: Closing server!");
+			String response = "<center>Succefully closed server! :D</center>";
+			try {
+				exchange.sendResponseHeaders(200, response.getBytes("UTF-8").length);
+				OutputStream os = exchange.getResponseBody();
+
+				// Write the response to the GI client
+				os.write(response.getBytes("UTF-8"));
+
+				// Close the output stream and set the last action string in the GUI
+				os.close();
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.exit(0);
 		}
 
 		// Create a new game exchange to work with.

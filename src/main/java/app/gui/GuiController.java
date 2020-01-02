@@ -66,8 +66,8 @@ public class GuiController {
 	private String outputString;
 	private GameExchange currentGameExchange;
 	private Game currentGame;
-	private String comboSearch = "";
-
+	private String comboSearch;
+	private boolean isClosed;
 	/**
 	 * Creates the controller for the GUI. The map draws an "empty" game state.
 	 */
@@ -79,7 +79,8 @@ public class GuiController {
 				.collect(Collectors.joining(System.lineSeparator()));
 
 		this.currentGame = new Game(json);
-
+		this.comboSearch =  "";
+		this.isClosed = false;
 	}
 
 	/**
@@ -295,7 +296,7 @@ public class GuiController {
 	 * @return True if GUI is ready.
 	 */
 	public boolean ready() {
-		return this.currentGameExchange == null;
+		return this.currentGameExchange == null && !this.isClosed;
 	}
 
 	/**
@@ -312,6 +313,7 @@ public class GuiController {
 
 		// Close the primaryStage and close the Server (terminate the Programm)
 		primaryStage.close();
+		this.isClosed = true;
 	}
 
 	/**
