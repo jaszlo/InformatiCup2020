@@ -2,12 +2,25 @@
 
 ______________ALLGEMEIN______________
 ->  AWS und MASTER branch auf gleichen stand					| REQUIRED
-->  Skript für Konstantenoptimierung schreiben                                  | OPTIONA
+->  GitHub-Abgabe-Repository für den Wettbewerb					| REQUIRED
+->  Skript für Konstantenoptimierung schreiben                                  | OPTIONAL
 ->  Laufzeit optimieren                                                         | OPTIONAL
 ->  JavaDoc vervollständiger (letzten Getter schreiben und Korrektur lesen)     | REQUIRED
-->  Dokumentation                                                               | REQUIRED 
+
 
 ________________GUI__________________
 (nach persönlicher Priorität sortiert)i
 ->  Tooltip vervollständigen                                                    | REQUIRED
-->  BrowserGUI fertigstellen oder entfernen.                                    | REQUIRED 
+->  BrowserGUI fertigstellen oder entfernen.                                    | REQUIRED
+
+
+
+___________DOKUMENTATION____________
+->  AWS installation								| REQUIRED
+->  Bilder hinzufügen								| OPTIONAL		
+->  Lösungsidee									| REQUIRED	
+->  Wartung und Weiterentwicklung						| OPTIONAL
+->  Lokale Benutzung über die grafische Oberfläche				| REQUIRED
+->  UML-Diagramm, HTTP-Package, Solver-Package, IO-Packagae			| REQUIRED (zum Teil)
+->  CodeErklärung								| REQUIRED (zumindest Teilweise)
+
