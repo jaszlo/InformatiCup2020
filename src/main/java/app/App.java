@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -47,9 +48,10 @@ public class App extends Application {
 			GUI.setMaximized(true);
 
 			// Attaches the newly created scene to the stage. Shows the stage in a resizable
-			// window. Also set title to "Pandemie".
+			// window. Also set title to "Pandemie" and add the icon.
 			GUI.setScene(scene);
 			GUI.setTitle("Pandemie");
+			GUI.getIcons().add(new Image("/pandemie.jpg"));
 			GUI.show();
 
 		} catch (Exception e) {
