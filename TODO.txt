@@ -12,7 +12,7 @@ ________________GUI__________________
 (nach persönlicher Priorität sortiert)i
 ->  Tooltip vervollständigen                                                    | REQUIRED
 ->  BrowserGUI fertigstellen oder entfernen.                                    | REQUIRED
-
+->  Wenn Spiel zuende Queue leeren und outcome anzigen				| OPTIONAL
 
 
 ___________DOKUMENTATION____________
