@@ -54,5 +54,5 @@ Diesen kann man z.B. durch das Aufrufen der URL "localhost:50123" in seinem Brow
 
 ## Lizenz
 
-Diese Projekt folgt der [MIT Lizenz](./LICENSE).
+Diese Projekt unterliegt der [MIT Lizenz](./LICENSE).
 
