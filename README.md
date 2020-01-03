@@ -18,22 +18,32 @@ $ mvn package
 ```
 War dies erfolgreich, so sollte der Webservice gestartet werden und die grafische Oberfläche erscheint.
 
-## Benutzung
+## Spielen über die grafische Oberfläche
 
-Ein blauer Ausgabetext gibt dabei Informationen über den aktuellen Zustand an. Startet man an dieser Stelle den \gls{GI Client}, so sollte der Text ausgeben, dass ein Spiel gefunden wurde.
+Nach dem starten der grafischen Oberfläche muss noch das Kommandozeilentool des InformatiCup auszuführen. Dabei ist es empfehlenswert die Antwowrt zeit auf "unbegrenz" zu setzten, da man selber
+leicht die Zehn Sekunden überschreitet. Dies sieht unter Linux folgendermaßen aus.
+```sh
+$ ./ic20_linux -t 0
+```
+In der grafischen Oberfläche gibt ein blauer Ausgabetext gibt Informationen über den aktuellen Zustand an. Nach dem Starten des Kommandozeilentool, so sollte der Text ausgeben, dass ein Spiel gefunden wurde.
 
 Nun kann man durch den 'Auto turn' Knopf einen Zug von der Heuristik ausführen lassen. Optional lässt sich im Textfeld 'amount' eine gewisse Anzahl von automatischen Zügen angeben.
+Ebenso lassen sich manuell Aktionen spielen. Der Ausgabetext gibt an, falls Informationen zum Ausführen einer Aktion fehlen, oder ob diese ausgeführt wurde.
+Städte und Pathogene lassen sich per "ChoiceBox" auswählen, während die Anzahl der Runden einer Aktion im dazugehörigen Textfeld angegeben werden.
 
+Will man nur die grafische Oberfläche beenden geht dies über das Kreuz des Fensters. Will man dazu noch den Server schließen muss der 'Quit' Knopf benutzt werden.
+
+## Testen
+
+Da man durch manuelles Spielen nur sehr langsam Eindruck von der Effizienz der Heuristik bekommt gibt es das Testskript.
 Zum effizienteren Testen der Heurisitk sollte man jedoch das Testskript benutzen. Dieses bietet verschiedene Möglichkeiten mehrere Spiele parallel spielen zu lassen.
 Durch den einfachen Aufruf
-
 ```
 $ python3 Test.py
 ```
-
 werden die ersten 100 Seeds gespielt, wovon jeweils vier parallel ausgeführt werden. Nach diesem Aufruf sollte sich die GUI schließen. Relevante Informationen zum aktuellen Fortschritt werden auf der Konsole ausgegeben.
+Erneut finden sich weitere und genauere Informationen in der Dokumentation in Kapitel 4.3 "Benutzung des Testskripts" .
 
-Erneut finden sich weitere und genauere Informationen in der Dokumentation in Kapitel 4.3 "Benutzung des Testskripts" 
 
 ## Beenden des Webservices als Hintergrundprozess
 
@@ -42,4 +52,4 @@ Spielt man mehrere Spiele zeitgleich, so wird die GUI geschlossen, da diese nich
 Diesen kann man z.B. durch das Aufrufen der URL "localhost:50123" in seinem Browser erzeugen.
 
 
-
+## Lizens
