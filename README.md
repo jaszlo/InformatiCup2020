@@ -52,4 +52,7 @@ Spielt man mehrere Spiele zeitgleich, so wird die GUI geschlossen, da diese nich
 Diesen kann man z.B. durch das Aufrufen der URL "localhost:50123" in seinem Browser erzeugen.
 
 
-## Lizens
+## Lizenz
+
+Diese Projekt folgt der [MIT Lizenz](./LICENSE).
+
