@@ -6,7 +6,7 @@ ______________ALLGEMEIN______________
 ->  Skript für Konstantenoptimierung schreiben                                  | OPTIONAL
 ->  Laufzeit optimieren                                                         | OPTIONAL
 ->  JavaDoc vervollständiger (letzten Getter schreiben und Korrektur lesen)     | REQUIRED
-
+->  Add a license								| OPTIONAL
 
 ________________GUI__________________
 (nach persönlicher Priorität sortiert)i
