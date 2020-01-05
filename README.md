@@ -37,7 +37,7 @@ Will man nur die grafische Oberfläche beenden geht dies über das Kreuz des Fen
 
 Da man durch manuelles Spielen nur sehr langsam Eindruck von der Effizienz der Heuristik bekommt gibt es das Testskript.
 Zum effizienteren Testen der Heurisitk sollte man jedoch das Testskript benutzen. Dieses bietet verschiedene Möglichkeiten mehrere Spiele parallel spielen zu lassen.
-Durch den einfachen Aufruf
+Durch den Aufruf
 ```
 $ python3 Test.py
 ```
