@@ -20,8 +20,8 @@ War dies erfolgreich, so sollte der Webservice gestartet werden und die grafisch
 
 ## Spielen über die grafische Oberfläche
 
-Nach dem starten der grafischen Oberfläche muss noch das Kommandozeilentool des InformatiCup auszuführen. Dabei ist es empfehlenswert die Antwowrt zeit auf "unbegrenz" zu setzten, da man selber
-leicht die Zehn Sekunden überschreitet. Dies sieht unter Linux folgendermaßen aus.
+Nach dem starten der grafischen Oberfläche muss noch das Kommandozeilentool des InformatiCup auszuführen. Dabei ist es empfehlenswert die Antwortzeit auf "unbegrenz" zu setzten, da man selber
+leicht die zehn Sekunden überschreitet. Dies sieht unter Linux folgendermaßen aus.
 ```sh
 $ ./ic20_linux -t 0
 ```
