@@ -47,7 +47,7 @@ Erneut finden sich weitere und genauere Informationen in der Dokumentation in Ka
 
 ## Beenden des Webservices als Hintergrundprozess
 
-Spielt man mehrere Spiele zeitgleich, so wird die GUI geschlossen, da diese nicht weiter benötigt wird. Will man nun den Prozess des Webservices beenden, so kann man dies per beliebigen Request der nicht vom Typ POST ist machen. 
+Spielt man mehrere Spiele zeitgleich, so wird die GUI geschlossen, da diese nicht weiter benötigt wird. Will man nun den Prozess des Webservices beenden, so kann man dies per beliebigen Request, der nicht vom Typ POST ist, machen. 
 
 Diesen kann man z.B. durch das Aufrufen der URL "localhost:50123" in seinem Browser erzeugen.
 
