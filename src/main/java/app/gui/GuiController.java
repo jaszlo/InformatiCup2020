@@ -1,5 +1,6 @@
 package app.gui;
 
+import java.awt.image.BufferedImage;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
@@ -17,6 +18,7 @@ import app.solver.ActionHeuristic;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.SnapshotResult;
 import javafx.scene.canvas.Canvas;
@@ -1132,7 +1134,8 @@ public class GuiController {
 		String path = System.getProperty("user.dir") + "/ic20_export.png";
 		this.setOutput("Exported the Canvas to the current work direcoty " + path);
 		this.currentMap.snapshot((SnapshotResult sr) -> {
-			FileHandler.writeFile(path, sr.getImage());
+			BufferedImage bufferedImage = SwingFXUtils.fromFXImage(sr.getImage(), null);
+			FileHandler.writeFile(path, bufferedImage);
 			return null;
 		}, null, null);
 	}

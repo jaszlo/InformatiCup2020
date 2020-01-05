@@ -13,8 +13,6 @@ import java.util.Collection;
 
 import javax.imageio.ImageIO;
 
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.WritableImage;
 /**
  * A handler that can write or read files.
  */
@@ -69,11 +67,11 @@ public class FileHandler {
 		}
 	}
 
-	public static void writeFile(String path, WritableImage image) {
+	public static void writeFile(String path, BufferedImage image) {
 		FileHandler.writeFile(new File(path), image);
 	}
 
-	public static void writeFile(File file, WritableImage image) {
+	public static void writeFile(File file, BufferedImage image) {
 
 		if (file == null) {
 			return;
@@ -84,8 +82,7 @@ public class FileHandler {
 				file.createNewFile();
 			}
 
-			BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
-			ImageIO.write(bufferedImage, "png", file);
+			ImageIO.write(image, "png", file);
 
 		} catch (IOException ex) {
 			ex.printStackTrace();
