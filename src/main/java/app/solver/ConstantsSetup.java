@@ -1,6 +1,5 @@
 package app.solver;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,8 +25,7 @@ public class ConstantsSetup {
 	public static Map<String, Double> getConstants(String resourceFilename) {
 
 		Map<String, Double> constants = new HashMap<String, Double>();
-		File constFile = FileHandler.getFileFromResources(resourceFilename);
-		ArrayList<String> constantsList = FileHandler.readFile(constFile);
+		ArrayList<String> constantsList = FileHandler.readFile(resourceFilename);
 
 		if (constantsList == null) {
 			return null;

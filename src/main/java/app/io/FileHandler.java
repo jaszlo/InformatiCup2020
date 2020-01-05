@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,6 +41,26 @@ public class FileHandler {
 	}
 
 	/**
+	 * Returns a stream from the resource folder.
+	 * 
+	 * @param path The path of the file relative to the resource folder.
+	 * @return A stream object if a file with the name path exists in the resource
+	 *         folder, otherwise null is returned.
+	 */
+	public static InputStream getStreamFromResources(String path) {
+
+		ClassLoader classLoader = FileHandler.class.getClassLoader();
+		URL resource = classLoader.getResource(path);
+
+		if (resource == null) {
+			return null;
+
+		} else {
+			return classLoader.getResourceAsStream(path);
+		}
+	}
+
+	/**
 	 * Writes text into a file.
 	 * 
 	 * @param file The file to write the text into. If this file does not exist,
@@ -67,10 +89,24 @@ public class FileHandler {
 		}
 	}
 
+	/**
+	 * Writes an image into a file.
+	 * 
+	 * @param path The path of the file to write the image into. If this file does
+	 *             not exist, nothing happens.
+	 * @param text The image to be written into the file.
+	 */
 	public static void writeFile(String path, BufferedImage image) {
 		FileHandler.writeFile(new File(path), image);
 	}
 
+	/**
+	 * Writes an image into a file.
+	 * 
+	 * @param file The file to write the image into. If this file does not exist,
+	 *             nothing happens.
+	 * @param text The image to be written into the file.
+	 */
 	public static void writeFile(File file, BufferedImage image) {
 
 		if (file == null) {
@@ -89,29 +125,38 @@ public class FileHandler {
 		}
 	}
 
+	/**
+	 * Returns the contents of a file as a List of Strings.
+	 * 
+	 * @param file The path of the file to read the content from. If the file does
+	 *             not exist, null is returned.
+	 * @return The contents of the file as a list of Strings. Each line corresponds
+	 *         to one entry in the resulting list. The first line is at position 0
+	 *         in the list, etc.
+	 */
 	public static ArrayList<String> readFile(String path) {
-		return FileHandler.readFile(FileHandler.getFileFromResources(path));
+		return FileHandler.readFile(FileHandler.getStreamFromResources(path));
 	}
 
 	/**
 	 * Returns the contents of a file as a List of Strings.
 	 * 
-	 * @param file The file to read the content from. If file is null or does not
-	 *             exist, null is also returned
+	 * @param file The file as a stream to read the content from. If file is null,
+	 *             null is returned
 	 * @return The contents of the file as a list of Strings. Each line corresponds
-	 *         to one entry in the resulting List. The first line is at position 0
+	 *         to one entry in the resulting list. The first line is at position 0
 	 *         in the list, etc.
 	 */
-	public static ArrayList<String> readFile(File file) {
+	public static ArrayList<String> readFile(InputStream file) {
 
 		// Check if file exists
-		if (file == null || !file.exists()) {
+		if (file == null) {
 			return null;
 		}
 
 		ArrayList<String> content = new ArrayList<>();
 
-		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(file))) {
 			// Read lines and store them into content
 			content = reader.lines().collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
 
