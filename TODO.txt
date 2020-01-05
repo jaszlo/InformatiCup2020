@@ -1,7 +1,6 @@
 
 
 ______________ALLGEMEIN______________
-->  AWS und MASTER branch auf gleichen stand					| REQUIRED
 ->  GitHub-Abgabe-Repository für den Wettbewerb					| REQUIRED
 ->  Skript für Konstantenoptimierung schreiben                                  | OPTIONAL
 ->  Laufzeit optimieren                                                         | OPTIONAL
