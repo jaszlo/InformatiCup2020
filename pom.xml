@@ -44,7 +44,7 @@
                         <id>auto-clean</id>
                         <phase>initialize</phase>
                         <goals>
-                        <goal>clean</goal>
+                        	<goal>clean</goal>
                         </goals>
                     </execution>
                 </executions>
