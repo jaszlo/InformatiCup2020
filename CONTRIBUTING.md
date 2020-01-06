@@ -5,21 +5,16 @@ Dies ist ein Projekt, welches im Rahmen einer Gruppenarbeit von drei Personen en
 da häufig gemeinsam über ein Gerät gearbeitet wurde.
 
 ## Contributors
-Christoph Schnell
-
-Email   -   christoph@hoebbel-schnell.de
+Christoph Schnell  
+Email   -   christoph@hoebbel-schnell.de  
 Packges -   AWS, GUI, Http, Solver
 
 
-
-Robin Schmöcker
-
-Email   -   robinyyy@t-online.de
+Robin Schmöcker  
+Email   -   robinyyy@t-online.de  
 Packges -   Game, Http, IO, Solver
 
 
-
-Jasper Lorenz
-
-Email   -   jasper@lorenzmail.de
+Jasper Lorenz  
+Email   -   jasper@lorenzmail.de  
 Packges -   AWS, GUI, Solver 
