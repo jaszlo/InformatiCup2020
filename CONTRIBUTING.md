@@ -7,7 +7,7 @@ da häufig gemeinsam über ein Gerät gearbeitet wurde.
 ## Contributors
 **Christoph Schnell**
 Email: christoph@hoebbel-schnell.de  
-Packges: GUI, Http, Solver
+Packges: [GUI](./src/main/java/app/gui), Http, Solver
 
 
 **Robin Schmöcker**  
