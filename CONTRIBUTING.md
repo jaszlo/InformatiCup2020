@@ -1,8 +1,11 @@
-### Contributing
+# Contributing
+
 
 ## Vorwort
 Dies ist ein Projekt, welches im Rahmen einer Gruppenarbeit von drei Personen entwickelt wurde. Die Commithistorie spiegelt dabei nicht die Leistung der einzelnen Personen für das Projekt wieder,
-da häufig gemeinsam über ein Gerät gearbeitet wurde.
+da häufig gemeinsam über ein Gerät gearbeitet wurde.  
+Das folgende sagt lediglich, zu welchem Package die jeweilige Person viel beigetragen hat.
+
 
 ## Contributors
 **Christoph Schnell**
