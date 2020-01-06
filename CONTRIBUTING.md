@@ -8,7 +8,6 @@ da häufig gemeinsam über ein Gerät gearbeitet wurde.
 Christoph Schnell
 
 Email   -   christoph@hoebbel-schnell.de
-
 Packges -   AWS, GUI, Http, Solver
 
 
@@ -16,7 +15,6 @@ Packges -   AWS, GUI, Http, Solver
 Robin Schmöcker
 
 Email   -   robinyyy@t-online.de
-
 Packges -   Game, Http, IO, Solver
 
 
@@ -24,5 +22,4 @@ Packges -   Game, Http, IO, Solver
 Jasper Lorenz
 
 Email   -   jasper@lorenzmail.de
-
 Packges -   AWS, GUI, Solver 
