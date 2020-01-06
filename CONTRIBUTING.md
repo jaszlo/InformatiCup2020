@@ -9,7 +9,7 @@ Das folgende sagt lediglich, zu welchem Package die jeweilige Person viel beiget
 
 
 ## Contributors
-**Christoph Schnell**
+**Christoph Schnell**  
 Email: christoph@hoebbel-schnell.de  
 Packges: [GUI](./src/main/java/app/gui), [Http](./src/main/java/app/http), [IO](./src/main/java/app/io), [Solver](./src/main/java/app/solver)
 
