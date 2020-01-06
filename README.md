@@ -25,7 +25,7 @@ leicht den Standardwert von zehn Sekunden überschreitet. Dies sieht unter Linux
 ```sh
 $ ./ic20_linux -t 0
 ```
-In der grafischen Oberfläche gibt ein blauer Ausgabetext gibt Informationen über den aktuellen Zustand an. Nach dem Starten des Kommandozeilentool, so sollte der Text ausgeben, dass ein Spiel gefunden wurde.
+In der grafischen Oberfläche gibt ein blauer Ausgabetext Informationen über den aktuellen Zustand an. Nach dem Starten des Kommandozeilentools sollte der Text ausgeben, dass ein Spiel gefunden wurde.
 
 Nun kann man durch den 'Auto turn' Knopf einen Zug von der Heuristik ausführen lassen. Optional lässt sich im Textfeld 'amount' eine gewisse Anzahl von automatischen Zügen angeben.
 Ebenso lassen sich manuell Aktionen spielen. Der Ausgabetext gibt an, falls Informationen zum Ausführen einer Aktion fehlen, oder ob diese ausgeführt wurde.
