@@ -11,14 +11,14 @@ Das folgende sagt lediglich aus, zu welchem Package die jeweilige Person viel be
 ## Contributors
 **Christoph Schnell**  
 Email: christoph@hoebbel-schnell.de  
-Packges: [GUI](./src/main/java/app/gui), [Http](./src/main/java/app/http), [IO](./src/main/java/app/io), [Solver](./src/main/java/app/solver)
+Packages: [GUI](./src/main/java/app/gui), [Http](./src/main/java/app/http), [IO](./src/main/java/app/io), [Solver](./src/main/java/app/solver)
 
 
 **Robin Schmöcker**  
 Email: robinyyy@t-online.de  
-Packges: [Game](./src/main/java/app/game), [Http](./src/main/java/app/http), [IO](./src/main/java/app/io), [Solver](./src/main/java/app/solver)
+Packages: [Game](./src/main/java/app/game), [Http](./src/main/java/app/http), [IO](./src/main/java/app/io), [Solver](./src/main/java/app/solver)
 
 
 **Jasper Lorenz**  
 Email: jasper@lorenzmail.de  
-Packges: [GUI](./src/main/java/app/gui), [Http](./src/main/java/app/http), [Solver](./src/main/java/app/solver) 
+Packages: [GUI](./src/main/java/app/gui), [Http](./src/main/java/app/http), [Solver](./src/main/java/app/solver) 
