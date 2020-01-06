@@ -7,14 +7,14 @@ da häufig gemeinsam über ein Gerät gearbeitet wurde.
 ## Contributors
 **Christoph Schnell**
 Email: christoph@hoebbel-schnell.de  
-Packges: [GUI](./src/main/java/app/gui), Http, Solver
+Packges: [GUI](./src/main/java/app/gui), [Http](./src/main/java/app/http), [IO](./src/main/java/app/io), [Solver](./src/main/java/app/solver)
 
 
 **Robin Schmöcker**  
 Email: robinyyy@t-online.de  
-Packges: Game, Http, IO, Solver
+Packges: Game, [Http](./src/main/java/app/http), [IO](./src/main/java/app/io), [Solver](./src/main/java/app/solver)
 
 
 **Jasper Lorenz**  
 Email: jasper@lorenzmail.de  
-Packges: GUI, Http, Solver 
+Packges: [GUI](./src/main/java/app/gui), [Http](./src/main/java/app/http), [Solver](./src/main/java/app/solver) 
