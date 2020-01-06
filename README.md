@@ -18,7 +18,7 @@ $ mvn package
 ```
 War dies erfolgreich, so sollte der Webservice gestartet werden und die grafische Oberfläche erscheint.
 
-## Spielen über die grafische Oberfläche
+## Benutzung
 
 Nach dem starten der grafischen Oberfläche muss noch das Kommandozeilentool des InformatiCup auszuführen. Dabei ist es empfehlenswert die Antwortzeit auf "unbegrenzt" zu setzten, da man selber
 leicht den Standardwert von zehn Sekunden überschreitet. Dies sieht unter Linux folgendermaßen aus.
