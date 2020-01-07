@@ -310,9 +310,7 @@ public class Game {
 	}
 
 	/**
-	 * //TODO java doc getters
-	 * 
-	 * @param name
+	 * @param name The name of the City.
 	 * @return the City with the given name.
 	 */
 	public City getCity(String name) {
@@ -320,23 +318,20 @@ public class Game {
 	}
 
 	/**
-	 * 
-	 * @return A Map of Cities in the game. The Key is the unique name of the City.
+	 * @return A Collection of all cities in the game.
 	 */
 	public Collection<City> getCities() {
 		return cities.values();
 	}
 
 	/**
-	 * 
-	 * @return The current round the game is in.
+	 * @return The current round of the game.
 	 */
 	public int getRound() {
 		return round;
 	}
 
 	/**
-	 * 
 	 * @return The initial population of the game. -1 if not known.
 	 */
 	public int getInitialPopulation() {
@@ -344,33 +339,29 @@ public class Game {
 	}
 
 	/**
-	 * 
-	 * @return The current total population. Equal to the sum of population of all
-	 *         cities.
+	 * @return The current total population. Equal to the sum of the population of
+	 *         all cities.
 	 */
 	public int getPopulation() {
 		return population;
 	}
 
 	/**
-	 * 
-	 * @return A Set of all anti-vaccionationism events
+	 * @return A set containing all anti-vaccionationism events.
 	 */
 	public Set<Event> getAntiVaccEvents() {
 		return events.get(EventType.antiVaccinationism);
 	}
 
 	/**
-	 * 
-	 * @return A Set of all the bio-terrorism taking place
+	 * @return A set containing all bio-terrorism events.
 	 */
 	public Set<Event> getBioTerrorEvents() {
 		return events.get(EventType.bioTerrorism);
 	}
 
 	/**
-	 * 
-	 * @return A set of all pathogen-outbreaks
+	 * @return A set containing all pathogen outbreaks.
 	 */
 	public Set<Event> getOutbreakEvents() {
 		return events.get(EventType.outbreak);
@@ -378,64 +369,56 @@ public class Game {
 	}
 
 	/**
-	 * 
-	 * @return The set of all uprisings taking place
+	 * @return A set containing all uprising-events.
 	 */
 	public Set<Event> getUprisingEvents() {
 		return events.get(EventType.uprising);
 	}
 
 	/**
-	 * 
-	 * @return A set of all the pathogens encountered
+	 * @return A set containing all pathogens that have appeared in the game.
 	 */
 	public Set<Event> getPathEncounterEvents() {
 		return events.get(EventType.pathogenEncountered);
 	}
 
 	/**
-	 * 
-	 * @return A set of all Quarantines
+	 * @return A set containing all quarantine-events.
 	 */
 	public Set<Event> getQuarantineEvents() {
 		return events.get(EventType.quarantine);
 	}
 
 	/**
-	 * 
-	 * @return A set of all vaccines currently in development
+	 * @return A set containing all vaccine in development events.
 	 */
 	public Set<Event> getVaccDevEvents() {
 		return events.get(EventType.vaccineInDevelopment);
 	}
 
 	/**
-	 * 
-	 * @return A set of all available vaccines
+	 * @return A set containing all vaccine available events.
 	 */
 	public Set<Event> getVaccAvailableEvents() {
 		return events.get(EventType.vaccineAvailable);
 	}
 
 	/**
-	 * 
-	 * @return A set of all medication currently in development
+	 * @return A set containing all medication in development events.
 	 */
 	public Set<Event> getMedDevEvents() {
 		return events.get(EventType.medicationInDevelopment);
 	}
 
 	/**
-	 * 
-	 * @return A set of all medication available.
+	 * @return A set containing all medication available events.
 	 */
 	public Set<Event> getMedAvailableEvents() {
 		return events.get(EventType.medicationAvailable);
 	}
 
 	/**
-	 * 
-	 * @return A set of all connections closed.
+	 * @return A set containing all connection-closed-events.
 	 */
 	public Set<Event> getConnClosedEvents() {
 		return events.get(EventType.connectionClosed);
@@ -443,8 +426,7 @@ public class Game {
 	}
 
 	/**
-	 * 
-	 * @return A set of all airports currently closed.
+	 * @return A set containing all airport-closed-events.
 	 */
 	public Set<Event> getAirportClosedEvents() {
 		return events.get(EventType.airportClosed);
@@ -452,33 +434,29 @@ public class Game {
 	}
 
 	/**
-	 * 
-	 * @return A set of all cities a certain medication is being deployed in.
+	 * @return A set containing all medication deployed events.
 	 */
 	public Set<Event> getMedDeployedEvents() {
 		return events.get(EventType.medicationDeployed);
 	}
 
 	/**
-	 * 
-	 * @return A set of all cities a certain vaccine is being deployed in.
+	 * @return A set containing all vaccine deployed events.
 	 */
 	public Set<Event> getVaccDeployedEvents() {
 		return events.get(EventType.vaccineDeployed);
 	}
 
 	/**
-	 * 
-	 * @return The outcome of the game as String. This can either be 'loss', 'win'
-	 *         or 'pending'
+	 * @return The outcome of the game as a String. Possible returns values are
+	 *         'loss', 'win' or 'pending'.
 	 */
 	public String getOutcome() {
 		return outcome;
 	}
 
 	/**
-	 * 
-	 * @return The round the large scale panic started. If it hasn't started yet, -1
+	 * @return The round the large scale panic started. If it has not started yet, -1
 	 *         is returned.
 	 */
 	public int getPanicStart() {
@@ -486,8 +464,7 @@ public class Game {
 	}
 
 	/**
-	 * 
-	 * @return The round the economic crisis has started. If it hasn't started yet,
+	 * @return The round the economic crisis has started. If it has not started yet,
 	 *         -1 is returned.
 	 */
 	public int getEcoCrisisStart() {
@@ -495,7 +472,6 @@ public class Game {
 	}
 
 	/**
-	 * 
 	 * @return The amount of points available for spending on actions.
 	 */
 	public int getPoints() {
@@ -503,7 +479,7 @@ public class Game {
 	}
 
 	/**
-	 * Returns the pathogen with the given name. If the name does not match any
+	 * Returns the pathogen by its identifier. If the name does not match any
 	 * pathogen in the game, null is returned.
 	 * 
 	 * @param name Name of the pathogen.
@@ -514,9 +490,10 @@ public class Game {
 	}
 
 	/**
-	 * Returns all pathogens in the game.
+	 * Returns all pathogens that have appeared in the game so far. If none exist, an empty Collection
+	 * is returned. 
 	 * 
-	 * @return All pathogens.
+	 * @return All pathogens that have appeared in the game.
 	 */
 	public Collection<Pathogen> getPathogens() {
 		return this.pathogenes.values();
