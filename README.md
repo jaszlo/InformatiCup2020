@@ -4,8 +4,8 @@ Dies ist ein lokaler Webservice, welcher die vom Kommandozeilentool des Informat
 
 Genauere Informationen zur Benutzung der grafischen Oberfläche, sowie des Testskripts finden sich in der Dokumentation (Kapitel 4.2 und 4.3).
   
-Außerdem lässt sich das Projekt bei Amazon Web Services deployen und es exestiert eine deployte Version. Mehr Informationen um das Projekt selber zu deployen finden sich in der Dokumentation (Kapitel 3.1).
-Um den deployten Webservice mit dem Kommandozeilentool aufzurufen fügt man die URL "https://udi8pt9vo9.execute-api.us-east-1.amazonaws.com/Beta/" hinzu. Ein Aufruf unter Linux sieht z.B. so aus
+Außerdem lässt sich das Projekt bei Amazon Web Services deployen und es existiert eine deployte Version. Mehr Informationen, um das Projekt selber zu deployen finden sich in der Dokumentation (Kapitel 3.1).
+Um den deployten Webservice mit dem Kommandozeilentool aufzurufen, fügt man die URL "https://udi8pt9vo9.execute-api.us-east-1.amazonaws.com/Beta/" hinzu. Ein Aufruf unter Linux sieht z.B. so aus
 ```sh
 ./ic20_linux -u https://udi8pt9vo9.execute-api.us-east-1.amazonaws.com/Beta/
 ```
