@@ -1,6 +1,6 @@
 # Lösung für den InformatiCup 2020
 
-Dies ist ein lokaler Webservice, welcher die vom Kommandozeilentool des InformatiCups erstellten Spielzustände bearbeiten kann und einen möglichst guten Zug ausführt. Mit enthalten ist eine grafische Oberfläche, welche zusätzliches manuelles Spielen ermöglicht, sowie ein Skript zum Testen der von uns erstelletn Lösung.
+Dies ist ein lokaler Webservice, welcher die vom Kommandozeilentool des InformatiCups erstellten Spielzustände bearbeiten kann und einen möglichst guten Zug ausführt. Mit enthalten ist eine grafische Oberfläche, welche zusätzliches manuelles Spielen ermöglicht, sowie ein Skript zum Testen der von uns erstellten Lösung.
 
 Genauere Informationen zur Benutzung der grafischen Oberfläche, sowie des Testskripts finden sich in der Dokumentation (Kapitel 4.2 und 4.3).
   
@@ -23,7 +23,7 @@ Um das Projekt mit maven zu bauen folgt der Systemaufruf
 $ mvn package
 ```
 War dies erfolgreich, so sollte der Webservice als ausführbare Jar-Datei in einem neu angelegten Ordner, mit dem Namen "target", liegen. 
-Zum starten ruft man die Jar-Datei wie folgt auf.
+Zum Starten ruft man die Jar-Datei wie folgt auf.
 
 ```sh
 $ java -jar target/ic_webservice-20.jar
@@ -53,7 +53,7 @@ Durch den Aufruf
 ```
 $ python3 Test.py
 ```
-werden die ersten 100 Seeds gespielt, wovon jeweils vier parallel ausgeführt werden. Nach diesem Aufruf sollte sich die GUI schließen. Relevante Informationen zum aktuellen Fortschritt werden auf der Konsole ausgegeben.
+werden die ersten 100 Seeds gespielt, wovon jeweils vier parallel ausgeführt werden. Nach diesem Aufruf sollte sich das GUI schließen. Relevante Informationen zum aktuellen Fortschritt werden auf der Konsole ausgegeben.
 Erneut finden sich weitere und genauere Informationen in der Dokumentation in Kapitel 4.3 "Benutzung des Testskripts" .
 
 
