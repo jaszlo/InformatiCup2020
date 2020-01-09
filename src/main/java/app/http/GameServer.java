@@ -84,10 +84,8 @@ public class GameServer {
 				// Close the output stream and set the last action string in the GUI
 				os.close();
 			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			System.exit(0);
