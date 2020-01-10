@@ -11,3 +11,12 @@ ___________DOKUMENTATION____________
 ->  UML-Diagramm, HTTP-Package, Solver-Package, IO-Packagae			| REQUIRED (zum Teil)
 ->  CodeErklärung								| REQUIRED (zumindest Teilweise)
 
+___________CRUNCH_TIME______________
+
+->  Neuer Branch
+->  Heuristik ändern:
+	- Score als savedPopulation
+->  Knappsack reimplementieren:
+	- Knappsack konstanten anpassen
+	- ActionSet filtern
+
