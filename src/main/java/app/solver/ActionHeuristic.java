@@ -234,7 +234,7 @@ public class ActionHeuristic {
 			 * opposite of that condition is checked and if not met no vaccines will be
 			 * developed.
 			 */
-			if (!doDevVaccine(pathogen, game) && game.getCities().stream().filter(c -> !c.isInfected())
+			if (!doDevVaccine(pathogen) && game.getCities().stream().filter(c -> !c.isInfected())
 					.mapToDouble(c -> c.getPopulation()).sum() >= 0.1 * game.getPopulation()) {
 				break;
 			}
@@ -276,7 +276,7 @@ public class ActionHeuristic {
 
 			// Check if the pathogen qualifies for medication. If it does develop
 			// medication.
-			if (doDevMedication(pathogen, game)) {
+			if (doDevMedication(pathogen)) {
 				score += (constants.get("DEV_MEDICATION_FACTOR") * pathogen.getLethality().getNumericRepresentation());
 			}
 
