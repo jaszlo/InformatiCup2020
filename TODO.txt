@@ -1,9 +1,6 @@
 
 ______________ALLGEMEIN______________
 ->  GitHub-Abgabe-Repository für den Wettbewerb					| REQUIRED
-->  Skript für Konstantenoptimierung schreiben                                  | OPTIONAL
-->  Laufzeit optimieren                                                         | OPTIONAL
-->  JavaDoc vervollständiger (letzten Getter schreiben und Korrektur lesen)     | REQUIRED
 
 ___________DOKUMENTATION____________
 ->  AWS installation								| REQUIRED
