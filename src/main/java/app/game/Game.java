@@ -236,6 +236,8 @@ public class Game {
 
 	/**
 	 * Helper method to put an event into the event map.
+	 * 
+	 * @param event Event to add.
 	 */
 	private void addToGeneralEventMap(Event event) {
 		events.get(event.getType()).add(event);

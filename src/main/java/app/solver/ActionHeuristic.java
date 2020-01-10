@@ -71,7 +71,7 @@ public class ActionHeuristic {
 	 * @param pathogen to check for vaccination requirements.
 	 * @return true or false depending on the pathogen's statistics.
 	 */
-	private static boolean doDevVaccine(Pathogen pathogen, Game game) {
+	private static boolean doDevVaccine(Pathogen pathogen) {
 
 		int infectivity = pathogen.getInfectivity().getNumericRepresentation();
 		int mobility = pathogen.getMobility().getNumericRepresentation();
@@ -97,7 +97,7 @@ public class ActionHeuristic {
 	 * @param pathogen to check for medication requirements.
 	 * @return true or false depending on the pathogen's statistics.
 	 */
-	private static boolean doDevMedication(Pathogen pathogen, Game game) {
+	private static boolean doDevMedication(Pathogen pathogen) {
 
 		int infectivity = pathogen.getInfectivity().getNumericRepresentation();
 		int mobility = pathogen.getMobility().getNumericRepresentation();

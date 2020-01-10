@@ -141,7 +141,7 @@ public class Event {
 	 * @param round       The round in which the event occurred or since it has been
 	 *                    active.
 	 * @param city        The city of the event.
-	 * @param paricipants participants of the event.
+	 * @param participants participants of the event.
 	 */
 	public Event(int round, City city, double participants) {
 		this(EventType.uprising, round, 0, null, city, null, participants);

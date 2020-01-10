@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -94,7 +93,7 @@ public class FileHandler {
 	 * 
 	 * @param path The path of the file to write the image into. If this file does
 	 *             not exist, nothing happens.
-	 * @param text The image to be written into the file.
+	 * @param image The image to be written into the file.
 	 */
 	public static void writeFile(String path, BufferedImage image) {
 		FileHandler.writeFile(new File(path), image);
@@ -105,7 +104,7 @@ public class FileHandler {
 	 * 
 	 * @param file The file to write the image into. If this file does not exist,
 	 *             nothing happens.
-	 * @param text The image to be written into the file.
+	 * @param image The image to be written into the file.
 	 */
 	public static void writeFile(File file, BufferedImage image) {
 
@@ -128,7 +127,7 @@ public class FileHandler {
 	/**
 	 * Returns the contents of a file as a List of Strings.
 	 * 
-	 * @param file The path of the file to read the content from. If the file does
+	 * @param path The path of the file to read the content from. If the file does
 	 *             not exist, null is returned.
 	 * @return The contents of the file as a list of Strings. Each line corresponds
 	 *         to one entry in the resulting list. The first line is at position 0
