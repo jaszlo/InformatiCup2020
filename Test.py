@@ -13,7 +13,7 @@ SEEDS = []
 # URL to connect to
 URL = "http://localhost:50123"
 # URL to AWS
-AWS_URL = "https://udi8pt9vo9.execute-api.us-east-1.amazonaws.com/Beta/"
+AWS_URL = "https://udi8pt9vo9.execute-api.us-east-1.amazonaws.com/default/"
 # Number of threads running at the same time
 N_WORKERS = 4
 
