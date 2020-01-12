@@ -12,7 +12,7 @@ import app.game.events.Event;
  * Class to generate all possible, legal actions and all actions of a certain
  * type that can be taken in a specific game.
  */
-public class ActionControl {
+public class ActionGenerator {
 
 	/**
 	 * Generates all possible, legal actions for the given game.

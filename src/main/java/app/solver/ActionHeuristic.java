@@ -9,7 +9,7 @@ import app.game.Game;
 import app.game.Pathogen;
 import app.game.Scale;
 import app.game.actions.Action;
-import app.game.actions.ActionControl;
+import app.game.actions.ActionGenerator;
 
 /**
  * Evaluator class that can evaluate a given action within the context of the
@@ -359,7 +359,7 @@ public class ActionHeuristic {
 		// Generate all possible action and stream them. Get the score for every action
 		// and set it in the action. Afterwards the action with the highest score will
 		// be executed.
-		return ActionControl.generatePossibleActions(game).parallelStream()
+		return ActionGenerator.generatePossibleActions(game).parallelStream()
 		.filter(a -> a.getType().getCosts(a.getRounds()) <= game.getPoints())
 		.max((Action a, Action b) -> a.getScore() == b.getScore() ? 0 : a.getScore() > b.getScore() ? 1 : -1)
 		.orElse(new Action(game));
