@@ -15,7 +15,7 @@ import java.util.Collection;
 import javax.imageio.ImageIO;
 
 /**
- * A handler that can write or read files.
+ * A handler that can write to or read from files.
  */
 public class FileHandler {
 

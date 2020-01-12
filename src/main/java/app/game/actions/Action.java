@@ -5,6 +5,10 @@ import app.game.Game;
 import app.game.Pathogen;
 import app.solver.ActionHeuristic;
 
+/**
+ * Class to represent and hold information about an action that can be taken in
+ * the current state of the game.
+ */
 public class Action {
 
 	private final ActionType type;

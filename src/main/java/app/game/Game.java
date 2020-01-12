@@ -22,14 +22,16 @@ import app.game.events.EventType;
  */
 public class Game {
 
-	/// General
+	//Map of all cities by their name
 	private final Map<String, City> cities = new HashMap<>();
+	//Map of all encountered pathogens by their name
 	private final Map<String, Pathogen> pathogenes = new HashMap<>();
+	//Map of all events grouped by their type
 	private final Map<EventType, Set<Event>> events = new HashMap<>(); // Events by type
-
-	/// A map with all pathogens we want to ignore in our heuristic
+	// A map with all pathogens we want to ignore in our heuristic
 	private Map<Pathogen, Boolean> ignoredPathogens = new HashMap<>();
-
+	
+	///Basic attributes - detailed description in the corresponding getter		
 	private int ecoCrisisStart = -1, panicStart = -1;
 
 	private int initialPopulation = -1; // -1 if not known
@@ -81,8 +83,8 @@ public class Game {
 	}
 
 	/**
-	 * Parses a given JSONObject to an event. The event is added to the general
-	 * event map and to the city map.
+	 * Parses a given JSONObject to an event. The event is added to the event map
+	 * and if related to a city, the event is also added to be city specific event map.
 	 * 
 	 * @param event The JSONObject to be parsed.
 	 * @param city  The city in which the event takes place. If the event is not
