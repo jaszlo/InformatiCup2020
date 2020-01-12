@@ -1,8 +1,9 @@
 package app;
 
+import app.game.Game;
 import app.gui.GuiController;
 import app.http.GameServer;
-
+import app.solver.ActionHeuristic;
 //Imports for the GUI
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -60,4 +61,12 @@ public class App extends Application {
 			App.guiController = null;
 		}
 	}	
+	
+	@Override
+	public void stop() {
+		// Detected GUI closed. Enable auto play.
+		GameServer.lock();
+		// Flush the game out of the GUI so that it is finished with auto play
+		App.guiController.flushGame();
+	}
 }

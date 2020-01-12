@@ -28,12 +28,12 @@ public class GameServer {
 	 * As long as the LOCK is the next reply auto play is enabled. This means the
 	 * heuristic computes the best possible turn and executes it.
 	 */
-	public static final GameEvaluator LOCK = new GameEvaluator() {
+	private static final GameEvaluator LOCK = new GameEvaluator() {
 		@Override
 		public String evaluate(Game currentGame) {
 
 			System.err.println("Blocking deque LOCK was executed!");
-			GameServer.addReply(GameServer.LOCK);
+			lock();
 
 			return ActionHeuristic.solve(currentGame).toString();
 		}
@@ -118,9 +118,9 @@ public class GameServer {
 				// Initializing the (3) way of playing.
 			} else {
 				// Detected more than one game. CLose GUI and enable auto play.
-				addReply(LOCK);
+				lock();
 				Platform.runLater(() -> {
-					App.guiController.executeAction(ActionHeuristic.solve(ge.getGame()));
+					App.guiController.flushGame();
 					App.guiController.close();
 				});
 
@@ -133,6 +133,13 @@ public class GameServer {
 		if (eval != null) {
 			ge.sendReply(eval.evaluate(ge.getGame()));
 		}
+	}
+	
+	/**
+	 * Enables auto play for all responses.
+	 */
+	public static void lock() {
+		repliesToSend.addFirst(LOCK);
 	}
 
 	/**

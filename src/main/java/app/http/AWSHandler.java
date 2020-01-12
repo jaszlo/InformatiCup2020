@@ -13,8 +13,14 @@ import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import app.game.Game;
 import app.solver.ActionHeuristic;
 
+/**
+ * Class for handling the requests of the REST-API in AWS.
+ */
 public class AWSHandler implements RequestStreamHandler {
-
+	
+	/**
+	 * Handles a single request from the API.
+	 */
 	@Override
 	public void handleRequest(InputStream input, OutputStream output, Context context) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(input, "UTF-8"));

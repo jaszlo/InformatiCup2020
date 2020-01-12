@@ -277,7 +277,12 @@ public class GuiController {
 
 		}
 	}
-
+	
+	/**
+	 * Sets the game that is displayed in the GUI.
+	 * 
+	 * @param exchange The game to be displayed.
+	 */
 	public void setGame(GameExchange exchange) {
 		if (exchange == null || !this.ready()) {
 			return;
@@ -1088,7 +1093,7 @@ public class GuiController {
 		this.executeAction();
 
 	}
-
+	
 	/**
 	 * Executes the given action.
 	 * 
@@ -1102,6 +1107,20 @@ public class GuiController {
 		}
 
 		this.currentGameExchange.sendReply(action);
+		this.currentGameExchange = null;
+	}
+
+	/**
+	 * Flushes the game out of the GUI.
+	 */
+	public void flushGame() {
+		// Check if there is an active GameExchange
+		if (this.currentGameExchange == null || !this.currentGameExchange.isAlive()) {
+			this.currentGameExchange = null;
+			return;
+		}
+
+		this.currentGameExchange.sendReply(ActionHeuristic.solve(this.currentGameExchange.getGame()).toString());
 		this.currentGameExchange = null;
 	}
 
