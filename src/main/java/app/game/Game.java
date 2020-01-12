@@ -84,7 +84,7 @@ public class Game {
 
 	/**
 	 * Parses a given JSONObject to an event. The event is added to the event map
-	 * and if related to a city, the event is also added to be city specific event map.
+	 * and if related to a city, the event is also added to the event map of the city.
 	 * 
 	 * @param event The JSONObject to be parsed.
 	 * @param city  The city in which the event takes place. If the event is not
