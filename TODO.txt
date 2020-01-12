@@ -3,7 +3,6 @@ ______________ALLGEMEIN______________
 ->  GitHub-Abgabe-Repository für den Wettbewerb					| REQUIRED
 
 ___________DOKUMENTATION____________
-->  AWS installation								| REQUIRED
 ->  Bilder hinzufügen								| OPTIONAL		
 ->  Lösungsidee									| REQUIRED	
 ->  Wartung und Weiterentwicklung						| OPTIONAL
@@ -11,12 +10,4 @@ ___________DOKUMENTATION____________
 ->  UML-Diagramm, HTTP-Package, Solver-Package, IO-Packagae			| REQUIRED (zum Teil)
 ->  CodeErklärung								| REQUIRED (zumindest Teilweise)
 
-___________CRUNCH_TIME______________
-
-->  Neuer Branch
-->  Heuristik ändern:
-	- Score als savedPopulation
-->  Knappsack reimplementieren:
-	- Knappsack konstanten anpassen
-	- ActionSet filtern
 
