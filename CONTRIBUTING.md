@@ -16,7 +16,7 @@ Packages: [GUI](./src/main/java/app/gui), [Http](./src/main/java/app/http), [IO]
 
 **Robin Schmöcker**  
 Email: robinyyy@t-online.de  
-Packages: [Game](./src/main/java/app/game), [Http](./src/main/java/app/events), [IO](./src/main/java/app/io), [Solver](./src/main/java/app/solver)
+Packages: [Game](./src/main/java/app/game), [Events](./src/main/java/app/events), [IO](./src/main/java/app/io), [Solver](./src/main/java/app/solver)
 
 
 **Jasper Lorenz**  
