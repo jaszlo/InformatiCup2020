@@ -23,7 +23,6 @@ PATH = './ic20_linux'
 # Parse arguments given to script
 parser = argparse.ArgumentParser(description = 'Test the winrate of a server.')
 parser.add_argument('-aws', action = 'store_true', help = 'If the flag is set AWS is tested, else localhost.')
-parser.add_argument('-train', action = 'store_true', help = 'If the flag is set the constants file is updated after each iteration.')
 parser.add_argument('-consistency', action = 'store_true', help = 'If the flag is set the given seeds are played multiple times to check for consitency.')
 parser.add_argument('-file', action = 'store_true', help = 'If the flag is set the seeds.txt file is used. Overrides range.')
 parser.add_argument('--threads', default = 4, type = int, help = 'Sets the amout of threads.')
@@ -63,35 +62,6 @@ loss = 0
 CHANGE_CHANCE = 0.25
 MAX_ADDITION = 5
 MAX_PERCENTAGE_CHANCE = 0.5
-
-def updateConstants():
-    global CHANGE_CHANCE
-    global MAX_ADDITION
-    global MAX_PERCENTAGE_CHANCE
-
-    with codecs.open('src/resources/constants.txt', mode='r', encoding='utf_8') as f:
-        newConstants = ""
-        for line in f.read().split("\n"):
-            line = line.strip()
-            # Skip lines that are either empty, constants or comments
-            if(line == "" or line.startswith("#") or line.startswith("//")):
-                newConstants += line + "\n"
-                continue
-
-            # Adjust variables
-            key = line.split(" ")[0]
-            value = float(line.split(" ")[1])
-
-            if(random.random() < CHANGE_CHANCE):
-                value += MAX_ADDITION * (random.random() * 2 - 1)
-                value *= MAX_PERCENTAGE_CHANCE * (random.random() * 2 - 1) + 1
-
-                value = value if value > 0 else 0
-
-            newConstants += key + " " + str(value) + "\n"
-
-    with codecs.open('src/resources/constants.txt', mode='w', encoding='utf_8') as f:
-        f.write(newConstants)
     
 
 def calculateWinrate(outcomes):
