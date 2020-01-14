@@ -257,7 +257,7 @@ public class ActionHeuristic {
 		case deployVaccine:
 			// Create a point buffer. If in a later round a strong pathogen is encountered
 			// it can be quarantined.
-			if (game.getPoints() <= constants.get("#STOP_DEPLOYING_VAC")) {
+			if (game.getPoints() <= constants.get("STOP_DEPLOYING_VAC")) {
 				break;
 			}
 
@@ -296,7 +296,7 @@ public class ActionHeuristic {
 		case deployMedication:
 			// Create a point buffer. If in a later round a strong pathogen breaks it can be
 			// quarantined.
-			if (currentPoints <= constants.get("#STOP_DEPLOYING_MED")) {
+			if (currentPoints <= constants.get("STOP_DEPLOYING_MED")) {
 				break;
 			}
 
@@ -308,7 +308,7 @@ public class ActionHeuristic {
 		case exertInfluence:
 			// Make sure the current state qualifies for reroll events in general and if a
 			// pointer buffer is available.
-			if (currentPoints >= constants.get("#START_RANDOM_EVENTS") && doRerolls) {
+			if (currentPoints >= constants.get("START_RANDOM_EVENTS") && doRerolls) {
 				score += constants.get("INFLUENCE_FACTOR") * city.getPopulation()
 						* (5 - city.getEconomy().getNumericRepresentation());
 			}
@@ -317,7 +317,7 @@ public class ActionHeuristic {
 		case callElections:
 			// Make sure the current state qualifies for reroll events in general and if a
 			// pointer buffer is available.
-			if (currentPoints >= constants.get("#START_RANDOM_EVENTS") && doRerolls) {
+			if (currentPoints >= constants.get("START_RANDOM_EVENTS") && doRerolls) {
 				score += constants.get("ELECTIONS_FACTOR") * city.getPopulation()
 						* (5 - city.getGovernment().getNumericRepresentation());
 			}
@@ -326,7 +326,7 @@ public class ActionHeuristic {
 		case applyHygienicMeasures:
 			// Make sure the current state qualifies for reroll events in general and if a
 			// pointer buffer is available.
-			if (currentPoints >= constants.get("#START_RANDOM_EVENTS") && doRerolls) {
+			if (currentPoints >= constants.get("START_RANDOM_EVENTS") && doRerolls) {
 				score += constants.get("HYGIENE_FACTOR") * city.getPopulation()
 						* (5 - city.getHygiene().getNumericRepresentation());
 			}
@@ -335,7 +335,7 @@ public class ActionHeuristic {
 		case launchCampaign:
 			// Make sure the current state qualifies for reroll events in general and if a
 			// pointer buffer is available.
-			if (currentPoints >= constants.get("#START_RANDOM_EVENTS") && doRerolls) {
+			if (currentPoints >= constants.get("START_RANDOM_EVENTS") && doRerolls) {
 				score += constants.get("CAMPAIGN_FACTOR") * city.getPopulation()
 						* (5 - city.getAwareness().getNumericRepresentation());
 			}

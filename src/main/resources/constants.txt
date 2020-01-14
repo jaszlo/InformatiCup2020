@@ -7,14 +7,14 @@ QUARANTINE_FACTOR 300
 QUARANTINE_THRESHOLD 220
 DEV_VACCINE_FACTOR 1
 MAX_SLOW_PRODUCT 6
-// Only develop vaccine if global prevlance is lower than this threshold value.
+// Only develop vaccine if global prevalence is lower than this threshold value.
 DEV_VACCINE_PREVALENCE_THRESHOLD 0.3333
 // Medication over vaccination therefore multiply the factor by 3.
 //DEV_MEDICATION_FACTOR = DEV_VACCINE_FACTOR * 3;
 DEV_MEDICATION_FACTOR 3
 //MIN_FAST_PRODUCT = MAX_SLOW_PRODUCT
 MIN_FAST_PRODUCT 6
-// If a Pathogen usualy does not require medication but this global prevalance
+// If a Pathogen usually does not require medication but this global prevalence
 // is reached develop it anyway.
 //DEV_MEDICATION_PREVALANCE_THRESHOLD = DEV_VACCINE_PREVALANCE_THRESHOLD;
 DEV_MEDICATION_PREVALENCE_THRESHOLD 0.3333
@@ -25,6 +25,6 @@ INFLUENCE_FACTOR 0
 ELECTIONS_FACTOR 0
 HYGIENE_FACTOR 0
 CAMPAIGN_FACTOR 0
-#START_RANDOM_EVENTS 100.0
-#STOP_DEPLOYING_MED 30.0
-#STOP_DEPLOYING_VAC 25.0
+START_RANDOM_EVENTS 100.0
+STOP_DEPLOYING_MED 30.0
+STOP_DEPLOYING_VAC 25.0
