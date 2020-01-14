@@ -119,10 +119,13 @@ public class ActionHeuristic {
 		return score >= constants.get("MIN_FAST_PRODUCT");
 	}
 
-	public static double getScore(Set<Action> actions) {
-		return actions.stream().mapToDouble(a -> a.getScore()).sum();
-	}
-
+	/**
+	 * This method calculates the score for a given action within the context of the
+	 * game of the action.
+	 * 
+	 * @param action The given action to evaluate.
+	 * @return The score of the given action.
+	 */
 	public static double getScore(Action action) {
 
 		// Get all values that will be required multiple times during the evaluation
@@ -309,8 +312,7 @@ public class ActionHeuristic {
 			// Make sure the current state qualifies for reroll events in general and if a
 			// pointer buffer is available.
 			if (currentPoints >= constants.get("START_RANDOM_EVENTS") && doRerolls) {
-				score += constants.get("INFLUENCE_FACTOR") * city.getPopulation()
-						* (5 - city.getEconomy().getValue());
+				score += constants.get("INFLUENCE_FACTOR") * city.getPopulation() * (5 - city.getEconomy().getValue());
 			}
 			break;
 
@@ -327,8 +329,7 @@ public class ActionHeuristic {
 			// Make sure the current state qualifies for reroll events in general and if a
 			// pointer buffer is available.
 			if (currentPoints >= constants.get("START_RANDOM_EVENTS") && doRerolls) {
-				score += constants.get("HYGIENE_FACTOR") * city.getPopulation()
-						* (5 - city.getHygiene().getValue());
+				score += constants.get("HYGIENE_FACTOR") * city.getPopulation() * (5 - city.getHygiene().getValue());
 			}
 			break;
 
@@ -336,8 +337,7 @@ public class ActionHeuristic {
 			// Make sure the current state qualifies for reroll events in general and if a
 			// pointer buffer is available.
 			if (currentPoints >= constants.get("START_RANDOM_EVENTS") && doRerolls) {
-				score += constants.get("CAMPAIGN_FACTOR") * city.getPopulation()
-						* (5 - city.getAwareness().getValue());
+				score += constants.get("CAMPAIGN_FACTOR") * city.getPopulation() * (5 - city.getAwareness().getValue());
 			}
 			break;
 
