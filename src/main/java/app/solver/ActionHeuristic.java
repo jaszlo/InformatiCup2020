@@ -171,8 +171,8 @@ public class ActionHeuristic {
 
 			/*
 			 * Check if there is only one active one pathogen and if there is only one
-			 * outbreak event for this pathogen put it under quarantine enclose a pathogen
-			 * inside a city.
+			 * outbreak event for this pathogen put it under quarantine (enclose a pathogen
+			 * inside a city).
 			 */
 			if (game.getPathEncounterEvents().stream().filter(e -> !game.ignorePathogenThisRound(e.getPathogen()))
 					.count() == 1) {
