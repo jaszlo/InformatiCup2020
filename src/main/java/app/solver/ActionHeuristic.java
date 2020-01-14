@@ -356,12 +356,14 @@ public class ActionHeuristic {
 	 */
 	public static Action solve(Game game) {
 
-		// Generate all possible action and stream them. Get the score for every action
-		// and set it in the action. Afterwards the action with the highest score will
-		// be executed.
+		/*
+		 * Generate all possible action and stream them. Get the score for every action
+		 * and set it in the action. Afterwards the action with the highest score will
+		 * be executed.
+		 */
 		return ActionGenerator.generatePossibleActions(game).parallelStream()
-		.filter(a -> a.getType().getCosts(a.getRounds()) <= game.getPoints())
-		.max((Action a, Action b) -> a.getScore() == b.getScore() ? 0 : a.getScore() > b.getScore() ? 1 : -1)
-		.orElse(new Action(game));
+				.filter(a -> a.getType().getCosts(a.getRounds()) <= game.getPoints())
+				.max((Action a, Action b) -> a.getScore() == b.getScore() ? 0 : a.getScore() > b.getScore() ? 1 : -1)
+				.orElse(new Action(game));
 	}
 }
