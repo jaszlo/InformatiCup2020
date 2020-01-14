@@ -399,10 +399,16 @@ public class GuiController {
 	 * @param output The string that will be set as the output.
 	 */
 	public void setOutput(String output) {
+
+		if (this.output.getText().startsWith("Game over") && !output.startsWith("Game found")) {
+			return;
+		}
+		
 		outputString = output;
 		if (this.ready()) {
 			Platform.runLater(() -> this.output.setText(outputString));
 
+			
 		} else {
 			String outcome = this.currentGame.getOutcome();
 			if (!outcome.equals("pending")) {
