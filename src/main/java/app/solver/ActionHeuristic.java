@@ -49,10 +49,10 @@ public class ActionHeuristic {
 	 */
 	private static boolean doQuarantine(Pathogen pathogen) {
 
-		int infectivity = pathogen.getInfectivity().getNumericRepresentation();
-		int lethality = pathogen.getLethality().getNumericRepresentation();
-		int mobility = pathogen.getMobility().getNumericRepresentation();
-		int duration = pathogen.getDuration().getNumericRepresentation();
+		int infectivity = pathogen.getInfectivity().getValue();
+		int lethality = pathogen.getLethality().getValue();
+		int mobility = pathogen.getMobility().getValue();
+		int duration = pathogen.getDuration().getValue();
 
 		// Factors that contribute to a dangerous pathogen killing lots of people in a
 		// short amount of time
@@ -73,8 +73,8 @@ public class ActionHeuristic {
 	 */
 	private static boolean doDevVaccine(Pathogen pathogen) {
 
-		int infectivity = pathogen.getInfectivity().getNumericRepresentation();
-		int mobility = pathogen.getMobility().getNumericRepresentation();
+		int infectivity = pathogen.getInfectivity().getValue();
+		int mobility = pathogen.getMobility().getValue();
 
 		int score = mobility * infectivity;
 
@@ -99,8 +99,8 @@ public class ActionHeuristic {
 	 */
 	private static boolean doDevMedication(Pathogen pathogen) {
 
-		int infectivity = pathogen.getInfectivity().getNumericRepresentation();
-		int mobility = pathogen.getMobility().getNumericRepresentation();
+		int infectivity = pathogen.getInfectivity().getValue();
+		int mobility = pathogen.getMobility().getValue();
 
 		int score = mobility * infectivity;
 
@@ -249,7 +249,7 @@ public class ActionHeuristic {
 
 			// Only if prevalence is low enough develop vaccines.
 			if (globalPrevalance < constants.get("DEV_VACCINE_PREVALENCE_THRESHOLD")) {
-				score += (constants.get("DEV_VACCINE_FACTOR") * pathogen.getLethality().getNumericRepresentation());
+				score += (constants.get("DEV_VACCINE_FACTOR") * pathogen.getLethality().getValue());
 			}
 
 			break;
@@ -264,7 +264,7 @@ public class ActionHeuristic {
 			// Calculate the healthy population of the city.
 			double healthyPopulation = city.isInfected(pathogen) ? 1 - city.getPrevalance() : 1;
 			score += constants.get("DEP_VACCINE_FACTOR") * healthyPopulation * city.getPopulation()
-					* pathogen.getLethality().getNumericRepresentation();
+					* pathogen.getLethality().getValue();
 			break;
 
 		case developMedication:
@@ -277,7 +277,7 @@ public class ActionHeuristic {
 			// Check if the pathogen qualifies for medication. If it does develop
 			// medication.
 			if (doDevMedication(pathogen)) {
-				score += (constants.get("DEV_MEDICATION_FACTOR") * pathogen.getLethality().getNumericRepresentation());
+				score += (constants.get("DEV_MEDICATION_FACTOR") * pathogen.getLethality().getValue());
 			}
 
 			// Unless it already has infected enough (see the
@@ -301,7 +301,7 @@ public class ActionHeuristic {
 			}
 
 			score += constants.get("DEP_MEDICATION_FACTOR") * city.getPrevalance() * city.getPopulation()
-					* pathogen.getLethality().getNumericRepresentation();
+					* pathogen.getLethality().getValue();
 
 			break;
 
@@ -310,7 +310,7 @@ public class ActionHeuristic {
 			// pointer buffer is available.
 			if (currentPoints >= constants.get("START_RANDOM_EVENTS") && doRerolls) {
 				score += constants.get("INFLUENCE_FACTOR") * city.getPopulation()
-						* (5 - city.getEconomy().getNumericRepresentation());
+						* (5 - city.getEconomy().getValue());
 			}
 			break;
 
@@ -319,7 +319,7 @@ public class ActionHeuristic {
 			// pointer buffer is available.
 			if (currentPoints >= constants.get("START_RANDOM_EVENTS") && doRerolls) {
 				score += constants.get("ELECTIONS_FACTOR") * city.getPopulation()
-						* (5 - city.getGovernment().getNumericRepresentation());
+						* (5 - city.getGovernment().getValue());
 			}
 			break;
 
@@ -328,7 +328,7 @@ public class ActionHeuristic {
 			// pointer buffer is available.
 			if (currentPoints >= constants.get("START_RANDOM_EVENTS") && doRerolls) {
 				score += constants.get("HYGIENE_FACTOR") * city.getPopulation()
-						* (5 - city.getHygiene().getNumericRepresentation());
+						* (5 - city.getHygiene().getValue());
 			}
 			break;
 
@@ -337,7 +337,7 @@ public class ActionHeuristic {
 			// pointer buffer is available.
 			if (currentPoints >= constants.get("START_RANDOM_EVENTS") && doRerolls) {
 				score += constants.get("CAMPAIGN_FACTOR") * city.getPopulation()
-						* (5 - city.getAwareness().getNumericRepresentation());
+						* (5 - city.getAwareness().getValue());
 			}
 			break;
 

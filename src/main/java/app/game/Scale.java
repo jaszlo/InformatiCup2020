@@ -64,7 +64,7 @@ public enum Scale {
 	 * 
 	 * @return The numerical representation of scale.
 	 */
-	public int getNumericRepresentation() {
+	public int getValue() {
 		switch (this) {
 		case MM:
 			return 1;
