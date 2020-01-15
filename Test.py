@@ -59,23 +59,16 @@ ARGUMENTS = [PATH, '-u', URL, '-t', '0']
 wins = 0
 loss = 0
 
-CHANGE_CHANCE = 0.25
-MAX_ADDITION = 5
-MAX_PERCENTAGE_CHANCE = 0.5
-    
 
 def calculateWinrate(outcomes):
     wins = 0
     games = 0
     for outcome in outcomes:
-        # Prevent incomplete data to mess with the updates
-        if(outcome == None):
-            return -1
 
         if(outcome[1] == "win"):
             wins += 1
-
-        games += 1
+        if(outcome[1] != None):
+            games += 1
     
     return wins / games
         
@@ -106,20 +99,17 @@ pool = ThreadPool(N_WORKERS)
 # and return the results
 results = pool.map(playGame, SEEDS)
 print(results)
-print(calculateWinrate(results))
+print("%f%% winrate" % calculateWinrate(results) * 100)
 loss = 0
 wins = 0
 
-if(args.train or args.consistency):
+if(args.consistency):
     oldWinrate = calculateWinrate(results)
     while(1):
         oldResults = results
-        if args.train:
-            shutil.copy('src/resources/constants.txt', 'src/resources/oldConstants.txt')
-            updateConstants()
         results = pool.map(playGame, SEEDS)
         print(results)
-        print("%f%% winrate" % calculateWinrate(results))
+        print("%f%% winrate" % calculateWinrate(results) * 100)
         differentSeed = set(results).symmetric_difference(set(oldResults))
         print("Seeds that changed: " + str(differentSeed))
         loss = 0
