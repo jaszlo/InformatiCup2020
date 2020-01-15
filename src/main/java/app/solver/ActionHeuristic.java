@@ -33,7 +33,7 @@ public class ActionHeuristic {
 		Map<String, Double> constantsOfFile = ConstantsSetup.getConstants(ConstantsSetup.CONSTANTS_PATH);
 
 		if (constantsOfFile == null) {
-			System.out.println("Konstanten konnten nicht geladen werden.");
+			System.err.println("Could not load constants.");
 			System.exit(1);
 		}
 
