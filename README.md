@@ -1,8 +1,6 @@
 # Lösung für den InformatiCup 2020
 
-Dies ist ein lokaler Webservice, welcher die vom 
-
-zeilentool des InformatiCups erstellten Spielzustände bearbeiten kann und einen möglichst guten Zug ausführt. Mit enthalten ist eine grafische Oberfläche, welche zusätzliches manuelles Spielen ermöglicht, sowie ein Skript zum Testen der von uns erstellten Lösung.
+Dies ist ein lokaler Webservice, welcher die vom Kommandozeilentool des InformatiCups erstellten Spielzustände bearbeiten kann und einen möglichst guten Zug ausführt. Mit enthalten ist eine grafische Oberfläche, welche zusätzliches manuelles Spielen ermöglicht, sowie ein Skript zum Testen der von uns erstellten Lösung..
 
 Genauere Informationen zur Benutzung der grafischen Oberfläche, sowie des Testskripts finden sich in der [Dokumentation](./documentation/documentation.pdf) (Kapitel 4.2 und 4.3).
   
