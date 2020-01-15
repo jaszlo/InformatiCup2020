@@ -2,9 +2,9 @@
 
 Dies ist ein lokaler Webservice, welcher die vom Kommandozeilentool des InformatiCups erstellten Spielzustände bearbeiten kann und einen möglichst guten Zug ausführt. Mit enthalten ist eine grafische Oberfläche, welche zusätzliches manuelles Spielen ermöglicht, sowie ein Skript zum Testen der von uns erstellten Lösung.
 
-Genauere Informationen zur Benutzung der grafischen Oberfläche, sowie des Testskripts finden sich in der Dokumentation (Kapitel 4.2 und 4.3).
+Genauere Informationen zur Benutzung der grafischen Oberfläche, sowie des Testskripts finden sich in der [Dokumentation](./documentation/documentation.pdf) (Kapitel 4.2 und 4.3).
   
-Außerdem lässt sich das Projekt bei Amazon Web Services deployen und es existiert eine deployte Version. Mehr Informationen, um das Projekt selber zu deployen finden sich in der Dokumentation (Kapitel 3.1).
+Außerdem lässt sich das Projekt bei Amazon Web Services deployen und es existiert eine deployte Version. Mehr Informationen, um das Projekt selber zu deployen finden sich in der [Dokumentation](./documentation/documentation.pdf) (Kapitel 3.1).
 Um den deployten Webservice mit dem Kommandozeilentool aufzurufen, fügt man die URL "https://udi8pt9vo9.execute-api.us-east-1.amazonaws.com/default/" hinzu. Ein Aufruf unter Linux sieht z.B. so aus
 ```sh
 ./ic20_linux -u https://udi8pt9vo9.execute-api.us-east-1.amazonaws.com/default/
@@ -54,7 +54,7 @@ Durch den Aufruf
 $ python3 Test.py
 ```
 werden die ersten 100 Seeds gespielt, wovon jeweils vier parallel ausgeführt werden. Nach diesem Aufruf sollte sich das GUI schließen. Relevante Informationen zum aktuellen Fortschritt werden auf der Konsole ausgegeben.
-Erneut finden sich weitere und genauere Informationen in der Dokumentation in Kapitel 4.3 "Benutzung des Testskripts" .
+Erneut finden sich weitere und genauere Informationen in der [Dokumentation](./documentation/documentation.pdf) in Kapitel 4.3 "Benutzung des Testskripts" .
 
 
 ## Beenden des Webservices als Hintergrundprozess
