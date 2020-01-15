@@ -42,7 +42,7 @@ remember.txt
 #javadoc
 /javadoc
 /docs
-*.pdf
+
 
 #maven compiled folder
 /target
