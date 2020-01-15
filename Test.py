@@ -99,7 +99,7 @@ pool = ThreadPool(N_WORKERS)
 # and return the results
 results = pool.map(playGame, SEEDS)
 print(results)
-print("%f%% winrate" % calculateWinrate(results) * 100)
+print("%f%% winrate" % (calculateWinrate(results) * 100))
 loss = 0
 wins = 0
 
@@ -109,7 +109,7 @@ if(args.consistency):
         oldResults = results
         results = pool.map(playGame, SEEDS)
         print(results)
-        print("%f%% winrate" % calculateWinrate(results) * 100)
+        print("%f%% winrate" % (calculateWinrate(results) * 100))
         differentSeed = set(results).symmetric_difference(set(oldResults))
         print("Seeds that changed: " + str(differentSeed))
         loss = 0
